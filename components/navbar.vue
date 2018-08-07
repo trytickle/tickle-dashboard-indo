@@ -6,6 +6,7 @@
           <img src="/tickleLogo.png" alt="Tickle" width="78" height="28">
         </a>
       </div>
+
       <div class="navbar-item" v-if="isSignedIn">
         <a class="button is-danger" href="/" @click="signout">
           <span>Sign out</span>

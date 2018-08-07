@@ -1,6 +1,6 @@
 <template>
   <div class="container" style="margin:20px;">
-    <h1>Dashboard</h1>
+    <nuxt-link class="button" to="/create-experience">Create Experience</nuxt-link>
   </div>
 </template>
 
