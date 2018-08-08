@@ -1,7 +1,7 @@
 <template>
   <div class="container" style="padding:20px;max-width:640px;margin:auto;">
     <p class="title is-3">Create Experience</p>
-    <p class="subtitle is-5">Make sure to check for grammar and spelling</p>
+    <p class="subtitle is-5">This creates an experience submission (not live)</p>
 
     <div class="field">
       <label class="label">Title</label>
@@ -90,12 +90,12 @@
         <label class="label">Duration</label>
         <div class="select">
           <select v-model="duration">
-            <option>1 hour</option>
-            <option>2 hours</option>
-            <option>3 hours</option>
-            <option>4 hours</option>
-            <option>5 hours</option>
-            <option>> 5 hours</option>
+            <option :value=60>1 hour</option>
+            <option :value=120>2 hours</option>
+            <option :value=180>3 hours</option>
+            <option :value=240>4 hours</option>
+            <option :value=300>5 hours</option>
+            <option :value=360>> 5 hours</option>
           </select>
         </div>
       </div>
@@ -213,23 +213,23 @@
         <label class="label">Minimum Age</label>
         <div class="select">
           <select v-model="minimumAge">
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
-            <option>10</option>
-            <option>11</option>
-            <option selected="selected">12</option>
-            <option>13</option>
-            <option>14</option>
-            <option>15</option>
-            <option>16</option>
-            <option>17</option>
-            <option>18</option>
-            <option>19</option>
-            <option>20</option>
-            <option>21</option>
+            <option :value=5>5</option>
+            <option :value=6>6</option>
+            <option :value=7>7</option>
+            <option :value=8>8</option>
+            <option :value=9>9</option>
+            <option :value=10>10</option>
+            <option :value=11>11</option>
+            <option :value=12 selected="selected">12</option>
+            <option :value=13>13</option>
+            <option :value=14>14</option>
+            <option :value=15>15</option>
+            <option :value=16>16</option>
+            <option :value=17>17</option>
+            <option :value=18>18</option>
+            <option :value=19>19</option>
+            <option :value=20>20</option>
+            <option :value=21>21</option>
           </select>
         </div>
       </div>
@@ -238,8 +238,8 @@
         <label class="label">Kids?</label>
         <div class="select">
           <select v-model="kidsAllowed">
-            <option>Yes</option>
-            <option>No</option>
+            <option :value=true>Yes</option>
+            <option :value=false>No</option>
           </select>
         </div>
       </div>
@@ -248,8 +248,8 @@
         <label class="label">Alcohol?</label>
         <div class="select">
           <select v-model="alcohol">
-            <option>Yes</option>
-            <option selected="selected">No</option>
+            <option :value=true>Yes</option>
+            <option :value=false selected="selected">No</option>
           </select>
         </div>
       </div>
@@ -258,10 +258,24 @@
         <label class="label">Verification?</label>
         <div class="select">
           <select v-model="verification">
-            <option>Yes</option>
-            <option selected="selected">No</option>
+            <option :value=true>Yes</option>
+            <option :value=false selected="selected">No</option>
           </select>
         </div>
+      </div>
+    </div>
+
+    <div class="field" style="padding-top:10px;">
+      <label class="label">Additional Requirements</label>
+      <div class="control">
+        <textarea class="textarea" placeholder="" v-model="additionalRequirements"></textarea>
+      </div>
+    </div>
+
+    <div class="field" style="padding-top:10px;">
+      <label class="label">Special Certifications</label>
+      <div class="control">
+        <textarea class="textarea" placeholder="" v-model="specialCertifications"></textarea>
       </div>
     </div>
 
@@ -295,7 +309,7 @@
         </span>
       </p>
       <p class="control">
-        <input class="input" type="text" placeholder="" v-model="price">
+        <input class="input" type="number" placeholder="" v-model.number="price">
       </p>
     </div>
 
@@ -304,26 +318,26 @@
         <label class="label">Guest Count</label>
         <div class="select">
           <select v-model="guestCount">
-            <option>1 guest</option>
-            <option>2 guests</option>
-            <option>3 guests</option>
-            <option>4 guests</option>
-            <option>5 guests</option>
-            <option>6 guests</option>
-            <option>7 guests</option>
-            <option>8 guests</option>
-            <option>9 guests</option>
-            <option selected="selected">10 guests</option>
-            <option>11 guests</option>
-            <option>12 guests</option>
-            <option>13 guests</option>
-            <option>14 guests</option>
-            <option>15 guests</option>
-            <option>16 guests</option>
-            <option>17 guests</option>
-            <option>18 guests</option>
-            <option>19 guests</option>
-            <option>20 guests</option>
+            <option :value=1>1 guest</option>
+            <option :value=2>2 guests</option>
+            <option :value=3>3 guests</option>
+            <option :value=4>4 guests</option>
+            <option :value=5>5 guests</option>
+            <option :value=6>6 guests</option>
+            <option :value=7>7 guests</option>
+            <option :value=8>8 guests</option>
+            <option :value=9>9 guests</option>
+            <option :value=10 selected="selected">10 guests</option>
+            <option :value=11>11 guests</option>
+            <option :value=12>12 guests</option>
+            <option :value=13>13 guests</option>
+            <option :value=14>14 guests</option>
+            <option :value=15>15 guests</option>
+            <option :value=16>16 guests</option>
+            <option :value=17>17 guests</option>
+            <option :value=18>18 guests</option>
+            <option :value=19>19 guests</option>
+            <option :value=20>20 guests</option>
           </select>
         </div>
       </div>
@@ -332,24 +346,24 @@
         <label class="label">Latest Booking Time</label>
         <div class="select">
           <select v-model="latestBookingTime">
-            <option>1 hour before</option>
-            <option>2 hours before</option>
-            <option>3 hours before</option>
-            <option>4 hours before</option>
-            <option>5 hours before</option>
-            <option>6 hours before</option>
-            <option>7 hours before</option>
-            <option>8 hours before</option>
-            <option>9 hours before</option>
-            <option>10 hours before</option>
-            <option>11 hours before</option>
-            <option>12 hours before</option>
-            <option>2 days before</option>
-            <option>3 days before</option>
-            <option>4 days before</option>
-            <option>5 days before</option>
-            <option>6 days before</option>
-            <option>1 week before</option>
+            <option :value=1>1 hour before</option>
+            <option :value=2>2 hours before</option>
+            <option :value=3>3 hours before</option>
+            <option :value=4>4 hours before</option>
+            <option :value=5>5 hours before</option>
+            <option :value=6>6 hours before</option>
+            <option :value=7>7 hours before</option>
+            <option :value=8>8 hours before</option>
+            <option :value=9>9 hours before</option>
+            <option :value=10>10 hours before</option>
+            <option :value=11>11 hours before</option>
+            <option :value=12>12 hours before</option>
+            <option :value=48>2 days before</option>
+            <option :value=72>3 days before</option>
+            <option :value=96>4 days before</option>
+            <option :value=120>5 days before</option>
+            <option :value=144>6 days before</option>
+            <option :value=168>1 week before</option>
           </select>
         </div>
       </div>
@@ -360,17 +374,17 @@
         <label class="label">Main Category</label>
         <div class="select">
           <select v-model="mainCategory">
-            <option>Classes & Workshops</option>
-            <option>Arts</option>
-            <option>Food & Drinks</option>
-            <option>Sports & Fitness</option>
-            <option>Nature</option>
-            <option>History & Culture</option>
-            <option>Health & Wellness</option>
-            <option>Music</option>
-            <option>Nightlife</option>
-            <option>Personalities</option>
-            <option>Social</option>
+            <option :value=0>Classes & Workshops</option>
+            <option :value=1>Arts</option>
+            <option :value=2>Food & Drinks</option>
+            <option :value=3>Sports & Fitness</option>
+            <option :value=4>Nature</option>
+            <option :value=5>History & Culture</option>
+            <option :value=6>Health & Wellness</option>
+            <option :value=7>Music</option>
+            <option :value=8>Nightlife</option>
+            <option :value=9>Personalities</option>
+            <option :value=10>Social</option>
           </select>
         </div>
       </div>
@@ -379,17 +393,17 @@
         <label class="label">Secondary Category</label>
         <div class="select">
           <select v-model="secondaryCategory">
-            <option>Classes & Workshops</option>
-            <option>Arts</option>
-            <option>Food & Drinks</option>
-            <option>Sports & Fitness</option>
-            <option>Nature</option>
-            <option>History & Culture</option>
-            <option>Health & Wellness</option>
-            <option>Music</option>
-            <option>Nightlife</option>
-            <option>Personalities</option>
-            <option>Social</option>
+            <option :value=0>Classes & Workshops</option>
+            <option :value=1>Arts</option>
+            <option :value=2>Food & Drinks</option>
+            <option :value=3>Sports & Fitness</option>
+            <option :value=4>Nature</option>
+            <option :value=5>History & Culture</option>
+            <option :value=6>Health & Wellness</option>
+            <option :value=7>Music</option>
+            <option :value=8>Nightlife</option>
+            <option :value=9>Personalities</option>
+            <option :value=10>Social</option>
           </select>
         </div>
       </div>
@@ -401,18 +415,25 @@
       <label class="label">Cancellation Policy</label>
       <div class="select">
         <select v-model="cancellationPolicy">
-          <option>Flexible</option>
-          <option>Moderate</option>
-          <option>Strict</option>
+          <option :value=0>Flexible</option>
+          <option :value=1>Moderate</option>
+          <option :value=2>Strict</option>
         </select>
       </div>
     </div>
 
     <hr/>
 
+    <div class="field" v-if="showError">
+      <p class="help is-danger">{{ errorMessage }}</p>
+    </div>
+
+    <hr v-if="showError"/>
+
     <div class="field is-grouped" style="padding-bottom:50px;">
       <div class="control">
-        <button class="button is-link" @click="createExperience">Create</button>
+        <button class="button is-link is-loading" v-if="isLoading">Create</button>
+        <button class="button is-link" @click="createExperience" v-else>Create</button>
       </div>
       <div class="control">
         <nuxt-link class="button is-text" to="/dashboard">Cancel</nuxt-link>
@@ -424,13 +445,15 @@
 
 <script>
 import { auth } from '~/plugins/firebase'
+
 export default {
   data() {
     return {
+      userId: '',
       title: '',
       tagline: '',
-      label: '',
-      duration: '1 hour',
+      label: 'Dinner party',
+      duration: 60,
       language: 'English',
       aboutHost: '',
       whatWeDo: '',
@@ -443,26 +466,86 @@ export default {
       zipcode: '',
       city: 'Singapore',
       country: 'Singapore',
-      minimumAge: '12',
-      kidsAllowed: 'Yes',
-      alcohol: 'No',
-      verification: 'No',
+      minimumAge: 12,
+      kidsAllowed: true,
+      alcohol: false,
+      verification: false,
+      additionalRequirements: '',
+      specialCertifications: '',
       currency: 'SGD',
-      price: '',
-      guestCount: '10 guests',
-      latestBookingTime: '1 hour before',
-      mainCategory: '',
-      secondaryCategory: '',
-      cancellationPolicy: 'Flexible'
+      price: 20,
+      guestCount: 10,
+      latestBookingTime: 1,
+      mainCategory: 0,
+      secondaryCategory: 0,
+      cancellationPolicy: 0,
+      isLoading: false,
+      showError: false,
+      errorMessage: ''
     }
   },
   methods: {
-    createExperience() {
-      console.log('label', this.label)
+    async createExperience() {
+      const body = {
+        userId: this.userId,
+        title: this.title,
+        tagline: this.tagline,
+        subtitle: this.label,
+        maxDuration: this.duration,
+        languages: [this.language],
+        aboutHost: this.aboutHost,
+        whatWeDo: this.whatWeDo,
+        whatIProvide: this.whatIProvide,
+        whereWeBe: this.whereWeBe,
+        notes: this.notes,
+        city: this.city,
+        whereWeMeet: {
+          locationName: this.locationName,
+          aptSuiteBuilding: this.aptSuiteBuilding,
+          streetAddress: this.streetAddress,
+          zipcode: this.zipcode,
+          city: this.city,
+          country: this.country,
+          lat: 1.3521,
+          lng: 103.8198
+        },
+        bookingOptions: {
+          bookBefore: this.latestBookingTime
+        },
+        guestRequirements: {
+          minimumAge: this.minimumAge,
+          kidsAllowed: this.kidsAllowed,
+          servesAlcohol: this.alcohol,
+          requireVerified: this.verification,
+          additionalRequirements: this.additionalRequirements,
+          specialCertifications: this.specialCertifications
+        },
+        currency: this.currency,
+        pricePerPax: this.price * 100,
+        maxGuestCount: this.guestCount,
+        categoryPrimary: this.mainCategory,
+        categorySecondary: this.secondaryCategory,
+        cancellationPolicy: this.cancellationPolicy
+      }
+
+      this.showError = false
+      this.isLoading = true
+
+      try {
+        const result = await this.$axios.$post('https://us-central1-tickle-development.cloudfunctions.net/createSubmission', body)
+        console.log(result)
+        this.$router.replace('/dashboard')
+      } catch (error) {
+        this.showError = true
+        this.errorMessage = error.message
+      }
+
+      this.isLoading = false
     }
   },
   created() {
     auth.onAuthStateChanged(user => {
+      this.userId = user.uid
       if (!user) {
         this.$router.replace('/')
       }
@@ -470,4 +553,3 @@ export default {
   }
 }
 </script>
-

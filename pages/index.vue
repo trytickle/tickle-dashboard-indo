@@ -1,5 +1,7 @@
 <template>
   <section class="container box" style="max-width:350px;margin-top:20px;">
+    <h1 class="title is-4">Dashboard Login</h1>
+    <hr style="margin-top:-10px;"/>
     <form v-on:submit.prevent="login">
       <div class="field">
         <input class="input" type="email" placeholder="Email" v-model="email">
@@ -12,7 +14,7 @@
       </div>
       <div class="field">
         <p class="control" v-if="isLoading">
-          <button class="button is-info is-loading" @click="login">
+          <button class="button is-info is-loading">
             Login
           </button>
         </p>
