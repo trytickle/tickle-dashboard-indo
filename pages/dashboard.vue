@@ -26,8 +26,6 @@ export default {
           profilePhotoUrl = doc.data().profilePhotoUrl
         }
 
-        console.log(profilePhotoUrl)
-
         const userData = {
           firstName: doc.data().firstName,
           lastName: doc.data().lastName,
