@@ -1,6 +1,13 @@
 <template>
   <div class="container" style="margin:20px;">
-    <usercell v-for="user in users" :key="user.userId" :userId="user.userId" :firstName="user.firstName" :lastName="user.lastName" :email="user.email" :profilePhotoUrl="user.profilePhotoUrl"/>
+    <div class="columns">
+      <div class="column">
+        <usercell v-for="user in users" :key="user.userId" :user="user"/>
+      </div>
+      <div class="column">
+
+      </div>
+    </div>
   </div>
 </template>
 
@@ -19,22 +26,16 @@ export default {
   },
   methods: {
     async fetchUsers() {
-      const querySnap = await db.collection('users').get()
-      querySnap.forEach(doc => {
+      const snapshot = await db.collection('users').get()
+      snapshot.forEach(doc => {
+        let userData = doc.data()
         let profilePhotoUrl = "/profile.png"
         if (doc.data().profilePhotoUrl.includes("firebase")) {
           profilePhotoUrl = doc.data().profilePhotoUrl
         }
-
-        const userData = {
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          profilePhotoUrl: profilePhotoUrl,
-          email: doc.data().email,
-          userId: doc.data().userId
-        }
+        userData['profilePhotoUrl'] = profilePhotoUrl
         this.users.push(userData)
-      })
+      }) 
     }
   },
   created() {

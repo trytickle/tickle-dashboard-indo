@@ -3,18 +3,18 @@
     <article class="media">
       <div class="media-left">
         <figure class="image is-64x64">
-          <img class="is-rounded" :src="profilePhotoUrl">
+          <img class="is-rounded" :src="user.profilePhotoUrl">
         </figure>
       </div>
       <div class="media-content">
         <div class="content">
           <p>
-            <strong>{{firstName}} {{lastName}}</strong>
+            <strong>{{user.firstName}} {{user.lastName}}</strong>
             <br>
-            <small>{{email}}</small><br><small>{{userId}}</small>
+            <small>{{user.email}}</small><br><small>{{user.userId}}</small>
           </p>
           <p>
-            <button class="button" style="margin-right:10px;">Profile</button><button class="button">Experiences</button>
+            <nuxt-link class="button" style="margin-right:10px;" :to="'/users/' + user.userId">Profile</nuxt-link><nuxt-link class="button" to="experiences/12345">Experiences</nuxt-link>
           </p>
         </div>
       </div>
@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  props: ['firstName', 'lastName', 'email', 'userId', 'profilePhotoUrl']
+  props: ['user']
 }
 </script>
 

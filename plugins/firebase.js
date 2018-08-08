@@ -2,15 +2,26 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
 
+const dev = {
+  apiKey: "AIzaSyCxjzIiNtQ0Nc2V1_j8eWFdHx0avp7-CSs",
+  authDomain: "tickle-development.firebaseapp.com",
+  databaseURL: "https://tickle-development.firebaseio.com",
+  projectId: "tickle-development",
+  storageBucket: "tickle-development.appspot.com",
+  messagingSenderId: "1053739599789"
+}
+
+const prod = {
+  apiKey: "AIzaSyCY3x0GxjLNamXJG-ghiecuPejkuLkIHQQ",
+  authDomain: "tickle-production.firebaseapp.com",
+  databaseURL: "https://tickle-production.firebaseio.com",
+  projectId: "tickle-production",
+  storageBucket: "tickle-production.appspot.com",
+  messagingSenderId: "279701072079"
+}
+
 if (!firebase.apps.length) {
-  firebase.initializeApp({
-    apiKey: "AIzaSyCxjzIiNtQ0Nc2V1_j8eWFdHx0avp7-CSs",
-    authDomain: "tickle-development.firebaseapp.com",
-    databaseURL: "https://tickle-development.firebaseio.com",
-    projectId: "tickle-development",
-    storageBucket: "tickle-development.appspot.com",
-    messagingSenderId: "1053739599789"
-  })
+  firebase.initializeApp(prod)
 }
 
 const firestore = firebase.firestore()
