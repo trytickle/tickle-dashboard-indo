@@ -2,13 +2,10 @@
   <nav class="level" style="padding:20px;background-color:#D4EDFA;">
     <div class="level-left">
       <div class="level-item">
-        <div v-if="isSignedIn">
+        <div>
           <a href="/dashboard">
-            <img src="/tickleLogo.png" alt="Tickle" width="110" height="40">
+            <img src="/tickleLogo.png" alt="Tickle" width="120" style="padding-left:10px;">
           </a>
-        </div>
-        <div v-else>
-          <img src="/tickleLogo.png" alt="Tickle" width="110" height="40">
         </div>
       </div>
     </div>

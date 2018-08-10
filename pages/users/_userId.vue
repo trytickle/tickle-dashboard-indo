@@ -1,7 +1,7 @@
 <template>
   <div class="container" style="padding-left:30px;padding-right:30px;padding-bottom:50px;">
     <div class="columns">
-      <div class="column is-2">
+      <div class="column is-2" style="max-width:150px;">
         <figure class="image is-128x128">
           <img class="is-rounded" :src="user.profilePhotoUrl">
         </figure>
@@ -103,7 +103,7 @@ export default {
       }
     })
 
-    const userId = this.$route.params.id
+    const userId = this.$route.params.userId
     const snapshot = await db.collection('users').doc(userId).get()
 
     let userData = snapshot.data()
@@ -139,4 +139,3 @@ export default {
   }
 }
 </script>
-

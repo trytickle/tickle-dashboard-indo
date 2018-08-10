@@ -14,7 +14,7 @@
             <small>{{user.email}}</small><br><small>{{user.userId}}</small>
           </p>
           <p>
-            <nuxt-link class="button" style="margin-right:10px;" :to="'/users/' + user.userId">Profile</nuxt-link><nuxt-link class="button" to="experiences/12345">Experiences</nuxt-link>
+            <nuxt-link class="button" style="margin-right:10px;" :to="'/users/' + user.userId">Profile</nuxt-link><nuxt-link class="button" :to="'/experiences/' + user.userId">Experiences</nuxt-link>
           </p>
         </div>
       </div>
@@ -27,4 +27,3 @@ export default {
   props: ['user']
 }
 </script>
-

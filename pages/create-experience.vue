@@ -281,10 +281,13 @@
 
     <hr/>
 
-    <label class="label">Cover Photo</label>
+    <label class="label">
+      Cover Photo<br>
+      <small>Photo will not be autoresized. Make sure to resize and compress it before upload.</small>
+    </label>
     <div class="file has-name is-fullwidth">
       <label class="file-label">
-        <input class="file-input" type="file" name="resume">
+        <input class="file-input" type="file" name="resume" @change="onFileChange">
         <span class="file-cta">
           <span class="file-icon">
             <i class="fas fa-upload"></i>
@@ -293,7 +296,7 @@
             Choose a file...
           </span>
         </span>
-        <span class="file-name"></span>
+        <span class="file-name">{{fileName}}</span>
       </label>
     </div>
 
@@ -444,7 +447,7 @@
 </template>
 
 <script>
-import { auth } from '~/plugins/firebase'
+import { auth, storage } from '~/plugins/firebase'
 
 export default {
   data() {
@@ -481,10 +484,42 @@ export default {
       cancellationPolicy: 0,
       isLoading: false,
       showError: false,
-      errorMessage: ''
+      errorMessage: '',
+      fileName: '',
+      coverPhotoImage: null,
+      coverPhotoUrl: ''
     }
   },
   methods: {
+    onFileChange(e) {
+      let files = e.target.files || e.dataTransfer.files
+      if (!files.length) return
+      this.createImage(files[0])
+    },
+    createImage(file) {
+      this.fileName = file.name
+      this.coverPhotoImage = file
+    },
+    async uploadImage(submissionId) {
+      this.isLoading = true
+      try {
+        const name = String(Date.now())
+        const uploadRef = storage.child(`media/submissions/${submissionId}`).child(`${name}.jpg`)
+        const metadata = {
+          contentType: 'image/jpeg',
+          customMetadata: {
+            'Uploaded': Date().toString()
+          }
+        }
+        const uploadTask = await uploadRef.put(this.coverPhotoImage, metadata)
+        const downloadUrl = await uploadTask.ref.getDownloadURL()
+        this.coverPhotoUrl = downloadUrl
+        console.log('Upload image successful', `${name}.jpg`, downloadUrl)
+      } catch (error) {
+        console.error(error.message)
+      }
+      this.isLoading = false
+    },
     async createExperience() {
       const body = {
         userId: this.userId,
@@ -532,8 +567,11 @@ export default {
       this.isLoading = true
 
       try {
-        const result = await this.$axios.$post('https://us-central1-tickle-development.cloudfunctions.net/createSubmission', body)
-        console.log(result)
+        const { submissionData } = await this.$axios.$post('https://us-central1-tickle-development.cloudfunctions.net/createSubmission', body)
+        if (this.coverPhotoImage) {
+          await this.uploadImage(submissionData.submissionId)
+        }
+        console.log('New submission created', submissionData)
         this.$router.replace('/dashboard')
       } catch (error) {
         this.showError = true

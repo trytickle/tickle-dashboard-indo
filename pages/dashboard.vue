@@ -13,7 +13,7 @@
 
 <script>
 import { auth, db } from '~/plugins/firebase'
-import usercell from '~/components/usercell.vue'
+import usercell from '~/components/user-cell.vue'
 
 export default {
   data() {

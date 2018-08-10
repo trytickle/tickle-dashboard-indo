@@ -46,6 +46,14 @@ export default {
       try {
         this.showError = false
         this.isLoading = true
+        if (this.email !== "timshim@gmail.com") {
+          if (!this.email.includes("@trytickle.com")) {
+            this.showError = true
+            this.errorMessage = 'Admin use only'
+            this.isLoading = false
+            return
+          }
+        }
         const { user } = await auth.signInWithEmailAndPassword(this.email, this.password)
         if (user) {
           this.$router.push('/dashboard')
