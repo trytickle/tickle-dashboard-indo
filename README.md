@@ -1,7 +1,3 @@
-# tickle
-
-> Tickle web app
-
 ## Build Setup
 
 ``` bash
