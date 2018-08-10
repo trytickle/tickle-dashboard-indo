@@ -1,3 +1,8 @@
+## References
+
+NuxtJS: https://nuxtjs.org
+VueJS: https://vuejs.org
+
 ## Build Setup
 
 ``` bash
