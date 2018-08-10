@@ -10,10 +10,10 @@
         <div class="content">
           <p> 
             <span class="title is-5">{{experience.title}}</span><br>
-            {{experience.tagline}}
+            <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
           </p>
           <p>
-            <nuxt-link class="button" style="margin-right:10px;" to="#">View</nuxt-link><nuxt-link class="button" to="#">Edit</nuxt-link>
+            <nuxt-link class="button" style="margin-right:10px;" to="#">View</nuxt-link><nuxt-link class="button" style="margin-right:10px;" to="#">Edit</nuxt-link><nuxt-link class="button is-danger is-outlined" to="#">Delete</nuxt-link>
           </p>
         </div>
       </div>
