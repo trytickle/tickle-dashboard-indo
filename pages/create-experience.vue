@@ -447,7 +447,7 @@
 </template>
 
 <script>
-import { auth, db, storage } from '~/plugins/firebase'
+import { auth, db, storage, host } from '~/plugins/firebase'
 
 export default {
   data() {
@@ -567,7 +567,7 @@ export default {
       this.isLoading = true
 
       try {
-        const { submissionData } = await this.$axios.$post('https://us-central1-tickle-development.cloudfunctions.net/createSubmission', body)
+        const { submissionData } = await this.$axios.$post(`${host}/createSubmission`, body)
         if (this.coverPhotoImage) {
           await this.uploadImage(submissionData.submissionId)
           await db.collection('submissions').doc(submissionData.submissionId).update({

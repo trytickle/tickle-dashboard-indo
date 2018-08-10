@@ -32,3 +32,4 @@ firestore.settings(settings)
 export const db = firestore
 export const auth = firebase.auth()
 export const storage = firebase.storage().ref()
+export const host = 'https://us-central1-tickle-development.cloudfunctions.net'
