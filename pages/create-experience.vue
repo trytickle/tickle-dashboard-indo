@@ -448,6 +448,7 @@
 
 <script>
 import { auth, db, storage, host } from '~/plugins/firebase'
+import {resizeImage} from '~/assets/utility'
 
 export default {
   data() {
@@ -494,10 +495,13 @@ export default {
     onFileChange(e) {
       let files = e.target.files || e.dataTransfer.files
       if (!files.length) return
-      this.createImage(files[0])
+      let file = files[0];
+      this.fileName = file.name;
+      resizeImage(file, resizedFile => {
+        this.createImage(resizedFile);
+      });
     },
     createImage(file) {
-      this.fileName = file.name
       this.coverPhotoImage = file
     },
     async uploadImage(submissionId) {
