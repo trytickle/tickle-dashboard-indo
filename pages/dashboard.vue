@@ -50,7 +50,6 @@ export default {
   display: grid;
   grid-column-gap: 25px;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  grid-auto-rows: 200px;
   padding: 5px 30px 30px 30px;
 }
 </style>
