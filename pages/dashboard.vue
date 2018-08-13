@@ -1,12 +1,7 @@
 <template>
-  <div class="container" style="margin:20px;">
-    <div class="columns">
-      <div class="column">
-        <usercell v-for="user in users" :key="user.userId" :user="user"/>
-      </div>
-      <div class="column">
-
-      </div>
+  <div>
+    <div class="users-grid">
+      <usercell v-for="user in users" :key="user.userId" :user="user"/>
     </div>
   </div>
 </template>
@@ -49,3 +44,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.users-grid {
+  display: grid;
+  grid-column-gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-auto-rows: 200px;
+  padding: 5px 30px 30px 30px;
+}
+</style>
