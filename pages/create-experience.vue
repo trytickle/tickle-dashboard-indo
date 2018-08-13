@@ -448,7 +448,7 @@
 
 <script>
 import { auth, db, storage, host } from '~/plugins/firebase'
-import {resizeImage} from '~/assets/utility'
+import { resizeImage } from '~/assets/utility'
 
 export default {
   data() {
