@@ -3,9 +3,9 @@
     <div class="level-left">
       <div class="level-item">
         <div>
-          <a href="/dashboard">
+          <nuxt-link to="/dashboard">
             <img src="/tickleLogo.png" alt="Tickle" width="120" style="padding-left:10px;">
-          </a>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
         </a>
       </div>
       <div class="level-item">
-        <div class="dropdown is-right" :class="{ 'is-active': isActive }" @click="toggleMenu">
+        <div class="dropdown is-right actionsButton">
           <div class="dropdown-trigger">
             <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
               <span>Actions</span>
@@ -27,11 +27,11 @@
               </span>
             </button>
           </div>
-          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+          <div class="dropdown-menu actionsDropdown" id="dropdown-menu" role="menu">
             <div class="dropdown-content">
-              <a href="/create-experience" class="dropdown-item">
+              <nuxt-link to="/create-experience" class="dropdown-item">
                 Create Experience
-              </a>
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -75,3 +75,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.actionsButton:hover .actionsDropdown {
+  display: block;
+}
+</style>

@@ -575,7 +575,7 @@ export default {
           })
         }
         console.log('New submission created', submissionData)
-        this.$router.replace('/dashboard')
+        this.$router.push('/dashboard')
       } catch (error) {
         this.showError = true
         this.errorMessage = error.message
@@ -588,7 +588,7 @@ export default {
     auth.onAuthStateChanged(user => {
       this.userId = user.uid
       if (!user) {
-        this.$router.replace('/')
+        this.$router.push('/')
       }
     })
   }

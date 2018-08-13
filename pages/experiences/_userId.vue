@@ -58,7 +58,7 @@ export default {
   created() {
     auth.onAuthStateChanged(user => {
       if (!user) {
-        this.$router.replace('/')
+        this.$router.push('/')
       } else {
         this.fetchUserFullName()
         this.fetchUserExperiences()

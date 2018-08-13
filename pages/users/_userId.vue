@@ -99,7 +99,7 @@ export default {
   async created() {
     auth.onAuthStateChanged(user => {
       if (!user) {
-        this.$router.replace('/')
+        this.$router.push('/')
       }
     })
 

@@ -50,8 +50,6 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'https://us-central1-tickle-development.cloudfunctions.net',
-    credentials: false
   },
 
   /*
