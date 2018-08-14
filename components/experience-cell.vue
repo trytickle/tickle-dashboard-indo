@@ -13,8 +13,8 @@
               <span class="title is-5">{{experience.title}}</span><br>
               <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
             </p>
-            <nuxt-link class="button" style="margin-right:10px;" to="#">View</nuxt-link>
-            <nuxt-link class="button" style="margin-right:10px;" to="#">Edit</nuxt-link>
+            <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
+            <nuxt-link class="button" style="margin-right:10px;" :to="editExperienceUrl">Edit</nuxt-link>
             <button class="button" style="margin-right:10px;" @click="transferClicked">Transfer</button>
             <nuxt-link class="button is-danger is-outlined" to="#">Delete</nuxt-link> 
           </div>
@@ -29,6 +29,12 @@ export default {
   props: [
     'experience'
   ],
+  data() {
+    return {
+      viewExperienceUrl: '/experience/' + this.experience.experienceId,
+      editExperienceUrl: '/experience/' + this.experience.experienceId + '?isEditMode=true'
+    }
+  },
   computed: {
     imageUrl() {
       if (this.experience.media && this.experience.media[0]) {
