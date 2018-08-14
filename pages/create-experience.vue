@@ -282,8 +282,7 @@
     <hr/>
 
     <label class="label">
-      Cover Photo<br>
-      <small>Optional</small>
+      Cover Photo (Optional)
     </label>
     <div class="file has-name is-fullwidth">
       <label class="file-label">
@@ -422,6 +421,15 @@
           <option :value=1>Moderate</option>
           <option :value=2>Strict</option>
         </select>
+      </div>
+    </div>
+
+    <hr/>
+
+    <div>
+      <label class="label">Create For User (Optional)</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="userId" v-model="userId">
       </div>
     </div>
 
