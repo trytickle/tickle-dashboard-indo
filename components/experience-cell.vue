@@ -3,8 +3,8 @@
     <div class="box">
       <article class="media">
         <div class="media-left">
-          <figure v-if="experience.media">
-            <img style="object-fit:cover;" :src="experience.media[0]">
+          <figure>
+            <img style="object-fit:cover;" :src="imageUrl">
           </figure>
         </div>
         <div class="media-content">
@@ -29,6 +29,15 @@ export default {
   props: [
     'experience'
   ],
+  computed: {
+    imageUrl() {
+      if (this.experience.media && this.experience.media[0]) {
+        return this.experience.media[0]
+      } else {
+        return '/profile.png'
+      }
+    }
+  },
   methods: {
     transferClicked() {
       this.$parent.showTransfer(this.experience.title)

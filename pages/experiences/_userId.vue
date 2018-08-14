@@ -97,7 +97,4 @@ export default {
   grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
   padding: 5px 30px 30px 30px;
 }
-.transferModal {
-
-}
 </style>
