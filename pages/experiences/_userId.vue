@@ -79,14 +79,14 @@ export default {
       this.showTransferModal = false
     },
     async transferExperience() {
-      const batch = db.batch();
+      const batch = db.batch()
       if (this.transferModalExperienceId === undefined || this.transferUserId === undefined || this.transferUserId.length == 0) {
         this.showTransferModal = false
         console.log("invalid experienceId or userId")
         return
       }
-      const submissionRef = db.collection('submissions').doc(this.transferModalExperienceId);
-      const experienceRef = db.collection('experiences').doc(this.transferModalExperienceId);
+      const submissionRef = db.collection('submissions').doc(this.transferModalExperienceId)
+      const experienceRef = db.collection('experiences').doc(this.transferModalExperienceId)
       
       batch.update(submissionRef, {'aboutHost.hostId' : this.transferUserId})
       
