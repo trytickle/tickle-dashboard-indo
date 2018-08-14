@@ -13,11 +13,11 @@
           </p>
           <p>
             Transfer to userId:
-            <input class="input" type="text" placeholder="userId" style="margin-top:10px;margin-bottom:10px;">
+            <input class="input" type="text" placeholder="" v-model="transferUserId" style="margin-top:10px;margin-bottom:10px;">
           </p>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success">Transfer</button>
+          <button class="button is-success" @click="transferExperience">Transfer</button>
           <button class="button" @click="closeTransferModal">Cancel</button>
         </footer>
       </div>
@@ -45,7 +45,9 @@ export default {
       experiences: [],
       submissions: [],
       showTransferModal: false,
-      transferModalTitle: 'Experience Title'
+      transferModalTitle: 'Experience Title',
+      transferModalExperienceId: '',
+      transferUserId: ''
     }
   },
   components: {
@@ -68,12 +70,37 @@ export default {
       const snapshot = await db.collection('users').doc(this.$route.params.userId).get()
       this.firstName = snapshot.data().firstName
     },
-    showTransfer(experienceTitle) {
+    showTransfer(experienceTitle, experienceId) {
       this.showTransferModal = true
       this.transferModalTitle = experienceTitle
+      this.transferModalExperienceId = experienceId
     },
     closeTransferModal() {
       this.showTransferModal = false
+    },
+    async transferExperience() {
+      const batch = db.batch();
+      if (this.transferModalExperienceId === undefined || this.transferUserId === undefined || this.transferUserId.length == 0) {
+        this.showTransferModal = false
+        console.log("invalid experienceId or userId")
+        return
+      }
+      const submissionRef = db.collection('submissions').doc(this.transferModalExperienceId);
+      const experienceRef = db.collection('experiences').doc(this.transferModalExperienceId);
+      
+      batch.update(submissionRef, {'aboutHost.hostId' : this.transferUserId})
+      
+      const experienceDoc = await experienceRef.get()
+      if (experienceDoc.exists) {
+        batch.update(experienceRef,  {'aboutHost.hostId' : this.transferUserId})
+      }
+
+      batch.commit().then(() => {
+         this.showTransferModal = false
+         this.transferUserId = ''
+         this.transferModalExperienceId = ''  
+         location.reload()
+      })
     }
   },
   created() {
