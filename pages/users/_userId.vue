@@ -3,7 +3,7 @@
     <div class="columns">
       <div class="column is-2" style="max-width:150px;">
         <figure class="image is-128x128">
-          <img class="is-rounded" :src="user.profilePhotoUrl">
+          <img class="is-rounded" style="object-fit:cover;" :src="user.profilePhotoUrl">
         </figure>
       </div>
       <div class="column is-10">

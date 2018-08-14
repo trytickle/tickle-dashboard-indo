@@ -5,7 +5,7 @@
     <div class="experiences-grid" style="margin-top:-10px;">
       <experiencecell v-for="experience in experiences" :key="experience.experienceId" :experience="experience"/>
     </div>
-    <h2 class="subtitle is-5" style="padding-left:30px;margin-top:-10px;">{{submissions.length}} submissions</h2>
+    <h2 class="subtitle is-5" style="padding-left:30px;">{{submissions.length}} submissions</h2>
     <div class="experiences-grid" style="margin-top:-10px;">
       <experiencecell v-for="submission in submissions" :key="submission.submissionId" :experience="submission"/>
     </div>
@@ -62,7 +62,7 @@ export default {
 <style scoped>
 .experiences-grid {
   display: grid;
-  grid-column-gap: 25px;
+  grid-gap: 25px;
   grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
   padding: 5px 30px 30px 30px;
 }

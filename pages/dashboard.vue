@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div class="users-grid">
-      <usercell v-for="user in users" :key="user.userId" :user="user"/>
-    </div>
+  <div class="users-grid">
+    <usercell v-for="user in users" :key="user.userId" :user="user"/>
   </div>
 </template>
 

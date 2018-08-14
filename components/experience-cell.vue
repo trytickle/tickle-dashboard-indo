@@ -1,23 +1,26 @@
 <template>
-  <div class="box">
-    <article class="media">
-      <div class="media-left">
-        <figure v-if="experience.media">
-          <img :src="experience.media[0]">
-        </figure>
-      </div>
-      <div class="media-content">
-        <div class="content">
-          <p> 
-            <span class="title is-5">{{experience.title}}</span><br>
-            <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
-          </p>
-          <p>
-            <nuxt-link class="button" style="margin-right:10px;" to="#">View</nuxt-link><nuxt-link class="button" style="margin-right:10px;" to="#">Edit</nuxt-link><nuxt-link class="button is-danger is-outlined" to="#">Delete</nuxt-link>
-          </p>
+  <div>
+    <div class="box">
+      <article class="media">
+        <div class="media-left">
+          <figure v-if="experience.media">
+            <img style="object-fit:cover;" :src="experience.media[0]">
+          </figure>
         </div>
-      </div>
-    </article>
+        <div class="media-content">
+          <div class="content">
+            <p> 
+              <span class="title is-5">{{experience.title}}</span><br>
+              <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
+            </p>
+            <nuxt-link class="button" style="margin-right:10px;" to="#">View</nuxt-link>
+            <nuxt-link class="button" style="margin-right:10px;" to="#">Edit</nuxt-link>
+            <nuxt-link class="button" style="margin-right:10px;" to="#">Transfer</nuxt-link>
+            <nuxt-link class="button is-danger is-outlined" to="#">Delete</nuxt-link> 
+          </div>
+        </div>
+      </article>
+    </div>
   </div>
 </template>
 
@@ -49,4 +52,3 @@ img {
   bottom: -100%;
 }
 </style>
-

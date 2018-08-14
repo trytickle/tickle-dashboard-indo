@@ -3,7 +3,7 @@
     <article class="media">
       <div class="media-left">
         <figure class="image is-64x64">
-          <img class="is-rounded" :src="user.profilePhotoUrl">
+          <img class="is-rounded" style="object-fit:cover;" :src="user.profilePhotoUrl">
         </figure>
       </div>
       <div class="media-content">
