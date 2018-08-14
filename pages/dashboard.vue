@@ -1,6 +1,10 @@
 <template>
-  <div class="users-grid">
-    <usercell v-for="user in users" :key="user.userId" :user="user"/>
+  <div>
+    <p class="title is-5" style="padding-left:30px;margin-bottom:10px;" v-if="this.users.length > 0">All Users ({{ this.users.length }})</p>
+    <p class="title is-5" style="padding-left:30px;margin-bottom:10px;" v-else>Loading ...</p>
+    <div class="users-grid">
+      <usercell v-for="user in users" :key="user.userId" :user="user"/>
+    </div>
   </div>
 </template>
 
