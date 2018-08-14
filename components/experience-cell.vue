@@ -15,7 +15,7 @@
             </p>
             <nuxt-link class="button" style="margin-right:10px;" to="#">View</nuxt-link>
             <nuxt-link class="button" style="margin-right:10px;" to="#">Edit</nuxt-link>
-            <nuxt-link class="button" style="margin-right:10px;" to="#">Transfer</nuxt-link>
+            <button class="button" style="margin-right:10px;" @click="transferClicked">Transfer</button>
             <nuxt-link class="button is-danger is-outlined" to="#">Delete</nuxt-link> 
           </div>
         </div>
@@ -28,7 +28,12 @@
 export default {
   props: [
     'experience'
-  ]
+  ],
+  methods: {
+    transferClicked() {
+      this.$parent.showTransfer(this.experience.title)
+    }
+  }
 }
 </script>
 
