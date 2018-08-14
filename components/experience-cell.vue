@@ -31,7 +31,8 @@ export default {
   ],
   methods: {
     transferClicked() {
-      this.$parent.showTransfer(this.experience.title)
+      const tranferUserId = this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId
+      this.$parent.showTransfer(this.experience.title, tranferUserId)
     }
   }
 }
