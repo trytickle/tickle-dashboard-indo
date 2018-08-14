@@ -17,7 +17,7 @@
           </p>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success" @click="transferExperience">Transfer</button>
+          <button class="button is-success" :class="{'is-loading': isProcessing}" @click="transferExperience">Transfer</button>
           <button class="button" @click="closeTransferModal">Cancel</button>
         </footer>
       </div>
@@ -47,7 +47,8 @@ export default {
       showTransferModal: false,
       transferModalTitle: 'Experience Title',
       transferModalExperienceId: '',
-      transferUserId: ''
+      transferUserId: '',
+      isProcessing: false
     }
   },
   components: {
@@ -80,9 +81,14 @@ export default {
     },
     async transferExperience() {
       const batch = db.batch()
-      if (this.transferModalExperienceId === undefined || this.transferUserId === undefined || this.transferUserId.length == 0) {
+      if (
+        this.transferModalExperienceId === undefined || 
+        this.transferModalExperienceId.length == 0 ||
+        this.transferUserId === undefined || 
+        this.transferUserId.length == 0) 
+      {
         this.showTransferModal = false
-        console.log("invalid experienceId or userId")
+        console.error("Invalid experienceId or userId")
         return
       }
       const submissionRef = db.collection('submissions').doc(this.transferModalExperienceId)
@@ -90,6 +96,7 @@ export default {
       
       batch.update(submissionRef, {'aboutHost.hostId' : this.transferUserId})
       
+      this.isProcessing = true
       const experienceDoc = await experienceRef.get()
       if (experienceDoc.exists) {
         batch.update(experienceRef,  {'aboutHost.hostId' : this.transferUserId})
@@ -99,6 +106,7 @@ export default {
          this.showTransferModal = false
          this.transferUserId = ''
          this.transferModalExperienceId = ''  
+         this.isProcessing = false
          location.reload()
       })
     }
