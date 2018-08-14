@@ -447,7 +447,7 @@
         <button class="button is-link" @click="createExperience" v-else>Create</button>
       </div>
       <div class="control">
-        <nuxt-link class="button is-text" to="/dashboard">Cancel</nuxt-link>
+        <nuxt-link class="button is-text" to="/users">Cancel</nuxt-link>
       </div>
     </div>
 
@@ -587,7 +587,7 @@ export default {
           })
         }
         console.log('New submission created', submissionData)
-        this.$router.push('/dashboard')
+        this.$router.push('/users')
       } catch (error) {
         this.showError = true
         this.errorMessage = error.message

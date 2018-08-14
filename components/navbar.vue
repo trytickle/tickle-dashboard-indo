@@ -3,7 +3,7 @@
     <div class="level-left">
       <div class="level-item">
         <div>
-          <nuxt-link to="/dashboard">
+          <nuxt-link to="/users">
             <img src="/tickleLogo.png" alt="Tickle" width="120" style="padding-left:10px;">
           </nuxt-link>
         </div>

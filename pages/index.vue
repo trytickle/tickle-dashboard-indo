@@ -58,7 +58,7 @@ export default {
         }
         const { user } = await auth.signInWithEmailAndPassword(this.email, this.password)
         if (user) {
-          this.$router.push('/dashboard')
+          this.$router.push('/users')
         }
       } catch (error) {
         this.showError = true
@@ -70,7 +70,7 @@ export default {
   created() {
     auth.onAuthStateChanged(user => {
       if (user) {
-        this.$router.push('/dashboard')
+        this.$router.push('/users')
       }
     })
   }
