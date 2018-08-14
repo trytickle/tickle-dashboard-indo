@@ -283,7 +283,7 @@
 
     <label class="label">
       Cover Photo<br>
-      <small>Photo will not be autoresized. Make sure to resize and compress it before upload.</small>
+      <small>Optional</small>
     </label>
     <div class="file has-name is-fullwidth">
       <label class="file-label">
