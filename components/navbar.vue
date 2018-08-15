@@ -32,6 +32,9 @@
               <nuxt-link to="/create-experience" class="dropdown-item">
                 Create Experience
               </nuxt-link>
+              <nuxt-link to="/in-review" class="dropdown-item">
+                In Review
+              </nuxt-link>
             </div>
           </div>
         </div>
