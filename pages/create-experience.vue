@@ -586,7 +586,6 @@ export default {
             media: [this.coverPhotoUrl]
           })
         }
-        console.log('New submission created', submissionData)
         this.$router.push('/users')
       } catch (error) {
         this.showError = true
