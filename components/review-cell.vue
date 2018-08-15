@@ -30,7 +30,7 @@ export default {
   ],
   data() {
     return {
-      viewExperienceUrl: '/experience/' + this.experience.experienceId
+      viewExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true')
     }
   },
   computed: {
