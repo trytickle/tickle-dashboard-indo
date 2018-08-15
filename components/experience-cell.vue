@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       viewExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true'),
-      editExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isEditMode=true' + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true')
+      editExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true') + '&isEditMode=true'
     }
   },
   computed: {
