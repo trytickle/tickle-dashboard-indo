@@ -593,7 +593,8 @@
 </template>
 
 <script>
-import { auth, db, host } from '~/plugins/firebase'
+import { auth, db, storage, host } from '~/plugins/firebase'
+import { resizeImage } from '~/assets/utility'
 
 export default {
   data() {
@@ -708,7 +709,7 @@ export default {
     },
     async fetchData() {
       let collectionPath = 'experiences'  
-      if (this.$route.query.isEditMode) {
+      if (this.$route.query.isEditMode || this.$route.query.isSubmission) {
         collectionPath = 'submissions'
       }
       const expSnap = await db.collection(collectionPath).doc(this.experienceId).get()
@@ -726,9 +727,9 @@ export default {
 
       this.userId = submission.aboutHost.hostId
       this.title = submission.title
-      this.tagline = submission.tagline ? submission.tagline : ''
+      this.tagline = submission.tagline
       this.label = submission.subtitle ? submission.subtitle : 'Dinner party'
-      this.duration = submission.duration ? submission.duration : 60
+      this.duration = submission.maxDuration
       this.language = submission.languages[0]
       this.aboutHost = submission.aboutHost.description
       this.whatWeDo = submission.whatWeDo
@@ -823,7 +824,7 @@ export default {
         this.errorMessage = error.message
       }
       this.isLoading = false
-       this.$router.push('/users')
+       this.$router.push('/experiences/'+this.userId)
     }
   },
   created() {
