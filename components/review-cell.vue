@@ -13,6 +13,7 @@
               <span class="title is-5">{{experience.title}}</span><br>
               <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
             </p>
+            <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
             <button class="button is-success is-outlined" style="margin-right:10px;" to="#">Approve</button> 
             <button class="button is-danger is-outlined" to="#">Reject</button> 
           </div>
@@ -29,8 +30,7 @@ export default {
   ],
   data() {
     return {
-      viewExperienceUrl: '/experience/' + this.experience.experienceId,
-      editExperienceUrl: '/experience/' + this.experience.experienceId + '?isEditMode=true'
+      viewExperienceUrl: '/experience/' + this.experience.experienceId
     }
   },
   computed: {
@@ -40,12 +40,6 @@ export default {
       } else {
         return '/profile.png'
       }
-    }
-  },
-  methods: {
-    transferClicked() {
-      const tranferUserId = this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId
-      this.$parent.showTransfer(this.experience.title, tranferUserId)
     }
   }
 }
