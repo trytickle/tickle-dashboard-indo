@@ -16,7 +16,7 @@
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
             <nuxt-link class="button" style="margin-right:10px;" :to="editExperienceUrl">Edit</nuxt-link>
             <button class="button" style="margin-right:10px;" @click="transferClicked">Transfer</button>
-            <nuxt-link class="button is-danger is-outlined" to="#">Delete</nuxt-link> 
+            <button v-if="this.experience.submissionId" class="button" @click="reviewClicked">Review</button> 
           </div>
         </div>
       </article>
@@ -48,6 +48,9 @@ export default {
     transferClicked() {
       const tranferUserId = this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId
       this.$parent.showTransfer(this.experience.title, tranferUserId)
+    },
+    reviewClicked() {
+
     }
   }
 }
