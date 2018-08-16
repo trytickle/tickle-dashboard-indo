@@ -14,8 +14,8 @@
               <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
             </p>
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
-            <button class="button is-success is-outlined" style="margin-right:10px;" to="#">Approve</button> 
-            <button class="button is-danger is-outlined" to="#">Reject</button> 
+            <button class="button is-success is-outlined" style="margin-right:10px;" @click="approveClicked">Approve</button> 
+            <button class="button is-danger is-outlined" @click="rejectClicked">Reject</button> 
           </div>
         </div>
       </article>
@@ -40,6 +40,14 @@ export default {
       } else {
         return '/profile.png'
       }
+    }
+  },
+  methods: {
+    approveClicked() {
+      this.$parent.openModal(true, false, this.experience.title, this.experience.submissionId)
+    },
+    rejectClicked() {
+      this.$parent.openModal(false, true, this.experience.title, this.experience.submissionId)
     }
   }
 }

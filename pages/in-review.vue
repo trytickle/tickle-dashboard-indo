@@ -1,5 +1,27 @@
 <template>
   <div>
+    <div class="modal" :class="{ 'is-active': modalIsActive }">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">{{isApproveModal ? 'Approve Submission' : 'Reject Submission'}}</p>
+          <button class="delete" aria-label="close" @click="closeModal"></button>
+        </header>
+        <section class="modal-card-body">
+          <p style="padding-bottom:10px;">
+            <span class="title is-5">{{submissionTitle}}</span>
+          </p>
+          <p>
+            {{isApproveModal ? 'This submission will be approved. An email will be sent to notify the host.' : 'This submission will be rejected. An email will be sent to notify the host.'}}
+          </p>
+        </section>
+        <footer class="modal-card-foot">
+          <button v-if="isApproveModal" class="button is-success" :class="{'is-loading': isLoading}" @click="approveSubmission">Approve</button>
+          <button v-if="isRejectModal" class="button is-danger" :class="{'is-loading': isLoading}" @click="rejectSubmission">Reject</button>
+          <button class="button" @click="closeModal">Cancel</button>
+        </footer>
+      </div>
+    </div>
     <h1 class="title is-4" style="padding-left:30px;">In Review</h1>
     <h2 class="subtitle is-5" style="padding-left:30px;">{{submissions.length}} submissions</h2>
     <div class="experiences-grid" style="margin-top:-10px;">
@@ -15,7 +37,13 @@ import ReviewCell from '~/components/review-cell.vue'
 export default {
   data() {
     return {
-      submissions: []
+      submissions: [],
+      modalIsActive: false,
+      submissionId: '',
+      submissionTitle: '',
+      isApproveModal: false,
+      isRejectModal: false,
+      isLoading: false
     }
   },
   components: {
@@ -27,6 +55,27 @@ export default {
       snapshot.forEach(doc => {
         this.submissions.push(doc.data())
       })
+    },
+    openModal(isApprove, isReject, submissionTitle, submissionId) {
+      if (isApprove) {
+        this.isApproveModal = true
+        this.isRejectModal = false
+      } else {
+        this.isApproveModal = false
+        this.isRejectModal = true
+      }
+      this.modalIsActive = true
+      this.submissionId = submissionId
+      this.submissionTitle = submissionTitle
+    },
+    closeModal() {
+      this.modalIsActive = false
+    },
+    approveSubmission() {
+      console.log('approve')
+    },
+    rejectSubmission() {
+      console.log('reject')
     }
   },
   created() {
