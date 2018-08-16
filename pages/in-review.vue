@@ -71,8 +71,21 @@ export default {
     closeModal() {
       this.modalIsActive = false
     },
-    approveSubmission() {
+    async approveSubmission() {
       console.log('approve')
+      isLoading = true
+      const body = {
+        submissionId: this.submissionId
+      }
+      try {
+      const approved = await this.$axios.$post(`${host}/approveSubmission`, body)
+      console.log("approved", approved)
+      this.$router.push('/users')
+    } catch (error) {
+      console.log(error)
+      this.errorMessage = error.message
+    }
+
     },
     rejectSubmission() {
       console.log('reject')

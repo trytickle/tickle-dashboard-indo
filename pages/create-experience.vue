@@ -156,7 +156,7 @@
     </div>
 
     <div class="field">
-      <label class="label">Notes (Optional)</label>
+      <label class="label">Notes</label>
       <div class="control">
         <textarea class="textarea" placeholder="" v-model="notes"></textarea>
       </div>
@@ -172,7 +172,7 @@
     </div>
 
     <div class="field">
-      <label class="label">Apartment/Suite/Building (Optional)</label>
+      <label class="label">Apartment/Suite/Building</label>
       <div class="control">
         <input class="input" type="text" placeholder="" v-model="aptSuiteBuilding">
       </div>
@@ -266,14 +266,14 @@
     </div>
 
     <div class="field" style="padding-top:10px;">
-      <label class="label">Additional Requirements (Optional)</label>
+      <label class="label">Additional Requirements</label>
       <div class="control">
         <textarea class="textarea" placeholder="" v-model="additionalRequirements"></textarea>
       </div>
     </div>
 
     <div class="field" style="padding-top:10px;">
-      <label class="label">Special Certifications (Optional)</label>
+      <label class="label">Special Certifications</label>
       <div class="control">
         <textarea class="textarea" placeholder="" v-model="specialCertifications"></textarea>
       </div>
@@ -586,6 +586,7 @@ export default {
             media: [this.coverPhotoUrl]
           })
         }
+        console.log('New submission created', submissionData)
         this.$router.push('/users')
       } catch (error) {
         this.showError = true
