@@ -72,15 +72,13 @@ export default {
       this.modalIsActive = false
     },
     async approveSubmission() {
-      console.log('approve')
       this.isLoading = true
       const body = {
         submissionId: this.submissionId
       }
       try {
-        const approved = await this.$axios.$post(`${host}/approveSubmission`, body)
-        console.log("approved", approved)
-        this.$router.push('/in-reviwew')
+        const approvedSubmission = await this.$axios.$post(`${host}/approveSubmission`, body)
+        console.log("approved", approvedSubmission)
         this.isLoading = false
         location.reload()
       } catch (error) {
