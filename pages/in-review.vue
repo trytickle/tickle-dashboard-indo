@@ -96,8 +96,22 @@ export default {
       }
       this.isLoading = false
     },
-    rejectSubmission() {
-      console.log('reject')
+    async rejectSubmission() {
+      this.isLoading = true
+      this.showError = false
+      const body = {
+        submissionId: this.submissionId,
+        notes: this.rejectionNotes
+      }
+      try {
+        await this.$axios.$post(`${host}/rejectSubmission`, body)
+        location.reload()
+      } catch (error) {
+        console.error(error)
+        this.errorMessage = error.message
+        this.showError = true
+      }
+      this.isLoading = false
     }
   },
   created() {
