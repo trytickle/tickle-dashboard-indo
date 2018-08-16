@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { auth, db } from '~/plugins/firebase'
+import { auth, db, host } from '~/plugins/firebase'
 import experiencecell from '~/components/experience-cell.vue'
 
 export default {
@@ -125,8 +125,28 @@ export default {
          location.reload()
       })
     },
-    submitForReview() {
-      console.log('Submit for review', this.submissionId)
+    async submitForReview() {
+      this.showError = false
+      this.isProcessing = true;
+      const submissionDoc = await db.collection('submissions').doc(this.submissionId).get();
+      const submissionData = submissionDoc.data();
+      const userDoc = await db.collection('users').doc(submissionData.aboutHost.hostId).get();
+      const userData = userDoc.data();
+      const body = {
+        submissionId: this.submissionId,
+        submissionData: submissionData,
+        firstName: this.firstName,
+        email: userData.email
+      }
+      try {
+        await this.$axios.$post(`${host}/sendSubmissionInReviewEmail`, body)
+        location.reload()
+      } catch (error) {
+        console.error(error)
+        this.errorMessage = error.message
+        this.showError = true
+      }
+      this.isProcessing = false
     }
   },
   created() {
