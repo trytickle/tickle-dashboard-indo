@@ -1,24 +1,28 @@
 <template>
   <div>
-    <div class="modal" :class="{ 'is-active': showTransferModal }">
+    <div class="modal" :class="{ 'is-active': showModal }">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Transfer Experience</p>
-          <button class="delete" aria-label="close" @click="closeTransferModal"></button>
+          <p class="modal-card-title">{{modalTitle}}</p>
+          <button class="delete" aria-label="close" @click="closeModal"></button>
         </header>
         <section class="modal-card-body">
           <p style="padding-bottom:10px;">
-            <span class="title is-5">{{ transferModalTitle }}</span>
+            <span class="title is-5">{{experienceTitle}}</span>
           </p>
-          <p>
+          <p v-if="!submissionId">
             Transfer to userId:
             <input class="input" type="text" placeholder="" v-model="transferUserId" style="margin-top:10px;margin-bottom:10px;">
           </p>
+          <p v-if="submissionId">
+            Please make sure you're happy with all the photos, words and settings you're submitting for review. If you want to edit your experience after it has gone live, you'll need to resubmit it for review again.
+          </p>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success" :class="{'is-loading': isProcessing}" @click="transferExperience">Transfer</button>
-          <button class="button" @click="closeTransferModal">Cancel</button>
+          <button v-if="!submissionId" class="button is-info" :class="{'is-loading': isProcessing}" @click="transferExperience">Transfer</button>
+          <button v-if="submissionId" class="button is-success" :class="{'is-loading': isProcessing}" @click="submitForReview">Submit</button>
+          <button class="button" @click="closeModal">Cancel</button>
         </footer>
       </div>
     </div>
@@ -44,10 +48,12 @@ export default {
       firstName: 'User', 
       experiences: [],
       submissions: [],
-      showTransferModal: false,
-      transferModalTitle: 'Experience Title',
-      transferModalExperienceId: '',
-      transferUserId: '',
+      showModal: false,
+      modalTitle: '',
+      experienceTitle: '',
+      transferExperienceId: null,
+      transferUserId: null,
+      submissionId: null,
       isProcessing: false
     }
   },
@@ -72,27 +78,36 @@ export default {
       this.firstName = snapshot.data().firstName
     },
     showTransfer(experienceTitle, experienceId) {
-      this.showTransferModal = true
-      this.transferModalTitle = experienceTitle
-      this.transferModalExperienceId = experienceId
+      this.experienceTitle = experienceTitle
+      this.transferExperienceId = experienceId
+      this.submissionId = null
+      this.modalTitle = 'Transfer Experience'
+      this.showModal = true
     },
-    closeTransferModal() {
-      this.showTransferModal = false
+    showReview(submissionTitle, submissionId) {
+      this.experienceTitle = submissionTitle
+      this.submissionId = submissionId
+      this.transferExperienceId = null
+      this.modalTitle = 'Submit For Review'
+      this.showModal = true
+    },
+    closeModal() {
+      this.showModal = false
     },
     async transferExperience() {
       const batch = db.batch()
       if (
-        this.transferModalExperienceId === undefined || 
-        this.transferModalExperienceId.length == 0 ||
+        this.transferExperienceId === undefined || 
+        this.transferExperienceId.length == 0 ||
         this.transferUserId === undefined || 
         this.transferUserId.length == 0) 
       {
-        this.showTransferModal = false
+        this.showModal = false
         console.error("Invalid experienceId or userId")
         return
       }
-      const submissionRef = db.collection('submissions').doc(this.transferModalExperienceId)
-      const experienceRef = db.collection('experiences').doc(this.transferModalExperienceId)
+      const submissionRef = db.collection('submissions').doc(this.transferExperienceId)
+      const experienceRef = db.collection('experiences').doc(this.transferExperienceId)
       
       batch.update(submissionRef, {'aboutHost.hostId' : this.transferUserId})
       
@@ -104,11 +119,14 @@ export default {
 
       batch.commit().then(() => {
          this.showTransferModal = false
-         this.transferUserId = ''
-         this.transferModalExperienceId = ''  
+         this.transferUserId = null
+         this.transferExperienceId = null 
          this.isProcessing = false
          location.reload()
       })
+    },
+    submitForReview() {
+      console.log('Submit for review', this.submissionId)
     }
   },
   created() {

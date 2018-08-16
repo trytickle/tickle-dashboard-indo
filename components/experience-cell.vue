@@ -46,11 +46,11 @@ export default {
   },
   methods: {
     transferClicked() {
-      const tranferUserId = this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId
+      const tranferUserId = this.experience.experienceId ? this.experience.experienceId : 
       this.$parent.showTransfer(this.experience.title, tranferUserId)
     },
     reviewClicked() {
-
+      this.$parent.showReview(this.experience.title, this.experience.submissionId)
     }
   }
 }
