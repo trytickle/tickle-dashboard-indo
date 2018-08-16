@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { auth, db } from '~/plugins/firebase'
+import { auth, db, host } from '~/plugins/firebase'
 import ReviewCell from '~/components/review-cell.vue'
 
 export default {
@@ -73,18 +73,20 @@ export default {
     },
     async approveSubmission() {
       console.log('approve')
-      isLoading = true
+      this.isLoading = true
       const body = {
         submissionId: this.submissionId
       }
       try {
-      const approved = await this.$axios.$post(`${host}/approveSubmission`, body)
-      console.log("approved", approved)
-      this.$router.push('/users')
-    } catch (error) {
-      console.log(error)
-      this.errorMessage = error.message
-    }
+        const approved = await this.$axios.$post(`${host}/approveSubmission`, body)
+        console.log("approved", approved)
+        this.$router.push('/in-reviwew')
+        this.isLoading = false
+        location.reload()
+      } catch (error) {
+        console.log(error)
+        this.errorMessage = error.message
+      }
 
     },
     rejectSubmission() {
