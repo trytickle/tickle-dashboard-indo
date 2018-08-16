@@ -14,6 +14,12 @@
           <p>
             This submission will be {{isApproveModal ? 'approved' : 'rejected'}}. An email will be sent to notify the host.
           </p>
+          <p v-if="!isApproveModal" style="padding-top:10px;">
+            <textarea class="textarea" placeholder="Reasons for rejection" v-model="rejectionNotes"></textarea>
+          </p>
+          <p v-if="showError">
+            {{errorMessage}}
+          </p>
         </section>
         <footer class="modal-card-foot">
           <button v-if="isApproveModal" class="button is-success" :class="{'is-loading': isLoading}" @click="approveSubmission">Approve</button>
@@ -43,7 +49,10 @@ export default {
       submissionTitle: '',
       isApproveModal: false,
       isRejectModal: false,
-      isLoading: false
+      isLoading: false,
+      showError: false,
+      errorMessage: '',
+      rejectionNotes: ''
     }
   },
   components: {
@@ -73,19 +82,19 @@ export default {
     },
     async approveSubmission() {
       this.isLoading = true
+      this.showError = false
       const body = {
         submissionId: this.submissionId
       }
       try {
-        const approvedSubmission = await this.$axios.$post(`${host}/approveSubmission`, body)
-        console.log("approved", approvedSubmission)
-        this.isLoading = false
+        await this.$axios.$post(`${host}/approveSubmission`, body)
         location.reload()
       } catch (error) {
-        console.log(error)
+        console.error(error)
         this.errorMessage = error.message
+        this.showError = true
       }
-
+      this.isLoading = false
     },
     rejectSubmission() {
       console.log('reject')
