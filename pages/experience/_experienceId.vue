@@ -759,8 +759,8 @@ export default {
       this.kidsAllowed = submission.guestRequirements.kidsAllowed;
       this.alcohol = submission.guestRequirements.servesAlcohol;
       this.verification = submission.guestRequirements.requireVerified;
-      this.additionalRequirements = submission.guestRequirements.additionalRequirements;
-      this.specialCertifications = submission.guestRequirements.specialCertifications;
+      this.additionalRequirements = submission.guestRequirements.additionalRequirements ? submission.guestRequirements.additionalRequirements : "";
+      this.specialCertifications = submission.guestRequirements.specialCertifications ? submission.guestRequirements.specialCertifications : "";
       this.currency = "SGD";
       this.price = submission.pricePerPax / 100;
       this.guestCount = submission.maxGuestCount;
@@ -828,6 +828,13 @@ export default {
           .collection("submissions")
           .doc(body.submissionId)
           .update(body);
+        const expDoc = await db.collection("experiences").doc(this.experienceId).get();
+        if (expDoc.exists) {
+          const experienceUpdatedResult = await db
+            .collection("experiences")
+            .doc(body.submissionId)
+            .update(body);
+        }
         if (this.coverPhotoImage) {
           await this.uploadImage(this.experienceId);
           await db
@@ -836,6 +843,14 @@ export default {
             .update({
               media: [this.coverPhotoUrl]
             });
+            if (expDoc.exists) {
+               await db
+                .collection("experiences")
+                .doc(this.experienceId)
+                .update({
+                  media: [this.coverPhotoUrl]
+                });
+            }
         }
         console.log("Experience/Submission updated", result);
       } catch (error) {
