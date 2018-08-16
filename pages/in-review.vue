@@ -12,7 +12,7 @@
             <span class="title is-5">{{submissionTitle}}</span>
           </p>
           <p>
-            {{isApproveModal ? 'This submission will be approved. An email will be sent to notify the host.' : 'This submission will be rejected. An email will be sent to notify the host.'}}
+            This submission will be {{isApproveModal ? 'approved' : 'rejected'}}. An email will be sent to notify the host.
           </p>
         </section>
         <footer class="modal-card-foot">
