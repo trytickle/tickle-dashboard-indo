@@ -487,24 +487,24 @@
           <span>{{experience.languages[0] ? experience.languages[0] : ''}}</span>
         </p>
         <hr>
-        <p>
+        <p style="white-space:pre-wrap;">
           <label class="label" style="margin-bottom:0px;">About Host</label>
           <span>{{experience.aboutHost.description}}</span>
         </p>
         <hr>
-        <p>
+        <p style="white-space:pre-wrap;">
           <label class="label" style="margin-bottom:0px;">What We'll Do</label>
           <span>{{experience.whatWeDo}}</span>
         </p>
-        <p>
+        <p style="white-space:pre-wrap;">
           <label class="label" style="margin-bottom:0px;">What I'll Provide</label>
           <span>{{experience.whatIProvide}}</span>
         </p>
-        <p>
+        <p style="white-space:pre-wrap;">
           <label class="label" style="margin-bottom:0px;">Where We'll Be</label>
           <span>{{experience.whereWeBe}}</span>
         </p>
-        <p>
+        <p style="white-space:pre-wrap;">
           <label class="label" style="margin-bottom:0px;">Notes</label>
           <span>{{experience.notes ? experience.notes : '-'}}</span>
         </p>
@@ -550,11 +550,11 @@
           <label class="label" style="margin-bottom:0px;">Verification?</label>
           <span>{{experience.guestRequirements.requireVerified}}</span>
         </p>
-        <p>
+        <p style="white-space:pre-wrap;">
           <label class="label" style="margin-bottom:0px;">Additional Requirements</label>
           <span>{{experience.guestRequirements.additionalRequirements}}</span>
         </p>
-        <p>
+        <p style="white-space:pre-wrap;">
           <label class="label" style="margin-bottom:0px;">Special Certifications</label>
           <span>{{experience.guestRequirements.specialCertifications}}</span>
         </p>
