@@ -47,14 +47,13 @@
           </p>
           <p>
             <strong>isVerified</strong><br>
-            {{user.isVerified}}
+            <span class="select">
+              <select v-model="isVerified" v-on:change="onVerifySelectionChange">
+                <option :value=true>true</option>
+                <option :value=false selected="selected">false</option>
+              </select>
+            </span>
           </p>
-          <div class="select">
-          <select v-model="isVerified" v-on:change="onVerifySelectionChange">
-            <option :value=true>Verfied</option>
-            <option :value=false selected="selected">Not Verfied</option>
-          </select>
-          </div>
           <p>
             <strong>lastActive</strong><br>
             {{lastActive}}
