@@ -11,7 +11,8 @@
           <div class="content">
             <p> 
               <span class="title is-5">{{experience.title}}</span><br>
-              <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>&nbsp;&nbsp;<span v-if="experience.submissionId" class="tag">{{experience.submissionId ? (experience.status.isDraft ? "Draft" : (experience.status.inReview ? "In Review": (experience.status.isApproved ? "Approved": "Rejected" ))): ""}}</span>
+              <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>&nbsp;&nbsp;
+              <span v-if="experience.submissionId" class="tag" :class="{'is-success': experience.status.inReview, 'is-danger': experience.status.isRejected, 'is-info': experience.status.isApproved}">{{experience.submissionId ? (experience.status.isDraft ? "Draft" : (experience.status.inReview ? "In Review": (experience.status.isApproved ? "Live": "Rejected" ))): ""}}</span>
             </p>
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
             <nuxt-link class="button" style="margin-right:10px;" :to="editExperienceUrl">Edit</nuxt-link>
@@ -46,7 +47,7 @@ export default {
   },
   methods: {
     transferClicked() {
-      const tranferUserId = this.experience.experienceId ? this.experience.experienceId : 
+      const tranferUserId = this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId
       this.$parent.showTransfer(this.experience.title, tranferUserId)
     },
     reviewClicked() {
