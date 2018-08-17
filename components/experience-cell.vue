@@ -11,7 +11,9 @@
           <div class="content">
             <p> 
               <span class="title is-5">{{experience.title}}</span><br>
-              <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>&nbsp;&nbsp;
+              <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
+            </p>
+            <p style="margin-top:-10px;">
               <span v-if="experience.submissionId" class="tag" :class="{'is-success': experience.status.inReview, 'is-danger': experience.status.isRejected, 'is-info': experience.status.isApproved}">{{experience.submissionId ? (experience.status.isDraft ? "Draft" : (experience.status.inReview ? "In Review": (experience.status.isApproved ? "Live": "Rejected" ))): ""}}</span>
             </p>
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
