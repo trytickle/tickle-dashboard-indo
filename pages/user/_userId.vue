@@ -49,6 +49,12 @@
             <strong>isVerified</strong><br>
             {{user.isVerified}}
           </p>
+          <div class="select">
+          <select v-model="isVerified" v-on:change="onVerifySelectionChange">
+            <option :value=true>Verfied</option>
+            <option :value=false selected="selected">Not Verfied</option>
+          </select>
+          </div>
           <p>
             <strong>lastActive</strong><br>
             {{lastActive}}
@@ -93,7 +99,17 @@ export default {
       receiveSms: true,
       payoutMethods: {},
       createdAt: '',
-      lastActive: ''
+      lastActive: '',
+      isVerified: false
+    }
+  },
+  methods: {
+    onVerifySelectionChange() {
+      db.collection("users").doc(this.user.userId).update({
+        isVerified: this.isVerified
+      }).then(() => {
+        location.reload()
+      })
     }
   },
   async created() {
@@ -108,6 +124,7 @@ export default {
 
     let userData = snapshot.data()
     let profilePhoto = "/profile.png"
+    this.isVerified = userData.isVerified
     if (userData.profilePhotoUrl.includes("firebase")) {
       profilePhoto = userData.profilePhotoUrl
     }
