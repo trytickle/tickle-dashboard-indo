@@ -632,6 +632,8 @@ export default {
       fileName: "",
       coverPhotoImage: null,
       coverPhotoUrl: "",
+      lat: 1.3521,
+      lng: 103.8198,
       hasCoverPhoto: false,
       experienceId: this.$route.params.experienceId,
       experience: {
@@ -753,6 +755,8 @@ export default {
       this.aptSuiteBuilding = submission.whereWeMeet.aptSuiteBuilding ? submission.whereWeMeet.aptSuiteBuilding : "";
       this.streetAddress = submission.whereWeMeet.streetAddress ? submission.whereWeMeet.streetAddress : "";
       this.zipcode = submission.whereWeMeet.zipcode ? submission.whereWeMeet.zipcode : "";
+      this.lat = submission.whereWeMeet.lat ? submission.whereWeMeet.lat : 1.3521;
+      this.lng = submission.whereWeMeet.lng ? submission.whereWeMeet.lng : 103.8198;
       this.city = "Singapore";
       this.country = "Singapore";
       this.minimumAge = submission.guestRequirements.minimumAge;
@@ -775,9 +779,7 @@ export default {
     },
     async saveSubmission() {
       const body = {
-        submissionId: this.experienceId,
         lastEdited: new Date().getTime(),
-        userId: this.userId,
         title: this.title,
         tagline: this.tagline,
         subtitle: this.label,
@@ -795,8 +797,8 @@ export default {
           zipcode: this.zipcode,
           city: this.city,
           country: this.country,
-          lat: 1.3521,
-          lng: 103.8198
+          lat: this.lat,
+          lng: this.lng
         },
         aboutHost: {
           description: this.aboutHost,
@@ -826,13 +828,13 @@ export default {
       try {
         const result = await db
           .collection("submissions")
-          .doc(body.submissionId)
+          .doc(this.experienceId)
           .update(body);
         const expDoc = await db.collection("experiences").doc(this.experienceId).get();
         if (expDoc.exists) {
           const experienceUpdatedResult = await db
             .collection("experiences")
-            .doc(body.submissionId)
+            .doc(this.experienceId)
             .update(body);
         }
         if (this.coverPhotoImage) {
