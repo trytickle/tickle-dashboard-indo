@@ -11,7 +11,7 @@
           <div class="content">
             <p> 
               <span class="title is-5">{{experience.title}}</span><br>
-              <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
+              <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>&nbsp;&nbsp;<span class="tag">Draft</span>
             </p>
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
             <nuxt-link class="button" style="margin-right:10px;" :to="editExperienceUrl">Edit</nuxt-link>
