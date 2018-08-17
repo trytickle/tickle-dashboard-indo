@@ -156,7 +156,7 @@
     </div>
 
     <div class="field">
-      <label class="label">Notes</label>
+      <label class="label">Notes (Optional)</label>
       <div class="control">
         <textarea class="textarea" placeholder="" v-model="notes"></textarea>
       </div>
@@ -266,14 +266,14 @@
     </div>
 
     <div class="field" style="padding-top:10px;">
-      <label class="label">Additional Requirements</label>
+      <label class="label">Additional Requirements (Optional)</label>
       <div class="control">
         <textarea class="textarea" placeholder="" v-model="additionalRequirements"></textarea>
       </div>
     </div>
 
     <div class="field" style="padding-top:10px;">
-      <label class="label">Special Certifications</label>
+      <label class="label">Special Certifications (Optional)</label>
       <div class="control">
         <textarea class="textarea" placeholder="" v-model="specialCertifications"></textarea>
       </div>
