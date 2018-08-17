@@ -17,8 +17,8 @@
           <p v-if="!isApproveModal" style="padding-top:10px;">
             <textarea class="textarea" placeholder="Reasons for rejection" v-model="rejectionNotes"></textarea>
           </p>
-          <p v-if="showError">
-            {{errorMessage}}
+          <p v-if="showError" style="padding-top:20px;">
+            <strong style="color:red;">{{errorMessage}}</strong>
           </p>
         </section>
         <footer class="modal-card-foot">
@@ -79,6 +79,7 @@ export default {
     },
     closeModal() {
       this.modalIsActive = false
+      this.showError = false
     },
     async approveSubmission() {
       this.isLoading = true

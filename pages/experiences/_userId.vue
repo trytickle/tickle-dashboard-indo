@@ -20,8 +20,8 @@
           </p>
         </section>
         <footer class="modal-card-foot">
-          <button v-if="!submissionId" class="button is-info" :class="{'is-loading': isProcessing}" @click="transferExperience">Transfer</button>
-          <button v-if="submissionId" class="button is-success" :class="{'is-loading': isProcessing}" @click="submitForReview">Submit</button>
+          <button v-if="!submissionId" class="button is-info" :class="{'is-loading': isLoading}" @click="transferExperience">Transfer</button>
+          <button v-if="submissionId" class="button is-success" :class="{'is-loading': isLoading}" @click="submitForReview">Submit</button>
           <button class="button" @click="closeModal">Cancel</button>
         </footer>
       </div>
@@ -54,7 +54,7 @@ export default {
       transferExperienceId: null,
       transferUserId: null,
       submissionId: null,
-      isProcessing: false
+      isLoading: false
     }
   },
   components: {
@@ -111,7 +111,7 @@ export default {
       
       batch.update(submissionRef, {'aboutHost.hostId' : this.transferUserId})
       
-      this.isProcessing = true
+      this.isLoading = true
       const experienceDoc = await experienceRef.get()
       if (experienceDoc.exists) {
         batch.update(experienceRef,  {'aboutHost.hostId' : this.transferUserId})
@@ -121,13 +121,13 @@ export default {
          this.showTransferModal = false
          this.transferUserId = null
          this.transferExperienceId = null 
-         this.isProcessing = false
+         this.isLoading = false
          location.reload()
       })
     },
     async submitForReview() {
       this.showError = false
-      this.isProcessing = true;
+      this.isLoading = true;
       const submissionDoc = await db.collection('submissions').doc(this.submissionId).get();
       const submissionData = submissionDoc.data();
       const userDoc = await db.collection('users').doc(submissionData.aboutHost.hostId).get();
@@ -146,7 +146,7 @@ export default {
         this.errorMessage = error.message
         this.showError = true
       }
-      this.isProcessing = false
+      this.isLoading = false
     }
   },
   created() {
