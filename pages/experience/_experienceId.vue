@@ -592,6 +592,7 @@
 <script>
 import { auth, db, storage, host } from "~/plugins/firebase";
 import { resizeImage } from "~/assets/utility";
+import _ from "lodash";
 
 export default {
   data() {
@@ -862,16 +863,18 @@ export default {
       }
       this.isLoading = false;
       this.$router.go(-1);
+    },
+    fetchCoordinates: _.debounce(function() {
+      console.log(this.streetAddress)
+    }, 1000)
+  },
+  watch: {
+    streetAddress() {
+      this.fetchCoordinates()
     }
   },
   created() {
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        this.$router.push("/");
-      } else {
-        this.fetchData();
-      }
-    });
+    this.fetchData()
   }
 };
 </script>

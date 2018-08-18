@@ -597,12 +597,9 @@ export default {
     }
   },
   created() {
-    auth.onAuthStateChanged(user => {
-      this.userId = user.uid
-      if (!user) {
-        this.$router.push('/')
-      }
-    })
+    if (auth.currentUser) {
+      this.userId = auth.currentUser.uid
+    }
   }
 }
 </script>

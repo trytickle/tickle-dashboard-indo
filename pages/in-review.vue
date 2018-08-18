@@ -116,13 +116,7 @@ export default {
     }
   },
   created() {
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        this.$router.push('/')
-      } else {
-        this.fetchInReviewExperiences()
-      }
-    })
+    this.fetchInReviewExperiences()
   }
 }
 </script>
