@@ -874,7 +874,7 @@ export default {
     fetchCoordinates: _.debounce(function() {
       const geocoder = new google.maps.Geocoder()
 
-      geocoder.geocode( { 'address': this.streetAddress }, (results, status) => {
+      geocoder.geocode( { 'address': `${this.streetAddress}, ${this.city}, ${this.country}` }, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK) {
               this.lat = results[0].geometry.location.lat()
               this.lng = results[0].geometry.location.lng()
