@@ -22,11 +22,11 @@
 
       <hr/>
 
-      <div class="field is-grouped is-expanded">
-        <div style="padding-right:20px;">
-          <label class="label">Label</label>
+      <div class="field is-grouped is-expanded subtitle-grid">
+        <div>
+          <label class="label">Subtitle</label>
           <div class="select">
-            <select v-model="label">
+            <select v-model="subtitle">
               <option>Dinner party</option>
               <option>Photo class</option>
               <option>Craft class</option>
@@ -101,7 +101,7 @@
           </div>
         </div>
 
-        <div style="padding-left:20px;">
+        <div>
           <label class="label">Language</label>
           <div class="select">
             <select v-model="language">
@@ -209,8 +209,8 @@
 
       <hr/>
 
-      <div class="field is-grouped">
-        <div style="padding-right:20px;">
+      <div class="field is-grouped minage-grid">
+        <div>
           <label class="label">Minimum Age</label>
           <div class="select">
             <select v-model="minimumAge">
@@ -235,7 +235,7 @@
           </div>
         </div>
 
-        <div style="padding-right:20px;">
+        <div>
           <label class="label">Kids?</label>
           <div class="select">
             <select v-model="kidsAllowed">
@@ -245,7 +245,7 @@
           </div>
         </div>
 
-        <div style="padding-right:20px;">
+        <div>
           <label class="label">Alcohol?</label>
           <div class="select">
             <select v-model="alcohol">
@@ -319,8 +319,8 @@
         </p>
       </div>
 
-      <div class="field is-grouped" style="padding-top:10px;">
-        <div style="padding-right:20px;">
+      <div class="field is-grouped guestcount-grid">
+        <div>
           <label class="label">Guest Count</label>
           <div class="select">
             <select v-model="guestCount">
@@ -373,28 +373,28 @@
             </select>
           </div>
         </div>
-      </div>
 
-      <div class="field is-grouped" style="padding-top:10px;">
-        <div style="padding-right:20px;">
-          <label class="label">Main Category</label>
-          <div class="select">
-            <select v-model="mainCategory">
-              <option :value=0>Classes & Workshops</option>
-              <option :value=1>Arts</option>
-              <option :value=2>Food & Drinks</option>
-              <option :value=3>Sports & Fitness</option>
-              <option :value=4>Nature</option>
-              <option :value=5>History & Culture</option>
-              <option :value=6>Health & Wellness</option>
-              <option :value=7>Music</option>
-              <option :value=8>Nightlife</option>
-              <option :value=9>Personalities</option>
-              <option :value=10>Social</option>
-            </select>
+        <div>
+          <div>
+            <label class="label">Main Category</label>
+            <div class="select">
+              <select v-model="mainCategory">
+                <option :value=0>Classes & Workshops</option>
+                <option :value=1>Arts</option>
+                <option :value=2>Food & Drinks</option>
+                <option :value=3>Sports & Fitness</option>
+                <option :value=4>Nature</option>
+                <option :value=5>History & Culture</option>
+                <option :value=6>Health & Wellness</option>
+                <option :value=7>Music</option>
+                <option :value=8>Nightlife</option>
+                <option :value=9>Personalities</option>
+                <option :value=10>Social</option>
+              </select>
+            </div>
           </div>
         </div>
-
+        
         <div>
           <label class="label">Secondary Category</label>
           <div class="select">
@@ -607,7 +607,7 @@ export default {
       userId: "",
       title: "",
       tagline: "",
-      label: "Dinner party",
+      subtitle: "Dinner party",
       duration: 60,
       language: "English",
       aboutHost: "",
@@ -751,7 +751,7 @@ export default {
       this.userId = submission.aboutHost.hostId;
       this.title = submission.title;
       this.tagline = submission.tagline ? submission.tagline : "";
-      this.label = submission.subtitle ? submission.subtitle : "Dinner party";
+      this.subtitle = submission.subtitle ? submission.subtitle : "Dinner party";
       this.duration = submission.maxDuration ? submission.maxDuration : 60;
       this.language = submission.languages[0];
       this.aboutHost = submission.aboutHost.description ? submission.aboutHost.description : "";
@@ -790,7 +790,7 @@ export default {
         lastEdited: new Date().getTime(),
         title: this.title,
         tagline: this.tagline,
-        subtitle: this.label,
+        subtitle: this.subtitle,
         maxDuration: this.duration,
         languages: [this.language],
         whatWeDo: this.whatWeDo,
@@ -892,3 +892,21 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.subtitle-grid {
+  display: grid;
+  grid-row-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.minage-grid {
+  display: grid;
+  grid-row-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+.guestcount-grid {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+</style>

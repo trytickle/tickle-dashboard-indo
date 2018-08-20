@@ -21,11 +21,11 @@
 
     <hr/>
 
-    <div class="field is-grouped is-expanded label-grid">
+    <div class="field is-grouped is-expanded subtitle-grid">
       <div>
-        <label class="label">Label</label>
+        <label class="label">Subtitle</label>
         <div class="select">
-          <select v-model="label">
+          <select v-model="subtitle">
             <option>Dinner party</option>
             <option>Photo class</option>
             <option>Craft class</option>
@@ -470,7 +470,7 @@ export default {
       userId: '',
       title: '',
       tagline: '',
-      label: 'Dinner party',
+      subtitle: 'Dinner party',
       duration: 60,
       language: 'English',
       aboutHost: '',
@@ -545,7 +545,7 @@ export default {
         userId: this.userId,
         title: this.title,
         tagline: this.tagline,
-        subtitle: this.label,
+        subtitle: this.subtitle,
         maxDuration: this.duration,
         languages: [this.language],
         aboutHost: this.aboutHost,
@@ -631,7 +631,7 @@ export default {
 </script>
 
 <style scoped>
-.label-grid {
+.subtitle-grid {
   display: grid;
   grid-row-gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -647,4 +647,3 @@ export default {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 </style>
-
