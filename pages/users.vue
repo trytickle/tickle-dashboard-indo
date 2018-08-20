@@ -44,8 +44,9 @@ export default {
 <style scoped>
 .users-grid {
   display: grid;
-  grid-column-gap: 25px;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-rows: repeat(auto-fit, 1fr);
   padding: 5px 30px 30px 30px;
 }
 </style>
