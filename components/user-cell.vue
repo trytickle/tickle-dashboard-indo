@@ -1,5 +1,5 @@
 <template>
-  <div class="user-container">
+  <div class="box">
     <article class="media">
       <div class="media-left">
         <figure class="image is-64x64">
@@ -27,12 +27,3 @@ export default {
   props: ['user']
 }
 </script>
-
-<style scoped>
-.user-container {
-  padding: 20px;
-  border: 1px solid #e7e7e7;
-  border-radius: 10px;
-  box-shadow: 0 5px 10px -5px rgba(136, 136, 136, 0.5);
-}
-</style>
