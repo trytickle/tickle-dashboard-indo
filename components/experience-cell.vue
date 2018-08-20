@@ -13,8 +13,8 @@
               <span class="title is-5">{{experience.title}}</span><br>
               <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
             </p>
-            <p style="margin-top:-10px;">
-              <span v-if="experience.submissionId" class="tag" :class="{'is-success': experience.status.inReview, 'is-danger': experience.status.isRejected, 'is-info': experience.status.isApproved}">{{experience.submissionId ? (experience.status.isDraft ? "Draft" : (experience.status.inReview ? "In Review": (experience.status.isApproved ? "Live": "Rejected" ))): ""}}</span>
+            <p style="margin-top:-10px;" v-if="experience.submissionId">
+              <span class="tag" :class="{'is-success': isInReview, 'is-danger': isRejected, 'is-info': isApproved}">{{experience.submissionId ? (experience.status.isDraft ? "Draft" : (experience.status.inReview ? "In Review": (experience.status.isApproved ? "Live": "Rejected" ))): ""}}</span>
             </p>
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
             <nuxt-link class="button" style="margin-right:10px;" :to="editExperienceUrl">Edit</nuxt-link>
@@ -44,6 +44,21 @@ export default {
         return this.experience.media[0]
       } else {
         return '/profile.png'
+      }
+    },
+    isInReview() {
+      if (this.experience.submissionId) {
+        return this.experience.status.inReview
+      }
+    },
+    isRejected() {
+      if (this.experience.submissionId) {
+        return this.experience.status.isRejected
+      }
+    },
+    isApproved() {
+      if (this.experience.submissionId) {
+        return this.experience.status.isApproved
       }
     }
   },
