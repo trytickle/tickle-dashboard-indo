@@ -21,8 +21,8 @@
 
     <hr/>
 
-    <div class="field is-grouped is-expanded">
-      <div style="padding-right:20px;">
+    <div class="field is-grouped is-expanded label-grid">
+      <div>
         <label class="label">Label</label>
         <div class="select">
           <select v-model="label">
@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <div style="padding-left:20px;">
+      <div>
         <label class="label">Language</label>
         <div class="select">
           <select v-model="language">
@@ -208,8 +208,8 @@
 
     <hr/>
 
-    <div class="field is-grouped">
-      <div style="padding-right:20px;">
+    <div class="field is-grouped minage-grid">
+      <div>
         <label class="label">Minimum Age</label>
         <div class="select">
           <select v-model="minimumAge">
@@ -234,7 +234,7 @@
         </div>
       </div>
 
-      <div style="padding-right:20px;">
+      <div>
         <label class="label">Kids?</label>
         <div class="select">
           <select v-model="kidsAllowed">
@@ -244,7 +244,7 @@
         </div>
       </div>
 
-      <div style="padding-right:20px;">
+      <div>
         <label class="label">Alcohol?</label>
         <div class="select">
           <select v-model="alcohol">
@@ -315,8 +315,8 @@
       </p>
     </div>
 
-    <div class="field is-grouped" style="padding-top:10px;">
-      <div style="padding-right:20px;">
+    <div class="field is-grouped guestcount-grid">
+      <div>
         <label class="label">Guest Count</label>
         <div class="select">
           <select v-model="guestCount">
@@ -369,10 +369,8 @@
           </select>
         </div>
       </div>
-    </div>
 
-    <div class="field is-grouped" style="padding-top:10px;">
-      <div style="padding-right:20px;">
+      <div>
         <label class="label">Main Category</label>
         <div class="select">
           <select v-model="mainCategory">
@@ -389,7 +387,7 @@
             <option :value=10>Social</option>
           </select>
         </div>
-      </div>
+      </div>      
 
       <div>
         <label class="label">Secondary Category</label>
@@ -631,3 +629,22 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.label-grid {
+  display: grid;
+  grid-row-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.minage-grid {
+  display: grid;
+  grid-row-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+.guestcount-grid {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+</style>
+
