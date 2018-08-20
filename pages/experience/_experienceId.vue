@@ -592,8 +592,15 @@
 <script>
 import { auth, db, storage, host } from "~/plugins/firebase";
 import { resizeImage } from "~/assets/utility";
-
+import _ from "lodash"
 export default {
+   head () {
+    return {
+      script: [
+        { src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCY3x0GxjLNamXJG-ghiecuPejkuLkIHQQ' }
+      ]
+    } 
+  },
   data() {
     return {
       userId: "",
