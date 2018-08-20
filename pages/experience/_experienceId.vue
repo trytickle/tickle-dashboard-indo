@@ -871,21 +871,17 @@ export default {
       this.isLoading = false;
       this.$router.go(-1);
     },
-      fetchCoordinates: _.debounce(function() {
-        var geocoder = new google.maps.Geocoder();
-        var address = this.streetAddress;
+    fetchCoordinates: _.debounce(function() {
+      const geocoder = new google.maps.Geocoder()
 
-        geocoder.geocode( { 'address': address}, (results, status) => {
-          if (status == google.maps.GeocoderStatus.OK) {
-                var latitude = results[0].geometry.location.lat();
-                var longitude = results[0].geometry.location.lng();
-                this.lat = latitude;
-                this.lng = longitude;
-              } 
-          }); 
-        }, 1000)
-
-      },
+      geocoder.geocode( { 'address': this.streetAddress }, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
+              this.lat = results[0].geometry.location.lat()
+              this.lng = results[0].geometry.location.lng()
+            } 
+        }); 
+      }, 1000)
+    },
     watch: {
       streetAddress() {
         this.fetchCoordinates()
