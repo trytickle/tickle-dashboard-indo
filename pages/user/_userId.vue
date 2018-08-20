@@ -112,12 +112,6 @@ export default {
     }
   },
   async created() {
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        this.$router.push('/')
-      }
-    })
-
     const userId = this.$route.params.userId
     const snapshot = await db.collection('users').doc(userId).get()
 

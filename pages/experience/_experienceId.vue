@@ -592,7 +592,8 @@
 <script>
 import { auth, db, storage, host } from "~/plugins/firebase";
 import { resizeImage } from "~/assets/utility";
-import _ from "lodash"
+import _ from "lodash";
+
 export default {
    head () {
     return {
@@ -869,16 +870,29 @@ export default {
       }
       this.isLoading = false;
       this.$router.go(-1);
-    }
-  },
-  created() {
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        this.$router.push("/");
-      } else {
-        this.fetchData();
+    },
+      fetchCoordinates: _.debounce(function() {
+        var geocoder = new google.maps.Geocoder();
+        var address = this.streetAddress;
+
+        geocoder.geocode( { 'address': address}, (results, status) => {
+          if (status == google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+                this.lat = latitude;
+                this.lng = longitude;
+              } 
+          }); 
+        }, 1000)
+
+      },
+    watch: {
+      streetAddress() {
+        this.fetchCoordinates()
       }
-    });
-  }
+    },
+    created() {
+      this.fetchData()
+    }
 };
 </script>

@@ -156,7 +156,7 @@
     </div>
 
     <div class="field">
-      <label class="label">Notes (Optional)</label>
+      <label class="label">Notes</label>
       <div class="control">
         <textarea class="textarea" placeholder="" v-model="notes"></textarea>
       </div>
@@ -266,14 +266,14 @@
     </div>
 
     <div class="field" style="padding-top:10px;">
-      <label class="label">Additional Requirements (Optional)</label>
+      <label class="label">Additional Requirements</label>
       <div class="control">
         <textarea class="textarea" placeholder="" v-model="additionalRequirements"></textarea>
       </div>
     </div>
 
     <div class="field" style="padding-top:10px;">
-      <label class="label">Special Certifications (Optional)</label>
+      <label class="label">Special Certifications</label>
       <div class="control">
         <textarea class="textarea" placeholder="" v-model="specialCertifications"></textarea>
       </div>
@@ -457,8 +457,16 @@
 <script>
 import { auth, db, storage, host } from '~/plugins/firebase'
 import { resizeImage } from '~/assets/utility'
+import _ from 'lodash'
 
 export default {
+    head () {
+      return {
+      script: [
+        { src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCY3x0GxjLNamXJG-ghiecuPejkuLkIHQQ' }
+      ]
+    } 
+  },
   data() {
     return {
       userId: '',
@@ -496,7 +504,9 @@ export default {
       errorMessage: '',
       fileName: '',
       coverPhotoImage: null,
-      coverPhotoUrl: ''
+      coverPhotoUrl: '',
+      lat: 1.3521,
+      lng: 103.8198
     }
   },
   methods: {
@@ -553,8 +563,8 @@ export default {
           zipcode: this.zipcode,
           city: this.city,
           country: this.country,
-          lat: 1.3521,
-          lng: 103.8198
+          lat: this.lat,
+          lng: this.lng
         },
         bookingOptions: {
           bookBefore: this.latestBookingTime
@@ -594,6 +604,25 @@ export default {
       }
 
       this.isLoading = false
+    },
+    fetchCoordinates: _.debounce(function() {
+    var geocoder = new google.maps.Geocoder();
+    var address = this.streetAddress;
+
+    geocoder.geocode( { 'address': address}, (results, status) => {
+      if (status == google.maps.GeocoderStatus.OK) {
+          var latitude = results[0].geometry.location.lat();
+          var longitude = results[0].geometry.location.lng();
+          this.lat = latitude;
+          this.lng = longitude;
+        } 
+      }); 
+    }, 1000)
+    },
+
+    watch: {
+    streetAddress() {
+      this.fetchCoordinates()
     }
   },
   created() {

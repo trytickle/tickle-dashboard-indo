@@ -150,15 +150,9 @@ export default {
     }
   },
   created() {
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        this.$router.push('/')
-      } else {
-        this.fetchUserFullName()
-        this.fetchUserExperiences()
-        this.fetchUserSubmissions()
-      }
-    })
+    this.fetchUserFullName()
+    this.fetchUserExperiences()
+    this.fetchUserSubmissions()
   }
 }
 </script>
