@@ -13,13 +13,15 @@
               <span class="title is-5">{{experience.title}}</span><br>
               <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
             </p>
+            <div style="font-weight:700;margin-top:10px;margin-bottom:20px;display:grid;grid-template-columns:90px auto;">
+              <small><span v-bind="checkStripeStatus()">Stripe: {{stripeStatus}}</span></small>
+              <small><span v-bind="checkHasAvailability()">Availabilities: {{availabilityStatus}}</span></small>
+            </div>
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
             <button class="button is-success is-outlined" style="margin-right:10px;" @click="approveClicked">Approve</button> 
             <button class="button is-danger is-outlined" @click="rejectClicked">Reject</button> 
           
           </div>
-           <span class="title is-5" v-bind="checkStripeStatus()">Stripe added: {{stripeStatus}}</span><br>
-           <span class="title is-5" v-bind="checkHasAvailability()">Availability added: {{availabilityStatus}}</span><br>
         </div>
       </article>
     </div>
@@ -27,52 +29,73 @@
 </template>
 
 <script>
-import { db } from '~/plugins/firebase'
+import { db } from "~/plugins/firebase";
 export default {
-  props: [
-    'experience'
-  ],
+  props: ["experience"],
   data() {
     return {
-      viewExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true'),
-      stripeStatus: "unkown",
-      availabilityStatus: "unkown"
-    }
+      viewExperienceUrl:
+        "/experience/" +
+        (this.experience.experienceId
+          ? this.experience.experienceId
+          : this.experience.submissionId) +
+        "?isSubmission=" +
+        (this.experience.experienceId ? "false" : "true"),
+      stripeStatus: "?",
+      availabilityStatus: "?"
+    };
   },
   computed: {
     imageUrl() {
       if (this.experience.media && this.experience.media[0]) {
-        return this.experience.media[0]
+        return this.experience.media[0];
       } else {
-        return '/profile.png'
+        return "/profile.png";
       }
     }
   },
   methods: {
     approveClicked() {
-      this.$parent.openModal(true, false, this.experience.title, this.experience.submissionId)
+      this.$parent.openModal(
+        true,
+        false,
+        this.experience.title,
+        this.experience.submissionId
+      );
     },
     rejectClicked() {
-      this.$parent.openModal(false, true, this.experience.title, this.experience.submissionId)
+      this.$parent.openModal(
+        false,
+        true,
+        this.experience.title,
+        this.experience.submissionId
+      );
     },
     async checkStripeStatus() {
-      const doc = await db.collection("users").doc(this.experience.aboutHost.hostId).get();
+      const doc = await db
+        .collection("users")
+        .doc(this.experience.aboutHost.hostId)
+        .get();
       if (doc.exists && doc.data().settings.payoutMethods) {
-        this.stripeStatus =  "Yes";
+        this.stripeStatus = "👍";
       } else {
-        this.stripeStatus =  "No";
+        this.stripeStatus = "❌";
       }
     },
     async checkHasAvailability() {
-    const availDocs = await db.collection("submissions").doc(this.experience.submissionId).collection("availability").get();
-    if (availDocs.size > 0) {
-      this.availabilityStatus =  "Yes";
-    } else {
-      this.availabilityStatus =  "No";
-    }
+      const availDocs = await db
+        .collection("submissions")
+        .doc(this.experience.submissionId)
+        .collection("availability")
+        .get();
+      if (availDocs.size > 0) {
+        this.availabilityStatus = "👍";
+      } else {
+        this.availabilityStatus = "❌";
+      }
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -86,7 +109,7 @@ figure {
 img {
   width: 64px;
   position: absolute;
-  margin: auto; 
+  margin: auto;
   min-height: 100%;
   min-width: 100%;
   left: -100%;
