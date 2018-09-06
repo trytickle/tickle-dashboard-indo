@@ -16,7 +16,10 @@
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
             <button class="button is-success is-outlined" style="margin-right:10px;" @click="approveClicked">Approve</button> 
             <button class="button is-danger is-outlined" @click="rejectClicked">Reject</button> 
+          
           </div>
+           <span class="title is-5" v-bind="checkStripeStatus()">Stripe added: {{stripeStatus}}</span><br>
+           <span class="title is-5" v-bind="checkHasAvailability()">Availability added: {{availabilityStatus}}</span><br>
         </div>
       </article>
     </div>
@@ -24,13 +27,16 @@
 </template>
 
 <script>
+import { db } from '~/plugins/firebase'
 export default {
   props: [
     'experience'
   ],
   data() {
     return {
-      viewExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true')
+      viewExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true'),
+      stripeStatus: "unkown",
+      availabilityStatus: "unkown"
     }
   },
   computed: {
@@ -48,6 +54,22 @@ export default {
     },
     rejectClicked() {
       this.$parent.openModal(false, true, this.experience.title, this.experience.submissionId)
+    },
+    async checkStripeStatus() {
+      const doc = await db.collection("users").doc(this.experience.aboutHost.hostId).get();
+      if (doc.exists && doc.data().settings.payoutMethods) {
+        this.stripeStatus =  "Yes";
+      } else {
+        this.stripeStatus =  "No";
+      }
+    },
+    async checkHasAvailability() {
+    const availDocs = await db.collection("submissions").doc(this.experience.submissionId).collection("availability").get();
+    if (availDocs.size > 0) {
+      this.availabilityStatus =  "Yes";
+    } else {
+      this.availabilityStatus =  "No";
+    }
     }
   }
 }
