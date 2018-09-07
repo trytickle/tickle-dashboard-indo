@@ -19,15 +19,27 @@
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
             <nuxt-link class="button" style="margin-right:10px;" :to="editExperienceUrl">Edit</nuxt-link>
             <button class="button" style="margin-right:10px;" @click="transferClicked">Transfer</button>
-            <button v-if="this.experience.submissionId" class="button" @click="reviewClicked">Review</button> 
+            <button v-if="this.experience.submissionId" class="button" @click="reviewClicked">Review</button>
           </div>
+           <p style="margin-top:-10px;" v-if="experience.experienceId">
+              <span class="tag" :class="{'is-danger': isDisabled, 'is-info': isHidden}">{{experience.experienceId ? (experience.isDisabled ? "Disabled" : (experience.isHidden ? "Hidden": "shown")) : "shown" }}</span>
+            </p>
+            <br>
+          <span class="title is-7">Change Visibility</span><br>
+          <select v-if="experience.experienceId" class="menu-dropdown" v-model="visibility">
+            <option value="show">Show</option>
+            <option value="hide">Hide</option>
+            <option value="disable">Disable</option>
+          </select>
         </div>
+       
       </article>
     </div>
   </div>
 </template>
 
 <script>
+import {db} from '~/plugins/firebase'
 export default {
   props: [
     'experience'
@@ -35,7 +47,8 @@ export default {
   data() {
     return {
       viewExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true'),
-      editExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true') + '&isEditMode=true'
+      editExperienceUrl: '/experience/' + (this.experience.experienceId ? this.experience.experienceId : this.experience.submissionId) + '?isSubmission=' + (this.experience.experienceId ? 'false' : 'true') + '&isEditMode=true',
+      visibility: this.experience.isDisabled ? 'disable' : (this.experience.isHidden ? 'hide' : 'show') 
     }
   },
   computed: {
@@ -60,6 +73,21 @@ export default {
       if (this.experience.submissionId) {
         return this.experience.status.isApproved
       }
+    },
+    isHidden() {
+      if (this.experience.experienceId) {
+        return this.experience.isHidden
+      }
+    },
+      isDisabled() {
+      if (this.experience.experienceId) {
+        return this.experience.isDisabled
+      }
+    }
+  },
+  watch: {
+    visibility() {
+      this.updateVisibility()
     }
   },
   methods: {
@@ -69,6 +97,19 @@ export default {
     },
     reviewClicked() {
       this.$parent.showReview(this.experience.title, this.experience.submissionId)
+    },
+    async updateVisibility() {
+      let obj = {}
+      console.log(this.visibility)
+      switch (this.visibility) {
+        case 'show':
+        obj = { isHidden : false, isDisabled: false }; break;
+        case 'hide':
+        obj = { isHidden: true, isDisabled: false }; break;
+        case 'disable':
+        obj = { isHidden: false, isDisabled: true }; break;
+      }
+       await db.collection("experiences").doc(this.experience.experienceId).update(obj)
     }
   }
 }
@@ -92,5 +133,17 @@ img {
   right: -100%;
   top: -100%;
   bottom: -100%;
+}
+.menu-dropdown {
+  width: 100px;
+  height: 50px;
+  border: 1px solid #ddd;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0 20px 0 20px;
+  color: black;
+  background: #fff url(/images/chevron-down.png) calc(100% - 20px) 15px;
+  background-repeat: no-repeat;
 }
 </style>
