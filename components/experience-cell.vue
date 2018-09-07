@@ -19,18 +19,13 @@
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
             <nuxt-link class="button" style="margin-right:10px;" :to="editExperienceUrl">Edit</nuxt-link>
             <button class="button" style="margin-right:10px;" @click="transferClicked">Transfer</button>
-            <button v-if="this.experience.submissionId" class="button" @click="reviewClicked">Review</button>
+            <button v-if="experience.submissionId" class="button" @click="reviewClicked">Review</button>
+            <select v-if="experience.experienceId" class="button" :class="{'is-danger is-outlined': visibility==='disable', 'is-warning is-outlined': visibility==='hide', 'is-success is-outlined': visibility==='show'}" v-model="visibility">
+              <option value="show">Active</option>
+              <option value="hide">Hidden</option>
+              <option value="disable">Disabled</option>
+            </select>
           </div>
-           <p style="margin-top:-10px;" v-if="experience.experienceId">
-              <span class="tag" :class="{'is-danger': isDisabled, 'is-info': isHidden}">{{experience.experienceId ? (experience.isDisabled ? "Disabled" : (experience.isHidden ? "Hidden": "shown")) : "shown" }}</span>
-            </p>
-            <br>
-          <span class="title is-7">Change Visibility</span><br>
-          <select v-if="experience.experienceId" class="menu-dropdown" v-model="visibility">
-            <option value="show">Show</option>
-            <option value="hide">Hide</option>
-            <option value="disable">Disable</option>
-          </select>
         </div>
        
       </article>
