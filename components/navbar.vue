@@ -35,6 +35,9 @@
               <nuxt-link to="/in-review" class="dropdown-item">
                 In Review
               </nuxt-link>
+              <nuxt-link to="/story/update" class="dropdown-item">
+                Update Story
+              </nuxt-link>
             </div>
           </div>
         </div>
