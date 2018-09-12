@@ -93,9 +93,13 @@ export default {
       } catch (error) {
         console.error(error.response)
         if (error.response.data && error.response.data.error) {
-          this.errorMessage = error.response.data.error
+          if (error.response.data.error.includes('A required param is undefined')) {
+            this.errorMessage = "Some required fields could be missing. Please review the submission again."
+          } else {
+            this.errorMessage = error.response.data.error
+          }
         } else {
-          this.errorMessage = "Some required parameters could be missing. Please review submission again."
+          this.errorMessage = "Some required fields could be missing. Please review the submission again."
         }
         this.showError = true
       }
