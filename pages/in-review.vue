@@ -91,8 +91,12 @@ export default {
         await this.$axios.$post(`${host}/approveSubmission`, body)
         location.reload()
       } catch (error) {
-        console.error(error)
-        this.errorMessage = error.message
+        console.error(error.response)
+        if (error.response.data && error.response.data.error) {
+          this.errorMessage = error.response.data.error
+        } else {
+          this.errorMessage = "Some required parameters could be missing. Please review submission again."
+        }
         this.showError = true
       }
       this.isLoading = false

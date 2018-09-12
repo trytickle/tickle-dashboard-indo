@@ -484,7 +484,7 @@
         </p>
         <p>
           <label class="label" style="margin-bottom:0px;">Language</label>
-          <span>{{experience.languages[0] ? experience.languages[0] : ''}}</span>
+          <span>{{experience.languages ? experience.languages[0] : ''}}</span>
         </p>
         <hr>
         <p style="white-space:pre-wrap;">
@@ -753,7 +753,7 @@ export default {
       this.tagline = submission.tagline ? submission.tagline : "";
       this.subtitle = submission.subtitle ? submission.subtitle : "Dinner party";
       this.duration = submission.maxDuration ? submission.maxDuration : 60;
-      this.language = submission.languages[0];
+      this.language = submission.languages ? submission.languages[0] : '';
       this.aboutHost = submission.aboutHost.description ? submission.aboutHost.description : "";
       this.whatWeDo = submission.whatWeDo ? submission.whatWeDo : "";
       this.whatIProvide = submission.whatIProvide ? submission.whatIProvide : "";
