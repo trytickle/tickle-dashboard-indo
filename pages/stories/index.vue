@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div style="text-align:center;">
-      <nuxt-link class="button is-link" style="padding:25px;" :to="pathUrl">Create Story</nuxt-link>
+      <nuxt-link class="button is-success" style="padding:25px;" :to="pathUrl">Create Story</nuxt-link>
     </div>
     <div class="content" style="margin:20px;">
       <div class="story-item" style="margin:auto;margin-bottom:20px;" v-for="story in stories" :key="story.storyId">
@@ -9,9 +9,12 @@
           <h3>{{story.title}}</h3>
           <p style="margin-top:-10px;">Written by {{story.authorName}}</p>
         </div>
-        <div>
-          <nuxt-link to="/story/{story.storyId}" class="button is-outlined">Edit</nuxt-link>
-          <button class="button is-outlined is-danger">Delete</button>
+        <div style="margin-top:20px;">
+          <nuxt-link :to="'/story/' + story.storyId" class="button is-outlined" style="margin-right:10px;">Edit Story</nuxt-link>
+          <select class="button" :class="{'is-info': story.isPublished}" :style="story.isPublished === false ? 'background-color: #ddd' : ''">
+            <option value="draft">Draft</option>
+            <option value="published" :selected="story.isPublished">Published</option>
+          </select>
         </div>
       </div>
     </div>
@@ -48,7 +51,5 @@ export default {
   border-radius: 10px;
   box-shadow: 0 5px 10px -5px rgba(136, 136, 136, 0.25);
   max-width: 640px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
 }
 </style>
