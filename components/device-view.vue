@@ -4,48 +4,16 @@
       <div class="div-block-6 headerSection" id="top">
         <div class="image-wrapper" v-if="this.$parent.coverImage !== null"><img :src="this.$parent.coverImage" alt="photo"></div>
        </div>
-      <div class="content-section">
-        <h1 v-text="this.$parent.title"></h1>
+      <div class="content-section content" style="padding: 30px;">
+        <h2 v-text="this.$parent.title"></h2>
         <br>
         <p class="paragraph-5" style="margin-top:-10px;" v-html="this.$parent.bodyPreview">'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.'</p>
         <div class="div-block-8"></div>
       </div>
-      <br>
-        <button style="button">Checkout experience</button>
+      <button class="button" style="padding:20px;margin-left:30px;width:auto;height:auto;cursor:auto;">JOIN GURUPREET'S EXPERIENCE</button>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      currentPhoto: 0,
-      showLeftArrow: false,
-      showRightArrow: false,
-      photos: [null],
-      map: null
-    }
-  },
-  watch: {
-
-  },
-  methods: {
-    scrollTo(id) {
-      document.getElementById(id).scrollIntoView({ behavior: 'smooth' })
-    }
-  },
-  created() {
-
-  },
-  mounted() {
-
-  },
-  computed: {
-
-    },
-}
-</script>
 
 <style scoped>
 .headerSection {
