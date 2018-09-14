@@ -12,19 +12,21 @@
      <div class="example-wrapper" style="gravity:center;">
           <p class="title is-3">Cover Image</p>
           <img :src= coverImage @click="pickPhoto(0)" width="180" height="250" class="image" style="object-fit:cover;">
+            <p v-text= coverImage ></p>  
         </div>
+          <p class="title is-3">Artical Images</p>
      <div class="photo-grid">
         <div class="example-wrapper">
           <img :src= url1 @click="pickPhoto(1)" width="180" height="250" class="image" style="object-fit:cover;">
-          <p v-text= url1 ></p>
+          <p v-text= url1 width="180"></p>
         </div>
         <div class="example-wrapper">
           <img :src= url2 @click="pickPhoto(2)" width="180" height="250" class="image" style="object-fit:cover;">
-          <p v-text= url2 ></p>
+          <p v-text= url2 width="180"></p>
         </div>
         <div class="example-wrapper">
           <img :src= url3 @click="pickPhoto(3)" width="180" height="250" class="image" style="object-fit:cover;">
-          <p v-text= url3 ></p>
+          <p v-text= url3 width="180" ></p>
         </div>
       </div>
         <div class="field">
@@ -33,14 +35,16 @@
                 <textarea  id= "markdown" class="CodeMirror" style="height:400px;" placeholder="" v-model="body"></textarea>
             </div>
          </div>  
-         <button class="button is-link">Create Story</button> 
+         <button class="button is-link" @click="updateStory()">Update Story</button> 
+         <button class="button " >Publish Story</button> 
+         <button class="button " @click="deleteStory()">Delete Story</button> 
     </div>
         <device-view style="width:300px;"></device-view>
     </section>
 </template>
 
 <script>
-import { db } from "~/plugins/firebase";
+import { db, storage } from "~/plugins/firebase";
 import SimpleMDE from "simplemde"
 import deviceView from '@/components/device-view.vue'
 import { resizeImageWidth } from '~/assets/utility'
@@ -52,18 +56,22 @@ export default {
   data() {
     return {
         storyId: this.$nuxt.$route.path.replace('/story/',''),
-        storyTitle: '',
+        storyTitle: 'Your story title',
         body: '',
-        coverImage: "http://www.gstatic.com/webp/gallery/1.jpg",
-        url1: "http://www.gstatic.com/webp/gallery/1.jpg",
-        url2: "http://www.gstatic.com/webp/gallery/1.jpg",
-        url3: "http://www.gstatic.com/webp/gallery/1.jpg",
+        coverImage: "/image.png",
+        url1: "/image.png",
+        url2: "/image.png",
+        url3: "/image.png",
         editor: null,
-        selectedIndex: 0
+        selectedIndex: 0,
+        story: null
     };
   },
   mounted() {
       this.initEditor()
+  },
+  created() {
+      this.loadOrCreateStory();
   },
 
   methods: { 
@@ -76,6 +84,79 @@ export default {
     pickPhoto(index) {
         this.selectedIndex = index;
         this.$refs.picker.click();
+    },
+    async loadOrCreateStory() {
+        try {
+            const storyDoc = await db.collection('stories').doc(this.storyId).get()
+            if (storyDoc.exists) {
+                const story = storyDoc.data();
+                this.title = story.title;
+                this.body = story.body;
+                this.coverImage = (story.coverPhotoUrl && story.coverPhotoUrl.length > 0) ? story.coverPhotoUrl : "/image.png"
+                if (story.images && story.images.size() > 1) {
+                    this.url1 = story.images[0]
+                    this.url2 = story.images[1]
+                    this.url3 = story.images[2]
+                }
+            } else {
+                const createdAt = new Date().getTime()
+                await db.collection('stories').doc(this.storyId).set({storyId: this.storyId, title: "your story title", createdAt: createdAt, isPublished: false, timestamp: createdAt}) 
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async deleteStory() {
+        try {
+            await db.collection("stories").doc(this.storyId).delete()
+            console.log("deleted")
+        } catch(error) {
+            console.log(error)
+        }
+    },
+    async updateStory() {
+        try {
+        const images = [this.url1, this.url2, this.url3]
+        const obj = { title: this.title ? this.title : "your story title", body: this.editor.value(), coverPhotoUrl: this.coverImage ? this.coverImage : "", images: images, timestamp: new Date().getTime() }
+
+        await db.collection('stories').doc(this.storyId).update(obj);
+        console.log("Update done")
+        } catch (error) {
+            console.log(error)
+        }
+  },
+    async uploadImage(index, imageBlob) {
+      //this.isLoading = true
+      try {
+        const name = String(Date.now())
+        const uploadRef = storage.child(`media/stories/${this.storyId}`).child(`${name}.jpg`)
+        const metadata = {
+          contentType: 'image/jpeg',
+          customMetadata: {
+            'Uploaded': Date().toString()
+          }
+        }
+        const uploadTask = await uploadRef.put(imageBlob, metadata)
+        const downloadUrl = await uploadTask.ref.getDownloadURL()
+            switch (this.selectedIndex) {
+                case 0:
+                    this.coverImage = downloadUrl
+                    break;
+                case 1:
+                    this.url1 = downloadUrl
+                    break;
+                case 2:
+                    this.url2 = downloadUrl
+                    break;
+                case 3:
+                    this.url3 = downloadUrl   
+                    break;    
+            }
+        console.log('Upload image successful', `${name}.jpg`, downloadUrl)
+      } catch (error) {
+        console.error(error.message)
+      }
+     // this.isLoading = false
     },
     onFileChange(e) {
         let files = e.target.files || e.dataTransfer.files
@@ -91,15 +172,19 @@ export default {
             switch (this.selectedIndex) {
                 case 0:
                     this.coverImage = resizedFilePath
+                    this.uploadImage(this.selectedIndex, outputFile)
                     break;
                 case 1:
                     this.url1 = resizedFilePath
+                    this.uploadImage(this.selectedIndex, outputFile)
                     break;
                 case 2:
                     this.url2 = resizedFilePath
+                    this.uploadImage(this.selectedIndex, outputFile)
                     break;
                 case 3:
                     this.url3 = resizedFilePath   
+                    this.uploadImage(this.selectedIndex, outputFile)
                     break;    
             }
 

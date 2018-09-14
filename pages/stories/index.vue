@@ -1,6 +1,6 @@
 <template>
   <div>
- <nuxt-link class="button is-link" style="margin-left:10px;" @click="createStory()"  :to="pathUrl">Create Story</nuxt-link>
+ <nuxt-link class="button is-link" style="margin-left:10px;" :to="pathUrl">Create Story</nuxt-link>
   </div>
 </template>
 
