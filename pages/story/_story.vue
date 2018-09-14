@@ -5,7 +5,7 @@
         <div class="field">
         <label class="label">Story Title</label>
         <div class="control">
-            <input class="input" type="text" placeholder="" v-model="storyTitle">
+            <input class="input" type="text" placeholder="" v-model="title">
         </div>
         </div>
     <input style="display:none" ref ="picker" type="file" name="pic" accept="image/*" @change="onFileChange">
@@ -56,8 +56,9 @@ export default {
   data() {
     return {
         storyId: this.$nuxt.$route.path.replace('/story/',''),
-        storyTitle: 'Your story title',
+        title: 'Your story title',
         body: '',
+        bodyPreview: '',
         coverImage: "/image.png",
         url1: "/image.png",
         url2: "/image.png",
@@ -78,7 +79,7 @@ export default {
     initEditor() {
         this.editor =  new SimpleMDE({ element: document.getElementById("markdown") })
         this.editor.codemirror.on("change", () => {
-        this.body = SimpleMDE.prototype.markdown(this.editor.value());
+        this.bodyPreview = SimpleMDE.prototype.markdown(this.editor.value());
     })
     },
     pickPhoto(index) {
@@ -92,8 +93,9 @@ export default {
                 const story = storyDoc.data();
                 this.title = story.title;
                 this.body = story.body;
+                this.editor.value(story.body)
                 this.coverImage = (story.coverPhotoUrl && story.coverPhotoUrl.length > 0) ? story.coverPhotoUrl : "/image.png"
-                if (story.images && story.images.size() > 1) {
+                if (story.images && story.images.length > 1) {
                     this.url1 = story.images[0]
                     this.url2 = story.images[1]
                     this.url3 = story.images[2]
@@ -117,7 +119,7 @@ export default {
     async updateStory() {
         try {
         const images = [this.url1, this.url2, this.url3]
-        const obj = { title: this.title ? this.title : "your story title", body: this.editor.value(), coverPhotoUrl: this.coverImage ? this.coverImage : "", images: images, timestamp: new Date().getTime() }
+        const obj = { title: this.title, body: this.editor.value(), coverPhotoUrl: this.coverImage ? this.coverImage : "", images: images, timestamp: new Date().getTime() }
 
         await db.collection('stories').doc(this.storyId).update(obj);
         console.log("Update done")

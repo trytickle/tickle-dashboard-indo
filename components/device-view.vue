@@ -5,9 +5,9 @@
         <div class="image-wrapper" v-if="this.$parent.coverImage !== null"><img :src="this.$parent.coverImage" alt="photo"></div>
        </div>
       <div class="content-section">
-        <h1 v-text="this.$parent.storyTitle"></h1>
+        <h1 v-text="this.$parent.title"></h1>
         <br>
-        <p class="paragraph-5" style="margin-top:-10px;" v-html="this.$parent.body">'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.'</p>
+        <p class="paragraph-5" style="margin-top:-10px;" v-html="this.$parent.bodyPreview">'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.'</p>
         <div class="div-block-8"></div>
       </div>
       <br>
