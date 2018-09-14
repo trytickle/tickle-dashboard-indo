@@ -9,25 +9,49 @@
         </div>
         </div>
     <input style="display:none" ref ="picker" type="file" name="pic" accept="image/*" @change="onFileChange">
-     <div class="example-wrapper" style="gravity:center;">
-          <p class="title is-3">Cover Image</p>
-          <img :src= coverImage @click="pickPhoto(0)" width="180" height="250" class="image" style="object-fit:cover;">
-            <p v-text= coverImage ></p>  
+    <div :class="{'photo-image': coverImage, 'photo-element': !coverImage}" @click="pickPhoto(0, 'add')">
+        <div class="image-wrapper">
+            <div class="buttons-wrapper">
+            <div class="photo-action-button" @click.stop="pickPhoto(0, 'remove')">Remove</div>
+            <div class="photo-action-button" @click.stop="pickPhoto(0, 'add')">Replace</div>
+            </div>
+            <img :src=coverImage>
         </div>
+    </div>
           <p class="title is-3">Artical Images</p>
      <div class="photo-grid">
-        <div class="example-wrapper">
-          <img :src= url1 @click="pickPhoto(1)" width="180" height="250" class="image" style="object-fit:cover;">
-          <p v-text= url1 width="180"></p>
-        </div>
-        <div class="example-wrapper">
-          <img :src= url2 @click="pickPhoto(2)" width="180" height="250" class="image" style="object-fit:cover;">
-          <p v-text= url2 width="180"></p>
-        </div>
-        <div class="example-wrapper">
-          <img :src= url3 @click="pickPhoto(3)" width="180" height="250" class="image" style="object-fit:cover;">
-          <p v-text= url3 width="180" ></p>
-        </div>
+        <div :class="{'photo-image': url1, 'photo-element': !url1}" @click="pickPhoto(1, 'add')">
+            <div class="image-wrapper">
+              <div class="buttons-wrapper">
+                <div class="photo-action-button" @click.stop="pickPhoto(1, 'remove')">Remove</div>
+                <div class="photo-action-button" @click.stop="pickPhoto(1, 'add')">Replace</div>
+              </div>
+              <img :src=url1>
+            </div>
+          </div>
+        <div :class="{'photo-image': url2, 'photo-element': !url2}" @click="pickPhoto(2, 'add')">
+            <div class="image-wrapper">
+              <div class="buttons-wrapper">
+                <div class="photo-action-button" @click.stop="pickPhoto(2, 'remove')">Remove</div>
+                <div class="photo-action-button" @click.stop="pickPhoto(2, 'add')">Replace</div>
+              </div>
+              <img :src=url2>
+            </div>
+          </div>
+        <div :class="{'photo-image': url3, 'photo-element': !url3}" @click="pickPhoto(3, 'add')">
+            <div class="image-wrapper">
+              <div class="buttons-wrapper">
+                <div class="photo-action-button" @click.stop="pickPhoto(3, 'remove')">Remove</div>
+                <div class="photo-action-button" @click.stop="pickPhoto(3, 'add')">Replace</div>
+              </div>
+              <img :src=url3>
+            </div>
+          </div>
+      </div>
+      <div class="photo-grid">
+        <p v-text="url1" style="word-break: break-all; margin:15px" width="180px"></p>   
+        <p v-text="url2" style="word-break: break-all; margin:15px" width="180px">  </p> 
+        <p v-text="url3" style="word-break: break-all; margin:15px" width="180px">  </p>     
       </div>
         <div class="field">
             <label class="label">Start your story here</label>
@@ -35,8 +59,7 @@
                 <textarea  id= "markdown" class="CodeMirror" style="height:400px;" placeholder="" v-model="body"></textarea>
             </div>
          </div>  
-         <button class="button is-link" @click="updateStory()">Update Story</button> 
-         <button class="button " >Publish Story</button> 
+         <button class="button is-link" @click="updateStory()">{{updateButtonText}}</button> 
          <button class="button " @click="deleteStory()">Delete Story</button> 
     </div>
         <device-view style="width:300px;"></device-view>
@@ -65,7 +88,8 @@ export default {
         url3: "/image.png",
         editor: null,
         selectedIndex: 0,
-        story: null
+        story: null,
+        updateButtonText: 'Update Story'
     };
   },
   mounted() {
@@ -82,9 +106,26 @@ export default {
         this.bodyPreview = SimpleMDE.prototype.markdown(this.editor.value());
     })
     },
-    pickPhoto(index) {
+    pickPhoto(index, action) {
         this.selectedIndex = index;
-        this.$refs.picker.click();
+        if (action == 'add') {
+            this.$refs.picker.click();
+        } else {
+             switch (this.selectedIndex) {
+                case 0:
+                    this.coverImage = '/image.png'
+                    break;
+                case 1:
+                    this.url1 = '/image.png'
+                    break;
+                case 2:
+                    this.url2 = '/image.png'
+                    break;
+                case 3:
+                    this.url3 = '/image.png'   
+                    break;    
+            }
+        }
     },
     async loadOrCreateStory() {
         try {
@@ -112,17 +153,20 @@ export default {
         try {
             await db.collection("stories").doc(this.storyId).delete()
             console.log("deleted")
+            this.$router.push('/stories')
         } catch(error) {
             console.log(error)
         }
     },
     async updateStory() {
         try {
+            this.updateButtonText = 'Updating...'
         const images = [this.url1, this.url2, this.url3]
         const obj = { title: this.title, body: this.editor.value(), coverPhotoUrl: this.coverImage ? this.coverImage : "", images: images, timestamp: new Date().getTime() }
 
         await db.collection('stories').doc(this.storyId).update(obj);
         console.log("Update done")
+        this.updateButtonText = "Update Story"
         } catch (error) {
             console.log(error)
         }
@@ -166,7 +210,7 @@ export default {
         let file = files[0]
         let targetWidth = 1024
         if (this.selectedIndex > 0) {
-            targetWidth = 320
+            targetWidth = 350
         }
         resizeImageWidth(file, targetWidth, (resizedFilePath, outputFile) => {
             console.log(outputFile);
@@ -207,5 +251,128 @@ export default {
 }
 .example-wrapper {
   width: 180px;
+}
+.photo-element {
+  margin-top: 30px;
+  width: 200px;
+  height: 300px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  display: grid;
+  justify-content: center;
+  align-items: center;  
+  cursor: pointer;
+  content: url('/images/image.png');
+  object-fit: none;
+  transition: 0.2s ease-in;
+  background-position: center;
+  box-shadow: 0px 5px rgba(0,0,0,0.3);
+}
+.photo-element:hover {
+  background-color: #dddddd;
+  transform: perspective(9999px) rotateX(15deg) rotateY(15deg);
+}
+.cover-photo-wrapper {
+  display: grid;
+  grid-column-gap: 20px;
+  grid-template-columns: 200px 200px;
+}
+.photo-image {
+  margin-top: 30px;
+  width: 200px;
+  height: 300px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  display: grid;
+  justify-content: center;
+  align-items: center;  
+  cursor: pointer;
+  transition: 0.2s ease-in;
+  background-position: center;
+  box-shadow: 0px 5px rgba(8, 192, 255, 1);
+  background-color: black;
+}
+.photo-landscape-preview {
+  margin-top: 30px;
+  width: 300px;
+  height: 200px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  background-color: #dddddd;
+  overflow: hidden;
+}
+.image-wrapper {
+  position: relative;
+}
+.image-wrapper img {
+  width: 200px;
+  height: 300px;
+  transition: 0.2s ease-in;
+  object-fit: cover;
+}
+.photo-image:hover {
+  border: 1px solid rgba(0,0,0,0.5);
+}
+.image-wrapper img:hover {
+  border: 0px solid rgba(0,0,0,0.5);
+}
+.photo-actions {
+  width: 200px;
+  height: 300px;
+  border-radius: 4px;
+  display: grid;
+  justify-content: center;
+  align-items: center;  
+  transition: 0.2s ease-in;
+  background-color: rgba(0,0,0,1);
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+}
+.photo-caption {
+  margin-top: 20px;
+  margin-right: 30px;
+}
+.buttons-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  transition: 0.2s ease-in;
+  background-color: rgba(0,0,0,0);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.buttons-wrapper:hover {
+  opacity: 1;
+  background-color: rgba(0,0,0,0.5);
+  cursor: auto;
+}
+.photo-action-button {
+  height: 40px;
+  width: 70%;
+  border: 1px solid white;
+  color: white;
+  border-radius: 5px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  margin: 5px;
+}
+.photo-action-button:hover {
+  height: 40px;
+  width: 70%;
+  color: black;
+  background-color: white;
+  border-radius: 4px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  margin: 5px;
+  cursor: pointer
 }
 </style>
