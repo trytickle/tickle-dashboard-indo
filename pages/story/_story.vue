@@ -19,26 +19,26 @@
       <input style="display:none" ref ="picker" type="file" name="pic" accept="image/*" @change="onFileChange">
       <div class="example-wrapper" style="margin-top:20px;margin-bottom:20px;">
         <label class="label">Cover Photo</label>
-        <img :src="coverImage" @click="pickPhoto(0, 'add')" width="180" height="250" class="image" style="object-fit:cover;">
+        <img :src="coverImage" @click="pickPhoto(0, 'add')" width="350" height="200" class="image" style="border-radius:3px;background-color:#ccc;">
         <button class="button" style="width:100%;margin-top:10px;" @click="pickPhoto(0, 'add')">{{coverbuttonText}}</button>
         <button class="button" style="width:100%;margin-top:5px;" @click="pickPhoto(0, 'remove')" >Delete</button>
       </div>
       <label class="label">Media Photos</label>
       <div class="photo-grid" style="margin-bottom:20px;">
         <div class="example-wrapper">
-          <img :src= url1 @click="pickPhoto(1, 'add')" width="180" height="250" class="image" style="object-fit:cover;border-radius:3px;">
+          <img :src= url1 @click="pickPhoto(1, 'add')" width="350" height="200" class="image" style="border-radius:3px;background-color:#ccc;">
           <button class="button" style="width:100%;margin-top:10px;"  @click="pickPhoto(1, 'add')">{{button1}}</button>
           <button class="button" style="width:100%;margin-top:5px;" @click="copyLink(1)">Copy Link</button>
           <button class="button" style="width:100%;margin-top:5px;" @click="pickPhoto(1, 'remove')">Delete</button>
         </div>
         <div class="example-wrapper">
-          <img :src="url2" @click="pickPhoto(2, 'add')" width="180" height="250" class="image" style="object-fit:cover;border-radius:3px;">
+          <img :src="url2" @click="pickPhoto(2, 'add')" width="350" height="200" class="image" style="border-radius:3px;background-color:#ccc;">
           <button class="button" style="width:100%;margin-top:10px;"  @click="pickPhoto(2, 'add')" >{{button2}}</button>
           <button class="button" style="width:100%;margin-top:5px;" @click="copyLink(2)">Copy Link</button>
           <button class="button" style="width:100%;margin-top:5px;" @click="pickPhoto(2, 'remove')" >Delete</button>
         </div>
         <div class="example-wrapper">
-          <img :src="url3" @click="pickPhoto(3, 'add')" width="180" height="250" class="image" style="object-fit:cover;border-radius:3px;">
+          <img :src="url3" @click="pickPhoto(3, 'add')" width="350" height="200" class="image" style="border-radius:3px;background-color:#ccc;">
           <button class="button" style="width:100%;margin-top:10px;"  @click="pickPhoto(3, 'add')" >{{button3}}</button>
           <button class="button" style="width:100%;margin-top:5px;" @click="copyLink(3)" >Copy Link</button>
           <button class="button" style="width:100%;margin-top:5px;" @click="pickPhoto(3, 'remove')" >Delete</button>
@@ -76,14 +76,14 @@ export default {
   data() {
     return {
       storyId: this.$nuxt.$route.path.replace("/story/", ""),
-      title: "Your story title",
+      title: "Story title",
       experienceId: null,
-      body: "",
-      bodyPreview: "",
-      coverImage: "/image.png",
-      url1: "/image.png",
-      url2: "/image.png",
-      url3: "/image.png",
+      body: "The body of your story.",
+      bodyPreview: "The body of your story.",
+      coverImage: null,
+      url1: null,
+      url2: null,
+      url3: null,
       coverbuttonText: "Upload",
       button1: "Upload",
       button2: "Upload",
@@ -149,16 +149,16 @@ export default {
       } else {
         switch (this.selectedIndex) {
           case 0:
-            this.coverImage = "/image.png";
+            this.coverImage = null;
             break;
           case 1:
-            this.url1 = "/image.png";
+            this.url1 = null;
             break;
           case 2:
-            this.url2 = "/image.png";
+            this.url2 = null;
             break;
           case 3:
-            this.url3 = "/image.png";
+            this.url3 = null;
             break;
         }
       }
@@ -178,11 +178,11 @@ export default {
           this.coverImage =
             story.coverPhotoUrl && story.coverPhotoUrl.length > 0
               ? story.coverPhotoUrl
-              : "/image.png";
+              : null;
           if (story.images && story.images.length > 0) {
             this.url1 = story.images[0];
-            this.url2 = story.images[1] ? story.images[1] : "/image.png";
-            this.url3 = story.images[2] ? story.images[2] : "/image.png";
+            this.url2 = story.images[1] ? story.images[1] : null;
+            this.url3 = story.images[2] ? story.images[2] : null;
           }
         } else {
           const createdAt = new Date().getTime();
@@ -191,7 +191,7 @@ export default {
             .doc(this.storyId)
             .set({
               storyId: this.storyId,
-              title: "your story title",
+              title: "Story title",
               createdAt: createdAt,
               isPublished: false,
               timestamp: createdAt
@@ -335,10 +335,14 @@ img {
   display: grid;
   grid-row-gap: 20px;
 
-  grid-template-columns: repeat(auto-fit, 200px);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 .example-wrapper {
-  width: 180px;
+  width: 220px;
+}
+.example-wrapper img {
+  height: 150px;
+  object-fit: cover;
 }
 .photo-element {
   margin-top: 30px;
@@ -396,7 +400,7 @@ img {
   width: 200px;
   height: 300px;
   transition: 0.2s ease-in;
-  object-fit: cover;
+  object-fit: none;
 }
 .photo-image:hover {
   border: 1px solid rgba(0, 0, 0, 0.5);
