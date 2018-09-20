@@ -74,17 +74,19 @@ export default {
           this.shortDescription = idea.shortDescription;
           this.ideaId = idea.ideaId;
           this.coverImage = idea.coverPhotoUrl && idea.coverPhotoUrl.length > 0 ? idea.coverPhotoUrl : null;
-          this.recommendedPrice = idea.price;
+          this.recommendedPrice = idea.price / 100;
         } else {
           const createdAt = new Date().getTime();
+          const snap = await db.collection('ideas').get()
           await db
             .collection("ideas")
             .doc(this.ideaId)
             .set({
               ideaId: this.ideaId,
-              title: "Idea Title",
+              title: "New Idea Title",
               createdAt: createdAt,
               isPublished: false,
+              order: snap.size ? snap.size + 1 : 0
             });
         }
       } catch (error) {
@@ -97,7 +99,6 @@ export default {
           .collection("ideas")
           .doc(this.ideaId)
           .delete();
-        console.log("deleted");
         this.$router.push("/ideas");
       } catch (error) {
         console.log(error);
@@ -111,7 +112,7 @@ export default {
           title: this.title,
           createdAt: new Date().getTime(),
           shortDescription: this.shortDescription,
-          price: this.recommendedPrice,
+          price: this.recommendedPrice * 100,
           currency: this.currency,
           coverPhotoUrl: this.coverImage ? this.coverImage : ""
         };
@@ -120,8 +121,7 @@ export default {
           .collection("ideas")
           .doc(this.ideaId)
           .update(obj);
-        console.log("Update done");
-        this.saveButtonText = "Save Idea";
+        this.$router.push("/ideas");
       } catch (error) {
         console.log(error);
       }

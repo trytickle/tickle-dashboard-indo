@@ -21,7 +21,8 @@
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "nuxt": "^1.0.0",
-    "simplemde": "^1.11.2"
+    "simplemde": "^1.11.2",
+    "vuedraggable": "^2.16.0"
   },
   "devDependencies": {
     "cross-env": "^5.0.1",
