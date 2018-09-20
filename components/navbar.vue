@@ -38,6 +38,9 @@
               <nuxt-link to="/stories" class="dropdown-item">
                 Stories
               </nuxt-link>
+              <nuxt-link to="/ideas" class="dropdown-item">
+                Ideas (Hosts Wanted)
+              </nuxt-link>
             </div>
           </div>
         </div>
