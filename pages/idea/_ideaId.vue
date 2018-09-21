@@ -140,9 +140,9 @@ export default {
         this.saveButtonText = "Saving...";
         const obj = {
           ideaId: this.ideaId ? this.ideaId : "",
-          title: this.title,
+          title: this.title.trim(),
           createdAt: new Date().getTime(),
-          shortDescription: this.shortDescription,
+          shortDescription: this.shortDescription.trim(),
           price: this.recommendedPrice * 100,
           currency: this.currency,
           guestCount: this.guestCount,
