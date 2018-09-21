@@ -2,30 +2,51 @@
   <section class="container" style="width:800px;">
     <div style="padding:40px;">
       <p class="title is-3">Create Idea</p>
-      <div class="field">
-        <label class="label">Idea Title</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="Title" v-model="title">
-        </div>
-
-        <label class="label" style="padding-top:20px;">Short Description</label>
-        <div class="control">
-          <textarea class="textarea" placeholder="" style="height:100px;" v-model="shortDescription"></textarea>
-        </div>
-
-        <label class="label" style="padding-top:20px;">Recommended Price ($ SGD)</label>
-        <div class="control">
-          <input class="input" type="number" v-model="recommendedPrice">
-        </div>
-      </div>
-      <input style="display:none" ref ="picker" type="file" name="pic" accept="image/*" @change="onFileChange">
       <div class="example-wrapper" style="margin-top:30px;margin-bottom:20px;">
         <label class="label">Cover Photo</label>
         <img :src="coverImage" @click="pickPhoto('add')" width="350" height="200" class="image" style="border-radius:3px;background-color:#ccc;">
         <button class="button" style="width:100%;margin-top:10px;" @click="pickPhoto('add')">{{coverbuttonText}}</button>
         <button class="button" style="width:100%;margin-top:5px;" @click="pickPhoto('remove')">Delete</button>
       </div>
-      <div style="padding-top:30px;padding-bottom:30px;">
+      <div class="field">
+        <label class="label">Idea Title</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Title" v-model="title">
+        </div>
+
+        <p style="margin-top:20px;margin-bottom:-15px;"><strong>Recommended</strong></p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-column-gap:20px;">
+          <div>
+            <label class="label" style="padding-top:20px;">Price ($ SGD)</label>
+            <div class="control">
+              <input class="input" type="number" v-model.number="recommendedPrice">
+            </div>
+          </div>
+          <div>
+            <label class="label" style="padding-top:20px;">Guests</label>
+            <div class="control">
+              <input class="input" type="number" v-model.number="guestCount">
+            </div>
+          </div>
+          <div>
+            <label class="label" style="padding-top:20px;">Duration (Mins)</label>
+            <div class="control">
+              <input class="input" type="number" v-model.number="duration">
+            </div>
+          </div>
+        </div>
+
+        <label class="label" style="padding-top:20px;">Short Description</label>
+        <div class="control">
+          <textarea class="textarea" placeholder="" style="height:100px;" v-model="shortDescription"></textarea>
+        </div>
+      </div>
+      <input style="display:none" ref ="picker" type="file" name="pic" accept="image/*" @change="onFileChange">
+      <div>
+        <p><strong>Blurb</strong></p>
+        <p>As a host, you could make <span style="font-weight:900;">${{calculateEarnings}}</span> for 12 hours each month.</p>
+      </div>
+      <div style="padding-top:50px;padding-bottom:30px;">
         <button class="button is-info" style="margin-right:20px;padding:10px;padding-left:40px;padding-right:40px;height:auto;width:auto;" @click="updateIdea()">{{saveButtonText}}</button> 
         <button class="button is-danger" style="padding:10px;padding-left:20px;padding-right:20px;height:auto;width:auto;" @click="deleteIdea()">Delete</button>
       </div>
@@ -45,6 +66,8 @@ export default {
       shortDescription: "",
       recommendedPrice: 20,
       currency: "sgd",
+      guestCount: 10,
+      duration: 60,
       coverImage: null,
       coverbuttonText: "Upload",
       saveButtonText: "Save Idea",
@@ -53,7 +76,11 @@ export default {
   created() {
     this.loadOrCreateIdea();
   },
-
+  computed: {
+    calculateEarnings() {
+      return this.recommendedPrice * 12 * this.guestCount
+    }
+  },
   methods: {
     pickPhoto(action) {
       if (action === "add") {
@@ -75,6 +102,8 @@ export default {
           this.ideaId = idea.ideaId;
           this.coverImage = idea.coverPhotoUrl && idea.coverPhotoUrl.length > 0 ? idea.coverPhotoUrl : null;
           this.recommendedPrice = idea.price / 100;
+          this.guestCount = idea.guestCount;
+          this.duration = idea.duration;
         } else {
           const createdAt = new Date().getTime();
           const snap = await db.collection('ideas').get()
@@ -84,6 +113,8 @@ export default {
             .set({
               ideaId: this.ideaId,
               title: "New Idea Title",
+              price: this.recommendedPrice * 100,
+              guestCount: this.guestCount,
               createdAt: createdAt,
               isPublished: false,
               order: snap.size ? snap.size + 1 : 0
@@ -114,6 +145,8 @@ export default {
           shortDescription: this.shortDescription,
           price: this.recommendedPrice * 100,
           currency: this.currency,
+          guestCount: this.guestCount,
+          duration: this.duration,
           coverPhotoUrl: this.coverImage ? this.coverImage : ""
         };
 
