@@ -22,7 +22,7 @@ const prod = {
 }
 
 if (!firebase.apps.length) {
-  firebase.initializeApp(prod)
+  firebase.initializeApp(dev)
 }
 
 const firestore = firebase.firestore()

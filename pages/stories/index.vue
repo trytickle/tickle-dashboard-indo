@@ -11,9 +11,9 @@
         </div>
         <div style="margin-top:20px;">
           <nuxt-link :to="'/story/' + story.storyId" class="button is-outlined" style="margin-right:10px;">Edit Story</nuxt-link>
-          <select class="button" :class="{'is-info': story.isPublished}" :style="story.isPublished === false ? 'background-color: #ddd' : ''">
-            <option value="draft">Draft</option>
-            <option value="published" :selected="story.isPublished">Published</option>
+          <select v-model="story.isPublished" @change="updateStatus(story.storyId, story.isPublished)" class="button" :class="{'is-info': story.isPublished}" :style="story.isPublished === false ? 'background-color: #ddd' : ''">
+            <option :value=false>Draft</option>
+            <option :value=true :selected="story.isPublished">Published</option>
           </select>
         </div>
       </div>
@@ -40,6 +40,14 @@ export default {
     snapshot.forEach(doc => {
       this.stories.push(doc.data())
     })
+  },
+  methods: {
+    async updateStatus(id, isPublished) {
+       await db
+          .collection("stories")
+          .doc(id)
+          .update({isPublished: isPublished});
+    }
   }
 }
 </script>
