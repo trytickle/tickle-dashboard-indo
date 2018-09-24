@@ -11,7 +11,10 @@
       <div class="field">
         <label class="label">Idea Title</label>
         <div class="control">
-          <input class="input" type="text" placeholder="Title" v-model="title">
+          <input class="input" maxlength="40" type="text" placeholder="Title" v-model="title">
+        </div>
+        <div v-if="title.length > 50">
+          <span style="font-size:15px;color:red;">Max characters 40</span>
         </div>
 
         <p style="margin-top:20px;margin-bottom:-15px;"><strong>Recommended</strong></p>
@@ -38,11 +41,11 @@
 
         <label class="label" style="padding-top:20px;">Short Description</label>
         <div class="control">
-          <textarea class="textarea" placeholder="" style="height:100px;" v-model="shortDescription"></textarea>
+          <textarea class="textarea" placeholder="" style="height:200px;" v-model="shortDescription"></textarea>
         </div>
       </div>
       <input style="display:none" ref ="picker" type="file" name="pic" accept="image/*" @change="onFileChange">
-      <div>
+      <div style="padding-top:10px;">
         <p><strong>Blurb</strong></p>
         <p>As a host, you could make <span style="font-weight:900;">${{calculateEarnings}}</span> for 12 hours each month.</p>
       </div>
