@@ -117,12 +117,29 @@ export default {
         batch.update(experienceRef,  {'aboutHost.hostId' : this.transferUserId})
       }
 
-      batch.commit().then(() => {
+      batch.commit().then(async() => {
+         const userDoc = await db.collection('users').doc(this.transferUserId).get();
+         const userData = userDoc.data();
+
+         const body = {
+          submissionId: this.transferExperienceId,
+          experienceTitle: this.experienceTitle,
+          firstName: userData.firstName,
+          email: userData.email
+        }
+
          this.showTransferModal = false
          this.transferUserId = null
          this.transferExperienceId = null 
          this.isLoading = false
-         location.reload()
+        try {
+          await this.$axios.$post(`${host}/sendTransferEmailToHost`, body)
+          location.reload()
+        } catch (error) {
+          console.error(error)
+          this.errorMessage = error.message
+          this.showError = true
+        }
       })
     },
     async submitForReview() {
