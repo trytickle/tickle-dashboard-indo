@@ -41,6 +41,9 @@
               <nuxt-link to="/ideas" class="dropdown-item">
                 Ideas (Hosts Wanted)
               </nuxt-link>
+              <nuxt-link to="/experience-list" class="dropdown-item">
+                Experience List
+              </nuxt-link>
             </div>
           </div>
         </div>
