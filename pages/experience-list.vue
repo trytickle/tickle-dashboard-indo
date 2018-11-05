@@ -14,6 +14,7 @@
           <option value="1">Yes</option>
           <option value="0">No</option>
         </select>
+        <button :class="{'button is-info': showAll, 'button': !showAll}" style="margin-left:25px;" @click="showAllSubmissions">show all</button>
       </div>
     </div>
     <div class="modal" :class="{ 'is-active': showModal }">
@@ -78,7 +79,8 @@ export default {
       showModal: false,
       currentSubmissionTitle: null,
       currentSubmissionId: null,
-      transferUserId: null
+      transferUserId: null,
+      showAll: false
     };
   },
   methods: {
@@ -190,10 +192,10 @@ export default {
           } else {
              this.visibility[submission.submissionId] = ""
           }
+          if (!this.showAll) {
           if (this.stripeFilter != 0) {
             if (user.data().settings.payoutMethods) {
               if (this.dateFilter != 0) {
-                const experience = await db.collection("experiences").doc(submission.submissionId).get();
                 if (experience.exists) {
                   if (experience.data().lastAvailabilityDate > new Date().getTime()) {
                     this.submissions.push(submission);
@@ -203,32 +205,62 @@ export default {
                   this.submissions.push(submission);
                   this.totalCount++
                 }
-              } else {
-                this.submissions.push(submission);
-                this.totalCount++
-              }
-            }
-          } else if (this.dateFilter != 0) {
-              const experience = await db.collection("experiences").doc(submission.submissionId).get();
-              if (experience.exists) {
-                if (experience.data().lastAvailabilityDate > new Date().getTime()) {
+              } else if (this.dateFilter == 0) {
+                 if (experience.exists) {
+                    if (experience.data().lastAvailabilityDate < new Date().getTime()) {
                     this.submissions.push(submission);
                     this.totalCount++
+                  }
+                } else {
+                  this.submissions.push(submission);
+                  this.totalCount++
                 }
               }
-            } else {
-              this.submissions.push(submission);
-              this.totalCount++
+            }
+          } else if (this.stripeFilter == 0) {
+              if (!user.data().settings || !user.data().settings.payoutMethods) {
+               if (this.dateFilter != 0) {
+                if (experience.exists) {
+                  if (experience.data().lastAvailabilityDate > new Date().getTime()) {
+                    this.submissions.push(submission);
+                    this.totalCount++
+                  }
+                } else {
+                  this.submissions.push(submission);
+                  this.totalCount++
+                }
+              } else if (this.dateFilter == 0) {
+                 if (experience.exists) {
+                    if (experience.data().lastAvailabilityDate < new Date().getTime()) {
+                    this.submissions.push(submission);
+                    this.totalCount++
+                  }
+                } else {
+                  this.submissions.push(submission);
+                  this.totalCount++
+                }
+              }
             }
           }
+          } else {
+              this.submissions.push(submission);
+              this.totalCount++
+          }
+        }
       });
     },
     async onDateFilterChange() {
+      this.showAll = false
       await this.fetchSubmissions();
     },
     async onStripeFilterChange() {
+      this.showAll = false
       await this.fetchSubmissions();
-    }
+    },
+     async showAllSubmissions() {
+      this.showAll = true;
+      await this.fetchSubmissions()   
+    },
   },
   created() {
     this.fetchSubmissions();
