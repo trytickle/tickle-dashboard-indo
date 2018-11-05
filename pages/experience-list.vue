@@ -52,10 +52,10 @@
           <nuxt-link class="button" style="margin-right:10px;" :to= getExperienceLink(submission.submissionId)>View</nuxt-link>
           <nuxt-link class="button" style="margin-right:10px;" :to= editExperienceLink(submission.submissionId)>Edit</nuxt-link>
           <button class="button" style="margin-right:10px;" @click="transferClicked(submission)">Transfer</button>
-          <select class="button" :class="{'is-danger is-outlined': submission.isDisabled, 'is-warning is-outlined': submission.isHidden, 'is-success is-outlined': (!submission.isHidden && !submission.isDisabled)}" v-model="visibility[submission.submissionId]" v-on:change="onVisibilityChange(submission.submissionId)">
+          <select v-if="!submission.status.isRejected" class="button" :class="{'is-danger is-outlined': submission.isDisabled, 'is-warning is-outlined': submission.isHidden, 'is-success is-outlined': (!submission.isHidden && !submission.isDisabled)}" v-model="visibility[submission.submissionId]" v-on:change="onVisibilityChange(submission.submissionId)">
             <option value= "show">Active</option>
             <option value= "hide">Hidden</option>
-            <option value= "diable">Disabled</option>
+            <option value= "disable">Disabled</option>
           </select>
         </div>
       </div>
