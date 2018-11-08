@@ -15,6 +15,7 @@
           <option value="0">No</option>
         </select>
         <button :class="{'button is-info': showAll, 'button': !showAll}" style="margin-left:25px;" @click="showAllSubmissions">show all</button>
+           <button class="button" style="margin-left:25px;" @click="downloadCSV">Download CSV</button>
       </div>
     </div>
     <div class="modal" :class="{ 'is-active': showModal }">
@@ -53,7 +54,7 @@
           <nuxt-link class="button" style="margin-right:10px;" :to= getExperienceLink(submission.submissionId)>View</nuxt-link>
           <nuxt-link class="button" style="margin-right:10px;" :to= editExperienceLink(submission.submissionId)>Edit</nuxt-link>
           <button class="button" style="margin-right:10px;" @click="transferClicked(submission)">Transfer</button>
-          <select v-if="!submission.status.isRejected" class="button" :class="{'is-danger is-outlined': submission.isDisabled, 'is-warning is-outlined': submission.isHidden, 'is-success is-outlined': (!submission.isHidden && !submission.isDisabled)}" v-model="visibility[submission.submissionId]" v-on:change="onVisibilityChange(submission.submissionId)">
+          <select v-if="submission.status.isApproved" class="button" :class="{'is-danger is-outlined': submission.isDisabled, 'is-warning is-outlined': submission.isHidden, 'is-success is-outlined': (!submission.isHidden && !submission.isDisabled)}" v-model="visibility[submission.submissionId]" v-on:change="onVisibilityChange(submission.submissionId)">
             <option value= "show">Active</option>
             <option value= "hide">Hidden</option>
             <option value= "disable">Disabled</option>
@@ -247,6 +248,7 @@ export default {
               this.totalCount++
           }
         }
+        this.convertArrayOfObjectsToCSV(this.submissions)
       });
     },
     async onDateFilterChange() {
@@ -257,10 +259,71 @@ export default {
       this.showAll = false
       await this.fetchSubmissions();
     },
-     async showAllSubmissions() {
+    async showAllSubmissions() {
       this.showAll = true;
+      this.dateFilter = 0;
+      this.stripeFilter = 0;
       await this.fetchSubmissions()   
     },
+    downloadCSV() {
+      var data, filename, link;
+      
+      var csv = this.convertArrayOfObjectsToCSV(this.submissions);
+      if (csv == null) return;
+
+      filename = 'export.csv';
+      if (!csv.match(/^data:text\/csv/i)) {
+          csv = 'data:text/csv;charset=utf-8,' + csv;
+      }
+      data = encodeURI(csv);
+
+      link = document.createElement('a');
+      link.setAttribute('href', data);
+      link.setAttribute('download', filename);
+      link.click();
+    },
+    convertArrayOfObjectsToCSV(data) {  
+      var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+      if (data == null || !data.length) {
+          return null;
+      }
+      var csvObjects = []
+      data.forEach(submission => {
+        const newObj = []
+        newObj["title"] = submission.title.replace(",", "");
+        newObj["experienceId"] = submission.submissionId;
+        newObj["host"] = submission.hostName;
+        newObj["hostId"] = submission.aboutHost.hostId;
+        newObj["status"] =  submission.status.isDraft ? "Draft" : (submission.status.inReview ? "In Review": (submission.status.isApproved ? "Live": "Rejected" ))
+        newObj["visibility"] = this.visibility[submission.submissionId] == "hide" ? "hidden" : (this.visibility[submission.submissionId] == "disable" ? "disabled": "showing");
+        newObj["stripeConnected"] = this.stripeFilter ? "Yes" : "No";
+        newObj["hasFutureDates"] = this.dateFilter ? "Yes" : "No";
+        newObj["price"] = submission.pricePerPax/100+" SGD"
+        csvObjects.push(newObj);
+      });
+      columnDelimiter =  ',';
+      lineDelimiter = '\n';
+
+      keys = Object.keys(csvObjects[0]);
+
+      result = '';
+      result += keys.join(columnDelimiter);
+      result += lineDelimiter;
+
+      csvObjects.forEach(function(item) {
+          ctr = 0;
+          keys.forEach(function(key) {
+              if (ctr > 0) result += columnDelimiter;
+
+              result += item[key];
+              ctr++;
+          });
+          result += lineDelimiter;
+      });
+      console.log(result)
+      return result;
+    }
   },
   created() {
     this.fetchSubmissions();
