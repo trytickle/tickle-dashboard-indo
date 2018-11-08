@@ -51,7 +51,7 @@
               <span class="tag" :class="{'is-success': submission.status.inReview, 'is-danger': submission.status.isRejected, 'is-info': submission.status.isApproved}">{{submission.submissionId ? (submission.status.isDraft ? "Draft" : (submission.status.inReview ? "In Review": (submission.status.isApproved ? "Live": "Rejected" ))): ""}}</span>
             </p>
         <div style="margin-top:20px;">
-          <nuxt-link class="button" style="margin-right:10px;" :to= getExperienceLink(submission.submissionId)>View</nuxt-link>
+          <nuxt-link class="button" style="margin-right:10px;" :to= getExperienceLink(submission)>View</nuxt-link>
           <nuxt-link class="button" style="margin-right:10px;" :to= editExperienceLink(submission.submissionId)>Edit</nuxt-link>
           <button class="button" style="margin-right:10px;" @click="transferClicked(submission)">Transfer</button>
           <select v-if="submission.status.isApproved" class="button" :class="{'is-danger is-outlined': submission.isDisabled, 'is-warning is-outlined': submission.isHidden, 'is-success is-outlined': (!submission.isHidden && !submission.isDisabled)}" v-model="visibility[submission.submissionId]" v-on:change="onVisibilityChange(submission.submissionId)">
@@ -96,8 +96,12 @@ export default {
     getProfileLink(userId) {
       return "user/"+userId;
     },
-    getExperienceLink(experienceId) {
-      return "experience/"+experienceId
+    getExperienceLink(submission) {
+      if (submission.status.isApproved) {
+        return "experience/"+submission.submissionId
+      } else {
+         return "experience/"+submission.submissionId+"?isSubmission=true"
+      }
     } ,
     editExperienceLink(experienceId) {
     return "experience/"+experienceId+"?isSubmission=true&isEditMode=true"
@@ -321,7 +325,6 @@ export default {
           });
           result += lineDelimiter;
       });
-      console.log(result)
       return result;
     }
   },

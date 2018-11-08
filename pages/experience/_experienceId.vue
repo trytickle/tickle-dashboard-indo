@@ -460,6 +460,12 @@
       <div class="image" style="position:absolute;left:-220px;">
         <img class="is-rounded" style="object-fit:cover;width:200px;height:200px;" :src="imageUrl">
       </div>
+       <div class="list" style="position:absolute;right:-220px;">
+         <h1 class="title is-5">Availability dates</h1>
+          <div v-for="date in dates" :key="date" :date="date" class="list-item" style="margin:auto;margin-bottom:20px;">
+            <h3>{{date}}</h3>
+          </div>
+      </div>
       <div class="content" style="padding-bottom:20px;">
         <p>
           <label class="label" style="margin-bottom:0px;">Title</label>
@@ -652,6 +658,7 @@ export default {
         languages: []
       },
       userData: {},
+      dates: [],
       categoryPrimaryTitle: "",
       categorySecondaryTitle: ""
     };
@@ -674,7 +681,7 @@ export default {
       }
     },
     imageUrl() {
-      if (this.experience.media && this.experience.media[0]) {
+      if (this.experience && this.experience.media && this.experience.media[0]) {
         return this.experience.media[0];
       } else {
         return "/profile.png";
@@ -727,7 +734,20 @@ export default {
         .get();
       this.experience = expSnap.data();
       const submission = this.experience;
-
+      if (this.experience && this.experience.lastAvailabilityDate > new Date().getTime()) {
+        const availSnap = await db.collection("availability").where("experienceId", "==", this.experienceId).orderBy("date", "desc").get();
+        availSnap.forEach(doc => {
+          let arr = doc.data().date.split("/");
+      
+          var newDate  = new Date(arr[0], arr[1], arr[2]);
+          if (newDate.getTime() > new Date().getTime()) {
+            this.dates.push(newDate.toString().substring(0,15))
+          }
+        })
+        this.dates.reverse()
+        } else {
+          this.dates.push("No future dates")
+        }
       const userSnap = await db
         .collection("users")
         .doc(this.experience.aboutHost.hostId)
