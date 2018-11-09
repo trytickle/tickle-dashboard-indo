@@ -517,27 +517,27 @@
         <hr>
         <p>
           <label class="label" style="margin-bottom:0px;">Location Name</label>
-          <span>{{experience.whereWeMeet.locationName}}</span>
+          <span>{{experience.whereWeMeet && experience.whereWeMeet.locationName}}</span>
         </p>
         <p>
           <label class="label" style="margin-bottom:0px;">Apartment/Suite/Building</label>
-          <span>{{experience.whereWeMeet.aptSuiteBuilding}}</span>
+          <span>{{experience.whereWeMeet && experience.whereWeMeet.aptSuiteBuilding}}</span>
         </p>
         <p>
           <label class="label" style="margin-bottom:0px;">Street Address</label>
-          <span>{{experience.whereWeMeet.streetAddress}}</span>
+          <span>{{experience.whereWeMeet && experience.whereWeMeet.streetAddress}}</span>
         </p>
         <p>
           <label class="label" style="margin-bottom:0px;">Zipcode</label>
-          <span>{{experience.whereWeMeet.zipcode}}</span>
+          <span>{{experience.whereWeMeet &&experience.whereWeMeet.zipcode}}</span>
         </p>
         <p>
           <label class="label" style="margin-bottom:0px;">City</label>
-          <span>{{experience.whereWeMeet.city}}</span>
+          <span>{{experience.whereWeMeet && experience.whereWeMeet.city}}</span>
         </p>
         <p>
           <label class="label" style="margin-bottom:0px;">Country</label>
-          <span>{{experience.whereWeMeet.country}}</span>
+          <span>{{experience.whereWeMeet && experience.whereWeMeet.country}}</span>
         </p>
         <hr>
         <p>
@@ -728,23 +728,42 @@ export default {
       if (this.$route.query.isEditMode || this.$route.query.isSubmission) {
         collectionPath = "submissions";
       }
+      console.log("path"+collectionPath)
       const expSnap = await db
         .collection(collectionPath)
         .doc(this.experienceId)
         .get();
       this.experience = expSnap.data();
       const submission = this.experience;
-      if (this.experience && this.experience.lastAvailabilityDate > new Date().getTime()) {
-        const availSnap = await db.collection("availability").where("experienceId", "==", this.experienceId).orderBy("date", "desc").get();
-        availSnap.forEach(doc => {
-          let arr = doc.data().date.split("/");
-      
-          var newDate  = new Date(arr[0], arr[1], arr[2]);
-          if (newDate.getTime() > new Date().getTime()) {
-            this.dates.push(newDate.toString().substring(0,15))
-          }
-        })
-        this.dates.reverse()
+      console.log(collectionPath)
+      if (collectionPath == "experiences" && this.experience && this.experience.lastAvailabilityDate > new Date().getTime()) {
+          const availSnap = await db.collection("availability").where("experienceId", "==", this.experienceId).orderBy("date", "desc").get();
+          console.log(availSnap)
+          availSnap.forEach(doc => {
+              let arr = doc.data().date.split("/");
+              var newDate  = new Date(arr[0], arr[1], arr[2]);
+              if (newDate.getTime() > new Date().getTime()) {
+                this.dates.push(newDate.toString().substring(0,15))
+              }
+            })
+                     this.dates.reverse()
+          if (this.dates.length == 0) {
+              this.dates.push("No future dates")
+          } 
+        } else if (collectionPath == "submissions") {
+          const availSnap = await db.collection("submissions").doc(this.experienceId).collection("availability").orderBy("date", "desc").get();
+          console.log(availSnap)
+          availSnap.forEach(doc => {
+            let arr = doc.data().date.split("/");
+            var newDate  = new Date(arr[0], arr[1], arr[2]);
+            if (newDate.getTime() > new Date().getTime()) {
+              this.dates.push(newDate.toString().substring(0,15))
+            }
+          })
+           if (this.dates.length == 0) {
+              this.dates.push("No future dates")
+          } 
+          this.dates.reverse()
         } else {
           this.dates.push("No future dates")
         }
@@ -779,7 +798,7 @@ export default {
       this.whatIProvide = submission.whatIProvide ? submission.whatIProvide : "";
       this.whereWeBe = submission.whereWeBe ? submission.whereWeBe : "";
       this.notes = submission.notes ? submission.notes : "";
-      this.locationName = submission.whereWeMeet.locationName ? submission.whereWeMeet.locationName : "";
+      this.locationName = (submission.whereWeMeet && submission.whereWeMeet.locationName) ? submission.whereWeMeet.locationName : "";
       this.aptSuiteBuilding = submission.whereWeMeet.aptSuiteBuilding ? submission.whereWeMeet.aptSuiteBuilding : "";
       this.streetAddress = submission.whereWeMeet.streetAddress ? submission.whereWeMeet.streetAddress : "";
       this.zipcode = submission.whereWeMeet.zipcode ? submission.whereWeMeet.zipcode : "";
