@@ -461,7 +461,7 @@
         <img class="is-rounded" style="object-fit:cover;width:200px;height:200px;" :src="imageUrl">
       </div>
        <div class="list" style="position:absolute;right:-220px;">
-         <h1 class="title is-5">Availability dates</h1>
+         <h1 class="title is-5">Availability dates and time</h1>
           <div v-for="date in dates" :key="date" :date="date" class="list-item" style="margin:auto;margin-bottom:20px;">
             <h3>{{date}}</h3>
           </div>
@@ -599,6 +599,8 @@
 import { auth, db, storage, host } from "~/plugins/firebase";
 import { resizeImage } from "~/assets/utility";
 import _ from "lodash";
+import moment from 'moment'
+
 
 export default {
    head () {
@@ -743,10 +745,10 @@ export default {
               let arr = doc.data().date.split("/");
               var newDate  = new Date(arr[0], arr[1], arr[2]);
               if (newDate.getTime() > new Date().getTime()) {
-                this.dates.push(newDate.toString().substring(0,15))
+                 this.dates.push(newDate.toString().substring(0,15)+", "+ moment(doc.data().startTime, 'HH:mm').format('hh:mm a')+"-"+ moment(doc.data().endTime, 'HH:mm').format('hh:mm a'))
               }
             })
-                     this.dates.reverse()
+           this.dates.reverse()
           if (this.dates.length == 0) {
               this.dates.push("No future dates")
           } 
@@ -757,7 +759,7 @@ export default {
             let arr = doc.data().date.split("/");
             var newDate  = new Date(arr[0], arr[1], arr[2]);
             if (newDate.getTime() > new Date().getTime()) {
-              this.dates.push(newDate.toString().substring(0,15))
+            this.dates.push(newDate.toString().substring(0,15)+", "+ moment(doc.data().startTime, 'HH:mm').format('hh:mm a')+"-"+ moment(doc.data().endTime, 'HH:mm').format('hh:mm a'))
             }
           })
            if (this.dates.length == 0) {
