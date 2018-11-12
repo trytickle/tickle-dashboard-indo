@@ -44,6 +44,9 @@
               <nuxt-link to="/experience-list" class="dropdown-item">
                 Experience List
               </nuxt-link>
+              <nuxt-link to="/flagged-experiences" class="dropdown-item">
+                Flagged Experiences
+              </nuxt-link>
             </div>
           </div>
         </div>
