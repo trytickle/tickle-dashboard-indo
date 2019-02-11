@@ -303,7 +303,7 @@ export default {
         newObj["visibility"] = this.visibility[submission.submissionId] == "hide" ? "hidden" : (this.visibility[submission.submissionId] == "disable" ? "disabled": "showing");
         newObj["stripeConnected"] = this.stripeFilter ? "Yes" : "No";
         newObj["hasFutureDates"] = this.dateFilter ? "Yes" : "No";
-        newObj["price"] = submission.pricePerPax/100+" SGD"
+        newObj["price"] = "IDR "+submission.pricePerPax/100
         csvObjects.push(newObj);
       });
       columnDelimiter =  ',';

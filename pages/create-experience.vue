@@ -306,7 +306,7 @@
       <p class="control">
         <span class="select">
           <select v-model="currency">
-            <option>SGD</option>
+            <option>IDR</option>
           </select>
         </span>
       </p>
@@ -374,17 +374,17 @@
         <label class="label">Main Category</label>
         <div class="select">
           <select v-model="mainCategory">
-            <option :value=0>Classes & Workshops</option>
-            <option :value=1>Arts</option>
-            <option :value=2>Food & Drinks</option>
-            <option :value=3>Sports & Fitness</option>
-            <option :value=4>Nature</option>
-            <option :value=5>History & Culture</option>
-            <option :value=6>Health & Wellness</option>
-            <option :value=7>Music</option>
-            <option :value=8>Nightlife</option>
-            <option :value=9>Personalities</option>
-            <option :value=10>Social</option>
+            <option :value=0>Kelas & Lokakarya</option>
+            <option :value=1>Seni</option>
+            <option :value=2>Makan & Minum</option>
+            <option :value=3>Olahraga</option>
+            <option :value=4>Alam</option>
+            <option :value=5>Sejarah</option>
+            <option :value=6>Kesehatan</option>
+            <option :value=7>Musik</option>
+            <option :value=8>Kehidupan Malam</option>
+            <option :value=9>Kepribadian</option>
+            <option :value=10>Sosial</option>
           </select>
         </div>
       </div>      
@@ -393,17 +393,17 @@
         <label class="label">Secondary Category</label>
         <div class="select">
           <select v-model="secondaryCategory">
-            <option :value=0>Classes & Workshops</option>
-            <option :value=1>Arts</option>
-            <option :value=2>Food & Drinks</option>
-            <option :value=3>Sports & Fitness</option>
-            <option :value=4>Nature</option>
-            <option :value=5>History & Culture</option>
-            <option :value=6>Health & Wellness</option>
-            <option :value=7>Music</option>
-            <option :value=8>Nightlife</option>
-            <option :value=9>Personalities</option>
-            <option :value=10>Social</option>
+         <option :value=0>Kelas & Lokakarya</option>
+            <option :value=1>Seni</option>
+            <option :value=2>Makan & Minum</option>
+            <option :value=3>Olahraga</option>
+            <option :value=4>Alam</option>
+            <option :value=5>Sejarah</option>
+            <option :value=6>Kesehatan</option>
+            <option :value=7>Musik</option>
+            <option :value=8>Kehidupan Malam</option>
+            <option :value=9>Kepribadian</option>
+            <option :value=10>Sosial</option>
           </select>
         </div>
       </div>
@@ -482,15 +482,15 @@ export default {
       aptSuiteBuilding: '',
       streetAddress: '',
       zipcode: '',
-      city: 'Singapore',
-      country: 'Singapore',
+      city: 'Jakarta',
+      country: 'Indonesia',
       minimumAge: 12,
       kidsAllowed: true,
       alcohol: false,
       verification: false,
       additionalRequirements: '',
       specialCertifications: '',
-      currency: 'SGD',
+      currency: 'IDR',
       price: 20,
       guestCount: 10,
       latestBookingTime: 1,

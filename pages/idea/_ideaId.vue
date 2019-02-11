@@ -20,7 +20,7 @@
         <p style="margin-top:20px;margin-bottom:-15px;"><strong>Recommended</strong></p>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-column-gap:20px;">
           <div>
-            <label class="label" style="padding-top:20px;">Price ($ SGD)</label>
+            <label class="label" style="padding-top:20px;">Price (IDR)</label>
             <div class="control">
               <input class="input" type="number" v-model.number="recommendedPrice">
             </div>
@@ -68,7 +68,7 @@ export default {
       title: "Idea Title",
       shortDescription: "",
       recommendedPrice: 20,
-      currency: "sgd",
+      currency: "idr",
       guestCount: 10,
       duration: 60,
       coverImage: null,

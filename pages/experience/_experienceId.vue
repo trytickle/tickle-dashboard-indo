@@ -310,7 +310,7 @@
         <p class="control">
           <span class="select">
             <select v-model="currency">
-              <option>SGD</option>
+              <option>IDR</option>
             </select>
           </span>
         </p>
@@ -379,17 +379,17 @@
             <label class="label">Main Category</label>
             <div class="select">
               <select v-model="mainCategory">
-                <option :value=0>Classes & Workshops</option>
-                <option :value=1>Arts</option>
-                <option :value=2>Food & Drinks</option>
-                <option :value=3>Sports & Fitness</option>
-                <option :value=4>Nature</option>
-                <option :value=5>History & Culture</option>
-                <option :value=6>Health & Wellness</option>
-                <option :value=7>Music</option>
-                <option :value=8>Nightlife</option>
-                <option :value=9>Personalities</option>
-                <option :value=10>Social</option>
+              <option :value=0>Kelas & Lokakarya</option>
+            <option :value=1>Seni</option>
+            <option :value=2>Makan & Minum</option>
+            <option :value=3>Olahraga</option>
+            <option :value=4>Alam</option>
+            <option :value=5>Sejarah</option>
+            <option :value=6>Kesehatan</option>
+            <option :value=7>Musik</option>
+            <option :value=8>Kehidupan Malam</option>
+            <option :value=9>Kepribadian</option>
+            <option :value=10>Sosial</option>
               </select>
             </div>
           </div>
@@ -399,17 +399,17 @@
           <label class="label">Secondary Category</label>
           <div class="select">
             <select v-model="secondaryCategory">
-              <option :value=0>Classes & Workshops</option>
-              <option :value=1>Arts</option>
-              <option :value=2>Food & Drinks</option>
-              <option :value=3>Sports & Fitness</option>
-              <option :value=4>Nature</option>
-              <option :value=5>History & Culture</option>
-              <option :value=6>Health & Wellness</option>
-              <option :value=7>Music</option>
-              <option :value=8>Nightlife</option>
-              <option :value=9>Personalities</option>
-              <option :value=10>Social</option>
+            <option :value=0>Kelas & Lokakarya</option>
+            <option :value=1>Seni</option>
+            <option :value=2>Makan & Minum</option>
+            <option :value=3>Olahraga</option>
+            <option :value=4>Alam</option>
+            <option :value=5>Sejarah</option>
+            <option :value=6>Kesehatan</option>
+            <option :value=7>Musik</option>
+            <option :value=8>Kehidupan Malam</option>
+            <option :value=9>Kepribadian</option>
+            <option :value=10>Sosial</option>
             </select>
           </div>
         </div>
@@ -569,7 +569,7 @@
         <hr>
         <p>
           <label class="label" style="margin-bottom:0px;">Price</label>
-          <span>{{experience.pricePerPax/100}} SGD</span>
+          <span>IDR {{experience.pricePerPax/100}}</span>
         </p>
         <p>
           <label class="label" style="margin-bottom:0px;">Max Guest Count</label>
@@ -637,7 +637,7 @@ export default {
       verification: false,
       additionalRequirements: "",
       specialCertifications: "",
-      currency: "SGD",
+      currency: "IDR",
       price: 20,
       guestCount: 10,
       latestBookingTime: 1,
@@ -650,8 +650,8 @@ export default {
       fileName: "",
       coverPhotoImage: null,
       coverPhotoUrl: "",
-      lat: 1.3521,
-      lng: 103.8198,
+      lat: 6.1805,
+      lng: 106.8283,
       hasCoverPhoto: false,
       experienceId: this.$route.params.experienceId,
       experience: {
@@ -809,17 +809,17 @@ export default {
       this.aptSuiteBuilding = submission.whereWeMeet.aptSuiteBuilding ? submission.whereWeMeet.aptSuiteBuilding : "";
       this.streetAddress = submission.whereWeMeet.streetAddress ? submission.whereWeMeet.streetAddress : "";
       this.zipcode = submission.whereWeMeet.zipcode ? submission.whereWeMeet.zipcode : "";
-      this.lat = submission.whereWeMeet.lat ? submission.whereWeMeet.lat : 1.3521;
-      this.lng = submission.whereWeMeet.lng ? submission.whereWeMeet.lng : 103.8198;
-      this.city = "Singapore";
-      this.country = "Singapore";
+      this.lat = submission.whereWeMeet.lat ? submission.whereWeMeet.lat : 6.1805;
+      this.lng = submission.whereWeMeet.lng ? submission.whereWeMeet.lng : 106.8283;
+      this.city = "Jakarta";
+      this.country = "Indonesia";
       this.minimumAge = submission.guestRequirements.minimumAge;
       this.kidsAllowed = submission.guestRequirements.kidsAllowed;
       this.alcohol = submission.guestRequirements.servesAlcohol;
       this.verification = submission.guestRequirements.requireVerified;
       this.additionalRequirements = submission.guestRequirements.additionalRequirements ? submission.guestRequirements.additionalRequirements : "";
       this.specialCertifications = submission.guestRequirements.specialCertifications ? submission.guestRequirements.specialCertifications : "";
-      this.currency = "SGD";
+      this.currency = "IDR";
       this.price = submission.pricePerPax / 100;
       this.guestCount = submission.maxGuestCount;
       this.latestBookingTime = submission.bookingOptions.bookBefore;

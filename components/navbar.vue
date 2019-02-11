@@ -29,24 +29,24 @@
           </div>
           <div class="dropdown-menu actionsDropdown" id="dropdown-menu" role="menu">
             <div class="dropdown-content">
-              <nuxt-link to="/create-experience" class="dropdown-item">
+              <a href="https://hostid.trytickle.com" target="_blank" class="dropdown-item">
                 Create Experience
-              </nuxt-link>
+              </a>
               <nuxt-link to="/in-review" class="dropdown-item">
                 In Review
               </nuxt-link>
-              <nuxt-link to="/stories" class="dropdown-item">
+              <!-- <nuxt-link to="/stories" class="dropdown-item">
                 Stories
-              </nuxt-link>
-              <nuxt-link to="/ideas" class="dropdown-item">
+              </nuxt-link> -->
+              <!-- <nuxt-link to="/ideas" class="dropdown-item">
                 Ideas (Hosts Wanted)
-              </nuxt-link>
+              </nuxt-link> -->
               <nuxt-link to="/experience-list" class="dropdown-item">
                 Experience List
               </nuxt-link>
-              <nuxt-link to="/flagged-experiences" class="dropdown-item">
+              <!-- <nuxt-link to="/flagged-experiences" class="dropdown-item">
                 Flagged Experiences
-              </nuxt-link>
+              </nuxt-link> -->
             </div>
           </div>
         </div>
