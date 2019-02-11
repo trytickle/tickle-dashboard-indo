@@ -460,9 +460,9 @@
       <div class="image" style="position:absolute;left:-220px;">
         <img class="is-rounded" style="object-fit:cover;width:200px;height:200px;" :src="imageUrl">
       </div>
-       <div class="list" style="position:absolute;right:-220px;">
+       <div class="list" style="position:absolute;right:-220px;padding:25px;">
          <h1 class="title is-5">Availability dates</h1>
-          <div v-for="(date, index) in dates" :key="date" :date="date" class="list-item" style="margin:auto;margin-bottom:20px;">
+          <div v-for="(date, index) in dates" :key="date" :date="date" class="list-item" style="margin:auto;">
             <span class="title is-6">{{date}}</span>
             <br/>
             <span>{{timings[index]}}</span>
