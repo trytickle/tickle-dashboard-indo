@@ -4,21 +4,21 @@ import 'firebase/auth'
 import 'firebase/storage'
 
 const dev = {
-  apiKey: "AIzaSyCxjzIiNtQ0Nc2V1_j8eWFdHx0avp7-CSs",
-  authDomain: "tickle-development.firebaseapp.com",
-  databaseURL: "https://tickle-development.firebaseio.com",
-  projectId: "tickle-development",
-  storageBucket: "tickle-development.appspot.com",
-  messagingSenderId: "1053739599789"
+  apiKey: "AIzaSyA1i2qU-jYhuVqlcWVeSAwuXvaHI9OqZpM",
+  authDomain: "tickle-indonesia.firebaseapp.com",
+  databaseURL: "https://tickle-indonesia.firebaseio.com",
+  projectId: "tickle-indonesia",
+  storageBucket: "tickle-indonesia.appspot.com",
+  messagingSenderId: "228048389763"
 }
 
 const prod = {
-  apiKey: "AIzaSyCY3x0GxjLNamXJG-ghiecuPejkuLkIHQQ",
-  authDomain: "tickle-production.firebaseapp.com",
-  databaseURL: "https://tickle-production.firebaseio.com",
-  projectId: "tickle-production",
-  storageBucket: "tickle-production.appspot.com",
-  messagingSenderId: "279701072079"
+  apiKey: "AIzaSyA1i2qU-jYhuVqlcWVeSAwuXvaHI9OqZpM",
+  authDomain: "tickle-indonesia.firebaseapp.com",
+  databaseURL: "https://tickle-indonesia.firebaseio.com",
+  projectId: "tickle-indonesia",
+  storageBucket: "tickle-indonesia.appspot.com",
+  messagingSenderId: "228048389763"
 }
 
 if (!firebase.apps.length) {
@@ -33,4 +33,4 @@ export const db = firestore
 export const auth = firebase.auth()
 export const storage = firebase.storage().ref()
 //export const host = 'https://us-central1-tickle-development.cloudfunctions.net'
-export const host = 'https://us-central1-tickle-production.cloudfunctions.net'
+export const host = 'https://us-central1-tickle-indonesia.cloudfunctions.net'
