@@ -14,7 +14,7 @@
               <small>{{experience.experienceId ? experience.experienceId : experience.submissionId}}</small>
             </p>
             <div style="font-weight:700;margin-top:10px;margin-bottom:20px;display:grid;grid-template-columns:90px auto;">
-              <small><span v-bind="checkStripeStatus()">Stripe: {{stripeStatus}}</span></small>
+              <!-- <small><span v-bind="checkStripeStatus()">Stripe: {{stripeStatus}}</span></small> -->
               <small><span v-bind="checkHasAvailability()">Availabilities: {{availabilityStatus}}</span></small>
             </div>
             <nuxt-link class="button" style="margin-right:10px;" :to="viewExperienceUrl">View</nuxt-link>
@@ -41,7 +41,6 @@ export default {
           : this.experience.submissionId) +
         "?isSubmission=" +
         (this.experience.experienceId ? "false" : "true"),
-      stripeStatus: "?",
       availabilityStatus: "?"
     };
   },
@@ -71,17 +70,17 @@ export default {
         this.experience.submissionId
       );
     },
-    async checkStripeStatus() {
-      const doc = await db
-        .collection("users")
-        .doc(this.experience.aboutHost.hostId)
-        .get();
-      if (doc.exists && doc.data().settings.payoutMethods) {
-        this.stripeStatus = "👍";
-      } else {
-        this.stripeStatus = "❌";
-      }
-    },
+    // async checkStripeStatus() {
+    //   const doc = await db
+    //     .collection("users")
+    //     .doc(this.experience.aboutHost.hostId)
+    //     .get();
+    //   if (doc.exists && doc.data().settings.payoutMethods) {
+    //     this.stripeStatus = "👍";
+    //   } else {
+    //     this.stripeStatus = "❌";
+    //   }
+    // },
     async checkHasAvailability() {
       const availDocs = await db
         .collection("submissions")

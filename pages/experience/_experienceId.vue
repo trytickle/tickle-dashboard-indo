@@ -27,62 +27,63 @@
           <label class="label">Subtitle</label>
           <div class="select">
             <select v-model="subtitle">
-              <option>Dinner party</option>
-              <option>Photo class</option>
-              <option>Craft class</option>
-              <option>Cooking class</option>
-              <option>Food tasting</option>
-              <option>Bike ride</option>
-              <option>Day trip</option>
-              <option>Bar crawl</option>
-              <option>Tea tasting</option>
-              <option>Meditation</option>
-              <option>Spirits tasting</option>
-              <option>Beer tasting</option>
-              <option>Boat ride</option>
-              <option>Lunch party</option>
-              <option>Food walk</option>
-              <option>Art class</option>
-              <option>Guided hike</option>
-              <option>Surf lesson</option>
-              <option>Culture walk</option>
-              <option>Dance party</option>
-              <option>Workshop</option>
-              <option>Market visit</option>
-              <option>Intimate concert</option>
-              <option>Dessert tasting</option>
-              <option>Wine tasting</option>
-              <option>Vineyard visit</option>
-              <option>Social gathering</option>
-              <option>Photo shoot</option>
-              <option>Video shoot</option>
+              <option>Pesta makan malam</option>
+              <option>Kelas foto</option>
+              <option>Kelas kerajinan</option>
+              <option>Kelas memasak</option>
+              <option>Mencicipi makanan</option>
+              <option>Mengendarai sepeda</option>
+              <option>Perjalanan sehari</option>
+              <option>Mengunjungi bar</option>
+              <option>Mencicipi teh</option>
+              <option>Meditasi</option>
+              <option>Mencicipi alkohol</option>
+              <option>Mencicipi bir</option>
+              <option>Mengendarai kapal</option>
+              <option>Pesta makan siang</option>
+              <option>Mencicipi makanan sambil jalan</option>
+              <option>Kelas seni</option>
+              <option>Hiking dengan pemandu</option>
+              <option>Belajar berselancar</option>
+              <option>Jalan-jalan budaya</option>
+              <option>Pesta dansa</option>
+              <option>Lokakarya</option>
+              <option>Mengunjungi pasar</option>
+              <option>Jalan-jalan seni</option>
+              <option>Upacara minum teh</option>
+              <option>Hiburan</option>
+              <option>Pelajaran dansa</option>
+              <option>Kayak</option>
+              <option>Jalan-jalan alam</option>
+              <option>Kunjungan cagar alam</option>
               <option>Scavenger hunt</option>
               <option>Baking class</option>
               <option>History walk</option>
               <option>Office visit</option>
-              <option>Art walk</option>
-              <option>Tea ceremony</option>
-              <option>Entertainment</option>
-              <option>Dance lesson</option>
-              <option>Kayaking</option>
-              <option>Nature walk</option>
-              <option>Sanctuary visit</option>
-              <option>Food & drink</option>
-              <option>Farm visit</option>
-              <option>Music lesson</option>
-              <option>Dance recital</option>
-              <option>Music</option>
-              <option>Museum visit</option>
-              <option>Shopping</option>
-              <option>Live music</option>
+              <option>Jalan-jalan seni</option>
+              <option>Upacara minum teh</option>
+              <option>Hiburan</option>
+              <option>Pelajaran dansa</option>
+              <option>Kayak</option>
+              <option>Jalan-jalan alam</option>
+              <option>Kunjungan cagar alam</option>
+              <option>Makanan & minuman</option>
+              <option>Mengunjungi pertanian</option>
+              <option>Pelajaran musik</option>
+              <option>Pertunjukkan dansa</option>
+              <option>Musik</option>
+              <option>Mengunjungi museum</option>
+              <option>Belanja</option>
+              <option>Pagelaran musik</option>
               <option>Ziplining</option>
-              <option>Polo lesson</option>
-              <option>Offroading</option>
-              <option>Yoga class</option>
-              <option>Design walk</option>
+              <option>Pelajaran polo</option>
+              <option>Berkendara off road</option>
+              <option>Kelas yoga</option>
+              <option>Jalan-jalan desain</option>
               <option>Skateboarding</option>
               <option>Scenic run</option>
-              <option>Boot camp</option>
+              <option>Berlari di alam</option>
+          
             </select>
           </div>
         </div>
@@ -91,12 +92,12 @@
           <label class="label">Duration</label>
           <div class="select">
             <select v-model="duration">
-              <option :value=60>1 hour</option>
-              <option :value=120>2 hours</option>
-              <option :value=180>3 hours</option>
-              <option :value=240>4 hours</option>
-              <option :value=300>5 hours</option>
-              <option :value=360>> 5 hours</option>
+              <option :value=60>1 jam</option>
+              <option :value=120>2 jam</option>
+              <option :value=180>3 jam</option>
+              <option :value=240>4 jam</option>
+              <option :value=300>5 jam</option>
+              <option :value=360>> 5 jam</option>
             </select>
           </div>
         </div>
@@ -105,13 +106,13 @@
           <label class="label">Language</label>
           <div class="select">
             <select v-model="language">
+              <option>Bahasa Indonesia</option>
               <option>English</option>
               <option>Mandarin</option>
               <option>Cantonese</option>
               <option>Bahasa Melayu</option>
               <option>Tamil</option>
               <option>Hindi</option>
-              <option>Bahasa Indonesia</option>
               <option>Thai</option>
               <option>Tagalog</option>
               <option>Vietnamese</option>
@@ -324,26 +325,26 @@
           <label class="label">Guest Count</label>
           <div class="select">
             <select v-model="guestCount">
-              <option :value=1>1 guest</option>
-              <option :value=2>2 guests</option>
-              <option :value=3>3 guests</option>
-              <option :value=4>4 guests</option>
-              <option :value=5>5 guests</option>
-              <option :value=6>6 guests</option>
-              <option :value=7>7 guests</option>
-              <option :value=8>8 guests</option>
-              <option :value=9>9 guests</option>
-              <option :value=10 selected="selected">10 guests</option>
-              <option :value=11>11 guests</option>
-              <option :value=12>12 guests</option>
-              <option :value=13>13 guests</option>
-              <option :value=14>14 guests</option>
-              <option :value=15>15 guests</option>
-              <option :value=16>16 guests</option>
-              <option :value=17>17 guests</option>
-              <option :value=18>18 guests</option>
-              <option :value=19>19 guests</option>
-              <option :value=20>20 guests</option>
+              <option :value=1>1 tamu</option>
+              <option :value=2>2 tamu</option>
+              <option :value=3>3 tamu</option>
+              <option :value=4>4 tamu</option>
+              <option :value=5>5 tamu</option>
+              <option :value=6>6 tamu</option>
+              <option :value=7>7 tamu</option>
+              <option :value=8>8 tamu</option>
+              <option :value=9>9 guetamusts</option>
+              <option :value=10 selected="selected">10 tamu</option>
+              <option :value=11>11 tamu</option>
+              <option :value=12>12 tamu</option>
+              <option :value=13>13 tamu</option>
+              <option :value=14>14 tamu</option>
+              <option :value=15>15 tamu</option>
+              <option :value=16>16 tamu</option>
+              <option :value=17>17 tamu</option>
+              <option :value=18>18 tamu</option>
+              <option :value=19>19 tamu</option>
+              <option :value=20>20 tamu</option>
             </select>
           </div>
         </div>
@@ -352,24 +353,24 @@
           <label class="label">Latest Booking Time</label>
           <div class="select">
             <select v-model="latestBookingTime">
-              <option :value=1>1 hour before</option>
-              <option :value=2>2 hours before</option>
-              <option :value=3>3 hours before</option>
-              <option :value=4>4 hours before</option>
-              <option :value=5>5 hours before</option>
-              <option :value=6>6 hours before</option>
-              <option :value=7>7 hours before</option>
-              <option :value=8>8 hours before</option>
-              <option :value=9>9 hours before</option>
-              <option :value=10>10 hours before</option>
-              <option :value=11>11 hours before</option>
-              <option :value=12>12 hours before</option>
-              <option :value=48>2 days before</option>
-              <option :value=72>3 days before</option>
-              <option :value=96>4 days before</option>
-              <option :value=120>5 days before</option>
-              <option :value=144>6 days before</option>
-              <option :value=168>1 week before</option>
+              <option :value=1>1 jam sebelumnya</option>
+              <option :value=2>2 jam sebelumnya</option>
+              <option :value=3>3 jam sebelumnya</option>
+              <option :value=4>4 jam sebelumnya</option>
+              <option :value=5>5 jam sebelumnya</option>
+              <option :value=6>6 jam sebelumnya</option>
+              <option :value=7>7 jam sebelumnya</option>
+              <option :value=8>8 jam sebelumnya</option>
+              <option :value=9>9 jam sebelumnya</option>
+              <option :value=10>10 jam sebelumnya</option>
+              <option :value=11>11 jam sebelumnya</option>
+              <option :value=12>12 jam sebelumnya</option>
+              <option :value=48>2 hari sebelum</option>
+              <option :value=72>3 hari sebelum</option>
+              <option :value=96>4 hari sebelum</option>
+              <option :value=120>5 hari sebelum</option>
+              <option :value=144>6 hari sebelum</option>
+              <option :value=168>1 minggu sebelumnya</option>
             </select>
           </div>
         </div>
@@ -417,7 +418,7 @@
 
       <hr/>
 
-      <div>
+      <!-- <div>
         <label class="label">Cancellation Policy</label>
         <div class="select">
           <select v-model="cancellationPolicy">
@@ -426,9 +427,9 @@
             <option :value=2>Strict</option>
           </select>
         </div>
-      </div>
+      </div> -->
 
-      <hr/>
+      <!-- <hr/> -->
 
       <div>
         <label class="label">Owner</label>
@@ -588,10 +589,10 @@
           <span>{{categorySecondaryTitle}}</span>
         </p>
         <hr>
-        <p>
+        <!-- <p>
           <label class="label" style="margin-bottom:0px;">Cancellation Policy</label>
           <span>{{cancellationPolicyTitle}}</span>
-        </p>
+        </p> -->
       </div>
     </div>
   </div>
@@ -629,8 +630,8 @@ export default {
       aptSuiteBuilding: "",
       streetAddress: "",
       zipcode: "",
-      city: "Singapore",
-      country: "Singapore",
+      city: "Jakarta",
+      country: "Indonesia",
       minimumAge: 12,
       kidsAllowed: true,
       alcohol: false,

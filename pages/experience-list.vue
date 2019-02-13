@@ -4,11 +4,11 @@
       <h1 class="title is-3">Experience List({{this.totalCount}})</h1>
        <h2 class="title is-3" v-if="this.isLoading">Loading...</h2>
       <div>
-        Host Stripe Connected:
+        <!-- Host Stripe Connected:
         <select v-model="stripeFilter" v-on:change="onStripeFilterChange" style="margin-right:20px;">
           <option value="1">Yes</option>
           <option value="0">No</option>
-        </select>
+        </select> -->
         Host Booking Dates Added:
         <select v-model="dateFilter" v-on:change="onDateFilterChange">
           <option value="1">Yes</option>

@@ -411,7 +411,7 @@
 
     <hr/>
 
-    <div>
+    <!-- <div>
       <label class="label">Cancellation Policy</label>
       <div class="select">
         <select v-model="cancellationPolicy">
@@ -420,7 +420,7 @@
           <option :value=2>Strict</option>
         </select>
       </div>
-    </div>
+    </div> -->
 
     <hr/>
 
