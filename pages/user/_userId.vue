@@ -60,7 +60,7 @@
           </p>
           <p>
             <strong>currency</strong><br>
-            {{currency}}
+            {{currency.toUpperCase()}}
           </p>
           <p>
             <strong>receiveEmail</strong><br>
