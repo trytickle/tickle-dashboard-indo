@@ -9,36 +9,36 @@
 </template>
 
 <script>
-import { auth, db } from '~/plugins/firebase'
-import usercell from '~/components/user-cell.vue'
+import { auth, db } from "~/plugins/firebase";
+import usercell from "~/components/user-cell.vue";
 
 export default {
   data() {
     return {
       users: []
-    }
+    };
   },
   components: {
     usercell
   },
   methods: {
     async fetchUsers() {
-      const snapshot = await db.collection('users').get()
+      const snapshot = await db.collection("users").get();
       snapshot.forEach(doc => {
-        let userData = doc.data()
-        let profilePhotoUrl = "/profile.png"
+        let userData = doc.data();
+        let profilePhotoUrl = "/profile.png";
         if (doc.data().profilePhotoUrl.includes("firebase")) {
-          profilePhotoUrl = doc.data().profilePhotoUrl
+          profilePhotoUrl = doc.data().profilePhotoUrl;
         }
-        userData['profilePhotoUrl'] = profilePhotoUrl
-        this.users.push(userData)
-      }) 
+        userData["profilePhotoUrl"] = profilePhotoUrl;
+        this.users.push(userData);
+      });
     }
   },
   created() {
-    this.fetchUsers()
+    this.fetchUsers();
   }
-}
+};
 </script>
 
 <style scoped>

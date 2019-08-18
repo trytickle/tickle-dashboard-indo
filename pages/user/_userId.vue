@@ -78,6 +78,11 @@
             <strong>payoutMethods</strong><br>
             {{payoutMethods}}
           </p>
+           <p>
+            <strong>customSplit (Percentage of cut Tickle will take for this host eg 10%, 20%, 30%)</strong><br>
+            <input class="input" type="number" style="width:200px; margin-top:20px; margin-right:20px" placeholder="" v-model="customSplit">
+            <button class="button" style="margin-top:20px;" @click="saveSplit()">Save Split</button>
+          </p>
         </div>
       </div>
     </div>
@@ -85,67 +90,89 @@
 </template>
 
 <script>
-import { auth, db } from '~/plugins/firebase'
-import moment from 'moment'
+import { auth, db } from "~/plugins/firebase";
+import moment from "moment";
 
 export default {
   data() {
     return {
       user: {},
-      currency: '',
+      currency: "",
       receiveEmail: true,
       receivePushNotifications: true,
       receiveSms: true,
       payoutMethods: {},
-      createdAt: '',
-      lastActive: '',
-      isVerified: false
-    }
+      createdAt: "",
+      lastActive: "",
+      isVerified: false,
+      customSplit: null
+    };
   },
   methods: {
+    saveSplit() {
+      db
+        .collection("users")
+        .doc(this.user.userId)
+        .update({
+          customSplit: parseInt(this.customSplit, 10)
+        })
+        .then(() => {
+          location.reload();
+        });
+    },
     onVerifySelectionChange() {
-      db.collection("users").doc(this.user.userId).update({
-        isVerified: this.isVerified
-      }).then(() => {
-        location.reload()
-      })
+      db
+        .collection("users")
+        .doc(this.user.userId)
+        .update({
+          isVerified: this.isVerified
+        })
+        .then(() => {
+          location.reload();
+        });
     }
   },
   async created() {
-    const userId = this.$route.params.userId
-    const snapshot = await db.collection('users').doc(userId).get()
+    const userId = this.$route.params.userId;
+    const snapshot = await db
+      .collection("users")
+      .doc(userId)
+      .get();
 
-    let userData = snapshot.data()
-    let profilePhoto = "/profile.png"
-    this.isVerified = userData.isVerified
+    let userData = snapshot.data();
+    let profilePhoto = "/profile.png";
+    this.isVerified = userData.isVerified;
     if (userData.profilePhotoUrl.includes("firebase")) {
-      profilePhoto = userData.profilePhotoUrl
+      profilePhoto = userData.profilePhotoUrl;
     }
-    userData.profilePhotoUrl = profilePhoto
-
+    userData.profilePhotoUrl = profilePhoto;
+    if (userData.customSplit && userData.customSplit >= 0) {
+      this.customSplit = userData.customSplit;
+    }
     if (userData.settings.currency) {
-      this.currency = userData.settings.currency
+      this.currency = userData.settings.currency;
     }
     if (userData.settings.notifications.receiveEmail) {
-      this.receiveEmail = userData.settings.notifications.receiveEmail
+      this.receiveEmail = userData.settings.notifications.receiveEmail;
     }
     if (userData.settings.notifications.receivePushNotifications) {
-      this.receivePushNotifications = userData.settings.notifications.receivePushNotifications
+      this.receivePushNotifications =
+        userData.settings.notifications.receivePushNotifications;
     }
     if (userData.settings.notifications.receiveSms) {
-      this.receiveSms = userData.settings.notifications.receiveSms
+      this.receiveSms = userData.settings.notifications.receiveSms;
     }
     if (userData.settings.payoutMethods) {
-      this.payoutMethods = userData.settings.payoutMethods
+      this.payoutMethods = userData.settings.payoutMethods;
     }
 
-    let createdAtDate = moment(userData.createdAt)
-    this.createdAt = createdAtDate.format("dddd, MMMM Do YYYY, h:mm a")
+    let createdAtDate = moment(userData.createdAt);
+    this.createdAt = createdAtDate.format("dddd, MMMM Do YYYY, h:mm a");
 
-    let lastActiveDate = moment(userData.lastActive)
-    this.lastActive = lastActiveDate.format("dddd, MMMM Do YYYY, h:mm a")
+    let lastActiveDate = moment(userData.lastActive);
+    this.lastActive = lastActiveDate.format("dddd, MMMM Do YYYY, h:mm a");
 
-    this.user = userData
+    this.user = userData;
   }
-}
+};
 </script>

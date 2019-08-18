@@ -1,6 +1,11 @@
 <template>
   <div class="container">
     <div style="text-align:center;">
+       <p style="margin:10px">
+            <strong>Tickle Cut</strong><br>
+            <input   class="input" style="width:200px; margin-top:10px; margin-right:20px" type="number" placeholder="" v-model="tickleCut">
+            <button class="button" style="margin-top:10px;" @click="saveCut()">Change and Save Cut</button>
+          </p>
       <h1 class="title is-3">Experience List({{this.totalCount}})</h1>
        <h2 class="title is-3" v-if="this.isLoading">Loading...</h2>
       <div>
@@ -81,255 +86,328 @@ export default {
       currentSubmissionTitle: null,
       currentSubmissionId: null,
       transferUserId: null,
-      showAll: false
+      showAll: false,
+      tickleCut: null
     };
   },
   methods: {
+    saveCut() {
+      db
+        .collection("configs")
+        .doc("appConfigs")
+        .update({
+          tickleCut: parseInt(this.tickleCut, 10)
+        })
+        .then(() => {
+          location.reload();
+        });
+    },
     transferClicked(submission) {
       this.showModal = true;
-      this.currentSubmissionId = submission.submissionId
-      this.currentSubmissionTitle = submission.title
+      this.currentSubmissionId = submission.submissionId;
+      this.currentSubmissionTitle = submission.title;
     },
     closeModal() {
       this.showModal = false;
     },
     getProfileLink(userId) {
-      return "user/"+userId;
+      return "user/" + userId;
     },
     getExperienceLink(submission) {
       if (submission.status.isApproved) {
-        return "experience/"+submission.submissionId
+        return "experience/" + submission.submissionId;
       } else {
-         return "experience/"+submission.submissionId+"?isSubmission=true"
+        return "experience/" + submission.submissionId + "?isSubmission=true";
       }
-    } ,
+    },
     editExperienceLink(experienceId) {
-    return "experience/"+experienceId+"?isSubmission=true&isEditMode=true"
-    } ,
+      return (
+        "experience/" + experienceId + "?isSubmission=true&isEditMode=true"
+      );
+    },
     async transferExperience() {
-      const batch = db.batch()
+      const batch = db.batch();
       if (
-        this.currentSubmissionId === undefined || 
+        this.currentSubmissionId === undefined ||
         this.currentSubmissionId.length == 0 ||
-        this.transferUserId === undefined || 
-        this.transferUserId.length == 0) 
-      {
-        this.showModal = false
-        console.error("Invalid experienceId or userId")
-        return
+        this.transferUserId === undefined ||
+        this.transferUserId.length == 0
+      ) {
+        this.showModal = false;
+        console.error("Invalid experienceId or userId");
+        return;
       }
-      const submissionRef = db.collection('submissions').doc(this.currentSubmissionId)
-      const experienceRef = db.collection('experiences').doc(this.currentSubmissionId)
-      
-      batch.update(submissionRef, {'aboutHost.hostId' : this.transferUserId})
-      
-      this.isLoading = true
-      const experienceDoc = await experienceRef.get()
+      const submissionRef = db
+        .collection("submissions")
+        .doc(this.currentSubmissionId);
+      const experienceRef = db
+        .collection("experiences")
+        .doc(this.currentSubmissionId);
+
+      batch.update(submissionRef, { "aboutHost.hostId": this.transferUserId });
+
+      this.isLoading = true;
+      const experienceDoc = await experienceRef.get();
       if (experienceDoc.exists) {
-        batch.update(experienceRef,  {'aboutHost.hostId' : this.transferUserId})
+        batch.update(experienceRef, {
+          "aboutHost.hostId": this.transferUserId
+        });
       }
 
-      batch.commit().then(async() => {
-         const userDoc = await db.collection('users').doc(this.transferUserId).get();
-         const userData = userDoc.data();
+      batch.commit().then(async () => {
+        const userDoc = await db
+          .collection("users")
+          .doc(this.transferUserId)
+          .get();
+        const userData = userDoc.data();
 
-         const body = {
+        const body = {
           submissionId: this.currentSubmissionId,
           experienceTitle: this.currentSubmissionTitle,
           firstName: userData.firstName,
           email: userData.email
-        }
+        };
 
-         this.showModal = false
-         this.transferUserId = null
-         this.currentSubmissionId = null 
-         this.isLoading = false
+        this.showModal = false;
+        this.transferUserId = null;
+        this.currentSubmissionId = null;
+        this.isLoading = false;
         try {
-          await this.$axios.$post(`${host}/sendTransferEmailToHost`, body)
+          await this.$axios.$post(`${host}/sendTransferEmailToHost`, body);
           // location.reload()
         } catch (error) {
-          console.error(error)
-          this.errorMessage = error.message
-          this.showError = true
+          console.error(error);
+          this.errorMessage = error.message;
+          this.showError = true;
         }
-      })
+      });
     },
     async onVisibilityChange(submissionId) {
-      let obj = {}
-      console.log(this.visibility)
+      let obj = {};
+      console.log(this.visibility);
       switch (this.visibility[submissionId]) {
-        case 'show':
-        obj = { isHidden : false, isDisabled: false }; break;
-        case 'hide':
-        obj = { isHidden: true, isDisabled: false }; break;
-        case 'disable':
-        obj = { isHidden: false, isDisabled: true }; break;
+        case "show":
+          obj = { isHidden: false, isDisabled: false };
+          break;
+        case "hide":
+          obj = { isHidden: true, isDisabled: false };
+          break;
+        case "disable":
+          obj = { isHidden: false, isDisabled: true };
+          break;
       }
-       await db.collection("experiences").doc(submissionId).update(obj)
+      await db
+        .collection("experiences")
+        .doc(submissionId)
+        .update(obj);
+    },
+    async loadTickleCut() {
+      console.log("tickle cut called");
+      const snapshot = await db
+        .collection("configs")
+        .doc("appConfigs")
+        .get();
+      console.log("tickle cut" + snapshot.data());
+      this.tickleCut = snapshot.data().tickleCut;
     },
     async fetchSubmissions() {
       this.isLoading = true;
       this.submissions = [];
-      this.visibility= [];
+      this.visibility = [];
       this.totalCount = 0;
-      const snapshot = await db.collection("submissions").orderBy("lastEdited", "desc").get();
+      const snapshot = await db
+        .collection("submissions")
+        .orderBy("lastEdited", "desc")
+        .get();
       snapshot.forEach(async doc => {
         const submission = doc.data();
         if (!submission.status.isDraft) {
-          const user = await db.collection("users").doc(submission.aboutHost.hostId).get();
+          const user = await db
+            .collection("users")
+            .doc(submission.aboutHost.hostId)
+            .get();
           if (user.exists) {
-          submission["hostName"] = user.data().firstName + " " + user.data().lastName;
+            submission["hostName"] =
+              user.data().firstName + " " + user.data().lastName;
           } else {
-            console.log("user doesn't exists"+ submission.submissionId)
+            console.log("user doesn't exists" + submission.submissionId);
           }
-          const experience = await db.collection("experiences").doc(submission.submissionId).get();
-          this.isLoading = false
+          const experience = await db
+            .collection("experiences")
+            .doc(submission.submissionId)
+            .get();
+          this.isLoading = false;
           if (experience.exists) {
-              submission["isHidden"] = experience.data().isHidden;
-              submission["isDisabled"] = experience.data().isDisabled;
-              if (submission.isDisabled) {
-                this.visibility[submission.submissionId] = "disable"
-              } else if (submission.isHidden) {
-                 this.visibility[submission.submissionId] = "hide"
-              } else {
-                 this.visibility[submission.submissionId] = "show"
-              }
+            submission["isHidden"] = experience.data().isHidden;
+            submission["isDisabled"] = experience.data().isDisabled;
+            if (submission.isDisabled) {
+              this.visibility[submission.submissionId] = "disable";
+            } else if (submission.isHidden) {
+              this.visibility[submission.submissionId] = "hide";
+            } else {
+              this.visibility[submission.submissionId] = "show";
+            }
           } else {
-             this.visibility[submission.submissionId] = ""
+            this.visibility[submission.submissionId] = "";
           }
           if (!this.showAll) {
-          if (this.stripeFilter != 0) {
-            if (user.data().settings.payoutMethods) {
-              if (this.dateFilter != 0) {
-                if (experience.exists) {
-                  if (experience.data().lastAvailabilityDate > new Date().getTime()) {
+            if (this.stripeFilter != 0) {
+              if (user.data().settings.payoutMethods) {
+                if (this.dateFilter != 0) {
+                  if (experience.exists) {
+                    if (
+                      experience.data().lastAvailabilityDate >
+                      new Date().getTime()
+                    ) {
+                      this.submissions.push(submission);
+                      this.totalCount++;
+                    }
+                  } else {
                     this.submissions.push(submission);
-                    this.totalCount++
+                    this.totalCount++;
                   }
-                } else {
-                  this.submissions.push(submission);
-                  this.totalCount++
+                } else if (this.dateFilter == 0) {
+                  if (experience.exists) {
+                    if (
+                      experience.data().lastAvailabilityDate <
+                      new Date().getTime()
+                    ) {
+                      this.submissions.push(submission);
+                      this.totalCount++;
+                    }
+                  } else {
+                    this.submissions.push(submission);
+                    this.totalCount++;
+                  }
                 }
-              } else if (this.dateFilter == 0) {
-                 if (experience.exists) {
-                    if (experience.data().lastAvailabilityDate < new Date().getTime()) {
+              }
+            } else if (this.stripeFilter == 0) {
+              if (
+                !user.data().settings ||
+                !user.data().settings.payoutMethods
+              ) {
+                if (this.dateFilter != 0) {
+                  if (experience.exists) {
+                    if (
+                      experience.data().lastAvailabilityDate >
+                      new Date().getTime()
+                    ) {
+                      this.submissions.push(submission);
+                      this.totalCount++;
+                    }
+                  } else {
                     this.submissions.push(submission);
-                    this.totalCount++
+                    this.totalCount++;
                   }
-                } else {
-                  this.submissions.push(submission);
-                  this.totalCount++
+                } else if (this.dateFilter == 0) {
+                  if (experience.exists) {
+                    if (
+                      experience.data().lastAvailabilityDate <
+                      new Date().getTime()
+                    ) {
+                      this.submissions.push(submission);
+                      this.totalCount++;
+                    }
+                  } else {
+                    this.submissions.push(submission);
+                    this.totalCount++;
+                  }
                 }
               }
             }
-          } else if (this.stripeFilter == 0) {
-              if (!user.data().settings || !user.data().settings.payoutMethods) {
-               if (this.dateFilter != 0) {
-                if (experience.exists) {
-                  if (experience.data().lastAvailabilityDate > new Date().getTime()) {
-                    this.submissions.push(submission);
-                    this.totalCount++
-                  }
-                } else {
-                  this.submissions.push(submission);
-                  this.totalCount++
-                }
-              } else if (this.dateFilter == 0) {
-                 if (experience.exists) {
-                    if (experience.data().lastAvailabilityDate < new Date().getTime()) {
-                    this.submissions.push(submission);
-                    this.totalCount++
-                  }
-                } else {
-                  this.submissions.push(submission);
-                  this.totalCount++
-                }
-              }
-            }
-          }
           } else {
-              this.submissions.push(submission);
-              this.totalCount++
+            this.submissions.push(submission);
+            this.totalCount++;
           }
         }
-        this.convertArrayOfObjectsToCSV(this.submissions)
+        this.convertArrayOfObjectsToCSV(this.submissions);
       });
     },
     async onDateFilterChange() {
-      this.showAll = false
+      this.showAll = false;
       await this.fetchSubmissions();
     },
     async onStripeFilterChange() {
-      this.showAll = false
+      this.showAll = false;
       await this.fetchSubmissions();
     },
     async showAllSubmissions() {
       this.showAll = true;
       this.dateFilter = 0;
       this.stripeFilter = 0;
-      await this.fetchSubmissions()   
+      await this.fetchSubmissions();
     },
     downloadCSV() {
       var data, filename, link;
-      
+
       var csv = this.convertArrayOfObjectsToCSV(this.submissions);
       if (csv == null) return;
 
-      filename = 'export.csv';
+      filename = "export.csv";
       if (!csv.match(/^data:text\/csv/i)) {
-          csv = 'data:text/csv;charset=utf-8,' + csv;
+        csv = "data:text/csv;charset=utf-8," + csv;
       }
       data = encodeURI(csv);
 
-      link = document.createElement('a');
-      link.setAttribute('href', data);
-      link.setAttribute('download', filename);
+      link = document.createElement("a");
+      link.setAttribute("href", data);
+      link.setAttribute("download", filename);
       link.click();
     },
-    convertArrayOfObjectsToCSV(data) {  
+    convertArrayOfObjectsToCSV(data) {
       var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
       if (data == null || !data.length) {
-          return null;
+        return null;
       }
-      var csvObjects = []
+      var csvObjects = [];
       data.forEach(submission => {
-        const newObj = []
+        const newObj = [];
         newObj["title"] = submission.title.replace(",", "");
         newObj["experienceId"] = submission.submissionId;
         newObj["host"] = submission.hostName;
         newObj["hostId"] = submission.aboutHost.hostId;
-        newObj["status"] =  submission.status.isDraft ? "Draft" : (submission.status.inReview ? "In Review": (submission.status.isApproved ? "Live": "Rejected" ))
-        newObj["visibility"] = this.visibility[submission.submissionId] == "hide" ? "hidden" : (this.visibility[submission.submissionId] == "disable" ? "disabled": "showing");
+        newObj["status"] = submission.status.isDraft
+          ? "Draft"
+          : submission.status.inReview
+            ? "In Review"
+            : submission.status.isApproved ? "Live" : "Rejected";
+        newObj["visibility"] =
+          this.visibility[submission.submissionId] == "hide"
+            ? "hidden"
+            : this.visibility[submission.submissionId] == "disable"
+              ? "disabled"
+              : "showing";
         newObj["stripeConnected"] = this.stripeFilter ? "Yes" : "No";
         newObj["hasFutureDates"] = this.dateFilter ? "Yes" : "No";
-        newObj["price"] = "IDR "+submission.pricePerPax/100
+        newObj["price"] = "IDR " + submission.pricePerPax / 100;
         csvObjects.push(newObj);
       });
-      columnDelimiter =  ',';
-      lineDelimiter = '\n';
+      columnDelimiter = ",";
+      lineDelimiter = "\n";
 
       keys = Object.keys(csvObjects[0]);
 
-      result = '';
+      result = "";
       result += keys.join(columnDelimiter);
       result += lineDelimiter;
 
       csvObjects.forEach(function(item) {
-          ctr = 0;
-          keys.forEach(function(key) {
-              if (ctr > 0) result += columnDelimiter;
+        ctr = 0;
+        keys.forEach(function(key) {
+          if (ctr > 0) result += columnDelimiter;
 
-              result += item[key];
-              ctr++;
-          });
-          result += lineDelimiter;
+          result += item[key];
+          ctr++;
+        });
+        result += lineDelimiter;
       });
       return result;
     }
   },
   created() {
     this.fetchSubmissions();
+    this.loadTickleCut();
   }
 };
 </script>
